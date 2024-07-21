@@ -15,4 +15,4 @@ build_and_push_nexus: nexus_login
 build_and_push_dockerhub: dockerhub_login
 	devcontainer build --workspace-folder . --platform=linux/amd64,linux/arm64 --image-name weslyg/ansible-infra:$TAG_VERSION --push
 
-run: install_devcontainer dockerhub_login build_and_push_dockerhub nexus_login build_and_push_nexus
+run: install_devcontainer build_and_push_dockerhub build_and_push_nexus

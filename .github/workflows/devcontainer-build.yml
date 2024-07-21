@@ -52,5 +52,8 @@ jobs:
       - name: Build nexus image and push
         run: devcontainer build --workspace-folder . --image-name registry.weslyg.ru/ansible-infra:$TAG_VERSION --platform linux/amd64,linux/arm64 --push
       
-      - name: Build docker image and push
-        run: devcontainer build --workspace-folder . --image-name weslyg/ansible-infra:$TAG_VERSION --platform linux/amd64,linux/arm64 --push
+      - name: Docker tag for dockerhub
+        run: docker tag registry.weslyg.ru/ansible-infra:$TAG_VERSION weslyg/ansible-infra:$TAG_VERSION
+
+      - name: Push to dockerhub
+        run: docker push weslyg/ansible-infra:$TAG_VERSION
