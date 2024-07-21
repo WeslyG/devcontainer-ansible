@@ -48,7 +48,6 @@ jobs:
           imageName: registry.weslyg.ru/ansible-infra
           platform: linux/amd64,linux/arm64
           push: always
-          cacheFrom: registry.weslyg.ru/ansible-infra
           # runCmd: |
           #   # Add multiple commands to run if needed
           #   make install-packages
