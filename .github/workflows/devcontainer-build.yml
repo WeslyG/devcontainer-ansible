@@ -49,8 +49,8 @@ jobs:
       - name: Install devcontainers cli
         run: npm i -g @devcontainers/cli
 
-      - name: Install devcontainers cli
-        run: devcontainer build --workspace-folder . --image-name registry.weslyg.ru/ansible-infra:1.0.1 --platform linux/amd64,linux/arm64 --push
+      - name: Build nexus image and push
+        run: devcontainer build --workspace-folder . --image-name registry.weslyg.ru/ansible-infra:$TAG_VERSION --platform linux/amd64,linux/arm64 --push
       
-      - name: Install devcontainers cli
-        run: devcontainer build --workspace-folder . --image-name weslyg/ansible-infra/ansible-infra:1.0.1 --platform linux/amd64,linux/arm64 --push
+      - name: Build docker image and push
+        run: devcontainer build --workspace-folder . --image-name weslyg/ansible-infra:$TAG_VERSION --platform linux/amd64,linux/arm64 --push
