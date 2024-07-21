@@ -10,15 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Checkout (GitHub)
+        uses: actions/checkout@v3
+
       - name: Read version from file and set as env var
         id: set_version
         run: echo "TAG_VERSION=$(cat .devcontainer/platform_version.txt)" >> $GITHUB_ENV
 
       - name: Display version
         run: echo "Version is $TAG_VERSION"
-
-      - name: Checkout (GitHub)
-        uses: actions/checkout@v3
 
       - name: Login to dockerhub Container Registry
         uses: docker/login-action@v2
