@@ -3,7 +3,7 @@ on: # rebuild any PRs and main branch changes
   push:
     branches:
       - master
-      - kubepsray
+      - kubespray
 
 jobs:
   build:
