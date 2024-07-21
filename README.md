@@ -2,6 +2,14 @@
 
 Контейнер для разработки на ansible
 
+Поддерживает архитектуры arm64/amd64 
+Проверенн запуск на windows 11 + wsl2 и на маке с m1 + процессорами
+
+#### Важно
+
+- В ветке kubespray версии пакетов для работы с Kubepsray
+- утилиты hashicorp ставятся с зеркала доступного в рф
+
 Включает в себя:
 - python 3.12
 - debian bookworm
@@ -25,12 +33,12 @@
 
 Создайте в своем репозитории папку `.devcontainer` с файлом `devcontainer.json`
 
-С содержимым
+С содержимым (уточнить актуальную версию тега)
 
 ```
 {
   "name": "my-infra",
-  "image": "weslyg/ansible-infra:1.0.8",
+  "image": "weslyg/ansible-infra:TAG_VERSION",
   "runArgs": [
     "--cap-add=SYS_ADMIN",  // Optional: Adds capabilities required by some applications
     "--net=host"            // Optional: Удобно, ходить в kubernetes и другие службы на локальном компе
@@ -45,3 +53,7 @@
 ```
 
 И запуститесь в vscode
+
+### Почему нет latest тега?
+
+Тогда vscode никогда не поймет, когда ребилдится, поэтому лучше, чтобы тег всегда был фисирован!
