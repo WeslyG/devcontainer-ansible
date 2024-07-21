@@ -1,9 +1,9 @@
 name: 'build'
-on: # rebuild any PRs and main branch changes
-  pull_request:
+on:
   push:
     branches:
-      - master
+      - latest
+      - kubespray
 
 jobs:
   build:
