@@ -1,0 +1,162 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,s3cmd"
+    },
+    "ghcr.io/devcontainers-contrib/features/kubectx-kubens:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "1.30.1",  // kubectl
+      "helm": "latest",
+      "minikube": "latest"
+    },
+    // https://hashicorp-releases.yandexcloud.net
+    "ghcr.io/weslyg/features/hashicorp-mirror:2": {
+      "products": "terraform=1.9.1,vault=1.17.1"
+    },
+    // devfeature docker-in-docker ломается на молекуле (подозреваю коряво работает с arm)
+    // если хотите переехать на девфичу, проверьте что apt install сработает в молекуле)
+    // если есть опасения по поводу get.docker.com в рф то надо зеркалить, когда нибудь займусь
+    "ghcr.io/devcontainers-contrib/features/bash-command:1": {
+      "command": "curl -fsSL get.docker.com | sh"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // ansible база
+        "redhat.ansible",
+        "blauwelucht.ansible-go-to-definition",         // возможно ерунда, и не будет работать - первый кандидат на снос
+        "ikbengeenrobot.ansible-variable-lookup",       // рекомендовали в статьях
+        "samuelcolvin.jinjahtml",                       // подсветка и работа с jinja
+        "oderwat.indent-rainbow",                       // если слишком лгбд то уберем
+        "esbenp.prettier-vscode",                       // потому что redhat-yaml Не может форматить ansible
+
+        // форматы которые мы встречаем
+        "redhat.vscode-yaml",                           // база
+        "redhat.vscode-xml",                            // на всякий случай
+
+        // python (базовые расширения зашиты уже в образе devcontainers)
+        "visualstudioexptteam.vscodeintellicode",       // может помочь с автокомплитом в python
+        "ms-python.black-formatter",                    // formatting
+        "twixes.pypi-assistant",                        // помощь с зависимостями
+        "ms-python.isort",                              // сортировка импортов
+        "ms-python.pylint",                             // линтер, подсветка всего кривого
+
+        // terraform - базовый, без сбора данных
+        "4ops.terraform",
+
+        // докер, для автокомплита dockerfile
+        "ms-azuretools.vscode-docker",
+
+        // nginx
+        "ahmadalli.vscode-nginx-conf",                   // nginx autocomplete + syntax
+        "raynigon.nginx-formatter",                      // nginx formatter
+
+        // haproxy
+        "bmarkovic.haproxy",                             // haproxy syntax highlight
+
+        // shell
+        "timonwong.shellcheck",                           // bash script check
+
+        // другое
+        "editorconfig.editorconfig",                    // editorconfig очень хорошо работает с crlf/lf - никто больше нормально это не делает
+        "eamodio.gitlens",                              // git
+        "gruntfuggly.todo-tree",                        // Осознание количества тудушек в коде
+        "adamhartford.vscode-base64",                   // Base64 works
+        "streetsidesoftware.code-spell-checker",        // очепятки находить на английском
+        "streetsidesoftware.code-spell-checker-russian" // очепятки находить на русском
+      ],
+      "settings": {
+        // общее
+        "telemetry.telemetryLevel": "off",
+        "extensions.ignoreRecommendations": true,
+        "diffEditor.renderSideBySide": true,
+        "workbench.startupEditor": "none",
+        "files.exclude": {
+          "**/.classpath": true,
+          "**/.DS_Store": true,
+          "**/.project": true,
+          "**/.settings": true
+        },
+        "editor.renderWhitespace": "all",
+        "editor.suggestSelection": "first",
+        "editor.tabSize": 2,
+        "editor.wordWrap": "bounded",
+        "editor.wordWrapColumn": 200,
+        "explorer.confirmDelete": false,
+        "explorer.confirmDragAndDrop": false,
+
+        // Ansible
+        "indentRainbow.includedLanguages": ["ansible", "yaml", "xml"],
+        "ansible.python.interpreterPath": "/usr/local/bin/python",        // таков контейнер
+        // ассоциации с ansible в плагине, для чтения
+        // Обсуждаемо, согласно схеме именований файлов
+        "files.associations": {
+          "*.yml": "ansible",
+          "*.yaml": "ansible"
+        },
+
+        // Python
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.analysis.autoImportCompletions": true,
+        "python.analysis.typeCheckingMode": "basic",
+        "pylint.importStrategy": "fromEnvironment",
+        // это надо уносить в конфиг файл, ибо ci!
+        // "pylint.args": [
+        //   "--disable=C0116",
+        //   "--disable=C0301",
+        //   "--disable=C0114"
+        // ],
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+          // "editor.formatOnSave": true,
+          // "editor.formatOnType": true,
+        },
+
+        // Очепятки
+        "cSpell.enabled": true,
+        "cSpell.language": "en,ru",
+        "cSpell.enableFiletypes": [
+          "ansible",
+          "ansible-jinja",
+          "yaml",
+          "python",
+          "jinja",
+          "xml"
+        ],
+
+
+        "[ansible]": {
+          "editor.autoIndent": "advanced",
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+          // "editor.formatOnSave": true
+        },
+        "[xml]": {
+          "editor.defaultFormatter": "redhat.vscode-xml"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "vscode.json-language-features"
+        },
+        "[yaml]": {
+          "editor.defaultFormatter": "redhat.vscode-yaml"
+        }
+
+        // оно не работает, но идея была хороша
+        // "[jinja-yaml]": {
+        //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+        // },
+        // "[jinja-py]": {
+        //   "editor.defaultFormatter": "ms-python.black-formatter"
+        // }
+      }
+    }
+  }
+}
