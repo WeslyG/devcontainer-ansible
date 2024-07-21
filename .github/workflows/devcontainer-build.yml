@@ -37,7 +37,7 @@ jobs:
       - name: Build Dev Container for nexus
         uses: devcontainers/ci@v0.3
         with:
-          imageTag: $TAG_VERSION
+          #imageTag: $TAG_VERSION
           imageName: registry.weslyg.ru/ansible-infra
           platform: linux/amd64,linux/arm64
           push: always
@@ -50,7 +50,7 @@ jobs:
       - name: Build Dev Container for dockerhub
         uses: devcontainers/ci@v0.3
         with:
-          imageTag: $TAG_VERSION
+          #imageTag: $TAG_VERSION
           imageName: docker.io/weslyg/ansible-infra
           cacheFrom: docker.io/weslyg/ansible-infra
           platform: linux/amd64,linux/arm64
