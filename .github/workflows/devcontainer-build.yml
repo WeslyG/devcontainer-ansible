@@ -58,7 +58,7 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           #imageTag: $TAG_VERSION
-          imageName: docker.io/weslyg/ansible-infra
-          cacheFrom: docker.io/weslyg/ansible-infra
+          imageName: weslyg/ansible-infra
+          cacheFrom: weslyg/ansible-infra
           platform: linux/amd64,linux/arm64
           push: always
