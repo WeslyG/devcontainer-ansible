@@ -27,7 +27,7 @@ pytz==2024.1
 # python base
 pip==24.1.2
 setuptools==71.1.0
-wheel==0.43.0
+wheel==0.44.0
 
 # https://github.com/ansible-collections/community.docker/issues/868#issuecomment-2124979976
 # если хотите обновить, проверьте работает ли molecule create
