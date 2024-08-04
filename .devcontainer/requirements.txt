@@ -18,7 +18,7 @@ pytest-testinfra==10.1.1
 # linters
 ansible-lint==24.7.0
 yamllint==1.35.1
-flake8==7.1.0
+flake8==7.1.1
 
 # hashicorp
 hvac==2.3.0
