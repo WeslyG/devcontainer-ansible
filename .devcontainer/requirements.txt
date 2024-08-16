@@ -10,7 +10,7 @@ distlib==0.3.8
 jmespath==1.0.1
 
 # test
-molecule==24.7.0
+molecule==24.8.0
 molecule-plugins[docker]==23.5.3
 docker==7.1.0
 pytest-testinfra==10.1.1
