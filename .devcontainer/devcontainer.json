@@ -4,19 +4,19 @@
   },
   "features": {
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,s3cmd"
+      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,s3cmd,ncdu"
     },
     "ghcr.io/devcontainers-contrib/features/kubectx-kubens:1": {
       "version": "latest"
     },
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "1.30.1",  // kubectl
+      "version": "1.31.0",  // kubectl
       "helm": "latest",
       "minikube": "latest"
     },
     // https://hashicorp-releases.yandexcloud.net
     "ghcr.io/weslyg/features/hashicorp-mirror:2": {
-      "products": "terraform=1.9.1,vault=1.17.1"
+      "products": "terraform=1.9.5,vault=1.17.3"
     },
     // devfeature docker-in-docker ломается на молекуле (подозреваю коряво работает с arm)
     // если хотите переехать на девфичу, проверьте что apt install сработает в молекуле)
