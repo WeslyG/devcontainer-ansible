@@ -26,7 +26,7 @@ pytz==2024.1
 
 # python base
 pip==24.2
-setuptools==73.0.1
+setuptools==74.1.2
 wheel==0.44.0
 
 # https://github.com/ansible-collections/community.docker/issues/868#issuecomment-2124979976
