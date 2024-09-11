@@ -22,7 +22,7 @@ flake8==7.1.1
 
 # hashicorp
 hvac==2.3.0
-pytz==2024.1
+pytz==2024.2
 
 # python base
 pip==24.2
