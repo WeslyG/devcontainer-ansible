@@ -1,6 +1,6 @@
 # core
 # ansible 11 required python 3.8 on remote server
-ansible==10.7.0
+ansible==11.6.0
 netaddr==1.3.0
 dnspython==2.7.0
 
