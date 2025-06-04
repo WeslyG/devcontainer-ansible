@@ -1,1 +1,1 @@
-bookworm-python3.13-ansible10-1.2.0
+bookworm-python3.13-ansible11-1.2.0
