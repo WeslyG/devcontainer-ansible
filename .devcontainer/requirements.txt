@@ -1,38 +1,45 @@
-# core (for kubespray)
-ansible==9.7.0
+## Взято отсюда https://github.com/kubernetes-sigs/kubespray/blob/master/requirements.txt
 
+# core (for kubespray)
+ansible==9.13.0
 
 # for filters
-netaddr==1.3.0
-dnspython==2.6.1
+dnspython==2.7.0
 
 # for kubespray
+# Needed for community.crypto module
+cryptography==45.0.3
+# Needed for jinja2 json_query templating
+jmespath==1.0.1
+# Needed for ansible.utils.ipaddr
+netaddr==1.3.0
+
 distlib==0.3.8
 jmespath==1.0.1
 
 # test
-molecule==24.8.0
-molecule-plugins[docker]==23.5.3
+molecule==25.5.0
+molecule-plugins[docker]==23.7.0
 docker==7.1.0
-pytest-testinfra==10.1.1
+pytest-testinfra==10.2.2
 
 # linters
-ansible-lint==24.7.0
-yamllint==1.35.1
-flake8==7.1.1
+ansible-lint==25.5.0
+yamllint==1.37.1
+flake8==7.2.0
 
 # hashicorp
 hvac==2.3.0
-pytz==2024.1
+pytz==2025.2
 
 # python base
-pip==24.2
-setuptools==73.0.1
-wheel==0.44.0
+pip==25.1.1
+setuptools==80.9.0
+wheel==0.45.1
 
 # https://github.com/ansible-collections/community.docker/issues/868#issuecomment-2124979976
 # если хотите обновить, проверьте работает ли molecule create
 #requests==2.31.0
 
 # update platform base
-python-gilt==2.2.3
+python-gilt==2.2.4
