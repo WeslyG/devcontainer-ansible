@@ -50,7 +50,7 @@ jobs:
         run: npm i -g @devcontainers/cli
 
       - name: Build nexus image and push
-        run: devcontainer build --workspace-folder . --image-name registry.weslyg.ru/ansible-infra:$TAG_VERSION --platform linux/amd64,linux/arm64 --push
+        run: devcontainer build --workspace-folder . --image-name registry.weslyg.ru/ansible-infra:${TAG_VERSION} --platform linux/amd64,linux/arm64 --push
       
       - name: Build dockerhub and push
-        run: devcontainer build --workspace-folder . --image-name weslyg/ansible-infra:$TAG_VERSION --platform linux/amd64,linux/arm64 --push
+        run: devcontainer build --workspace-folder . --image-name weslyg/ansible-infra:${TAG_VERSION} --platform linux/amd64,linux/arm64 --push
