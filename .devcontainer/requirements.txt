@@ -13,7 +13,7 @@ pytest-testinfra==10.2.2
 ansible-lint==25.5.0
 
 yamllint==1.37.1
-pylint==3.3.7
+pylint==3.3.8
 
 # hashicorp
 hvac==2.3.0
