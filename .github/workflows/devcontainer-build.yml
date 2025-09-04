@@ -43,7 +43,7 @@ jobs:
           password: ${{ secrets.NEXUS_PASSWORD }}
 
       - name: Install Node.js and npm
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '20'
 
