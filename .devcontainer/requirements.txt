@@ -1,14 +1,14 @@
 ## Взято отсюда https://github.com/kubernetes-sigs/kubespray/blob/master/requirements.txt
 
 # core (for kubespray)
-ansible==9.13.0
+ansible==10.7.0
 
 # for filters
 dnspython==2.7.0
 
 # for kubespray
 # Needed for community.crypto module
-cryptography==45.0.3
+cryptography==45.0.6
 # Needed for jinja2 json_query templating
 jmespath==1.0.1
 # Needed for ansible.utils.ipaddr

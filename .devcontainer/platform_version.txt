@@ -1,1 +1,1 @@
-kubespray-bookworm-ansible9.13.0-1.2.0
+kubespray2.28.1-bookworm3.12-ansible10.7.0
