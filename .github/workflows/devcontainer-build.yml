@@ -4,13 +4,14 @@ on: # rebuild any PRs and main branch changes
     branches:
       - master
       - kubespray
+      - ansible11
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout (GitHub)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Read version from file and set as env var
         id: set_version
@@ -42,15 +43,15 @@ jobs:
           password: ${{ secrets.NEXUS_PASSWORD }}
 
       - name: Install Node.js and npm
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install devcontainers cli
         run: npm i -g @devcontainers/cli
 
       - name: Build nexus image and push
-        run: devcontainer build --workspace-folder . --image-name registry.weslyg.ru/ansible-infra:$TAG_VERSION --platform linux/amd64,linux/arm64 --push
+        run: devcontainer build --workspace-folder . --image-name registry.weslyg.ru/ansible-infra:${TAG_VERSION} --platform linux/amd64,linux/arm64 --push
       
       - name: Build dockerhub and push
-        run: devcontainer build --workspace-folder . --image-name weslyg/ansible-infra:$TAG_VERSION --platform linux/amd64,linux/arm64 --push
+        run: devcontainer build --workspace-folder . --image-name weslyg/ansible-infra:${TAG_VERSION} --platform linux/amd64,linux/arm64 --push
