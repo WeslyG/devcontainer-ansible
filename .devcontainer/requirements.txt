@@ -30,7 +30,7 @@ setuptools==80.9.0
 wheel==0.45.1
 
 # update platform base
-python-gilt==2.2.4
+python-gilt==2.2.5
 
 # bcrypt
 passlib==1.7.4
