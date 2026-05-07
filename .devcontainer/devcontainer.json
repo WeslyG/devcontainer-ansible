@@ -5,23 +5,19 @@
   },
   "features": {
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,s3cmd,ncdu,sshpass,dnsutils"
+      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils"
     },
     "ghcr.io/dhoeric/features/k9s:1": {
-      "version": "0.50.6" // https://github.com/derailed/k9s/releases
-    },
-    // Ждем билда https://github.com/devcontainers-extra/features/tree/main/src/kubectx-kubens
-    "ghcr.io/devcontainers-extra/features/kubectx-kubens:1.0.6": {
-      "version": "v0.9.5" // https://github.com/ahmetb/kubectx/releases (обе там)
+      "version": "0.50.18" // https://github.com/derailed/k9s/releases
     },
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "1.33.1",  // kubectl https://cdn.dl.k8s.io/release/stable.txt
-      "helm": "3.18.2",    // https://github.com/helm/helm/releases
-      "minikube": "1.36.0" // https://github.com/kubernetes/minikube/releases
+      "version": "1.35.3",  // kubectl https://dl.k8s.io/release/stable.txt
+      "helm": "4.1.3",    // https://github.com/helm/helm/releases
+      "minikube": "1.38.1" // https://github.com/kubernetes/minikube/releases
     },
     // https://hashicorp-releases.yandexcloud.net
     "ghcr.io/weslyg/features/hashicorp-mirror:2": {
-      "products": "terraform=1.12.1,vault=1.19.5"
+      "products": "terraform=1.14.8,vault=1.21.4"
     },
     // devfeature docker-in-docker ломается на молекуле (подозреваю коряво работает с arm)
     // если хотите переехать на девфичу, проверьте что apt install сработает в молекуле при запуске тестов)
@@ -75,6 +71,7 @@
         //"forbeslindesay.forbeslindesay-taskrunner",
         //"technosophos.vscode-make",
         // другое
+        "rjmacarthy.twinny", // ai for ecom.tech см https://space.samokat.ru/pages/viewpage.action?pageId=4172978983
         "editorconfig.editorconfig", // editorconfig очень хорошо работает с crlf/lf - никто больше нормально это не делает
         "eamodio.gitlens", // git
         "gruntfuggly.todo-tree", // Осознание количества тудушек в коде
@@ -127,7 +124,7 @@
         // Python
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.analysis.autoImportCompletions": true,
-        "python.analysis.typeCheckingMode": "basic",
+        "python.analysis.typeCheckingMode": "standard",
         "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
         "python.formatting.blackArgs": [
           "--line-length=120"
