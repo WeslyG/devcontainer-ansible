@@ -15,7 +15,7 @@ PyYAML==6.0.3
 jsonpatch==1.33
 
 # linters
-ansible-lint==25.9.2
+ansible-lint==25.12.2
 
 yamllint==1.37.1
 pylint==4.0.2
