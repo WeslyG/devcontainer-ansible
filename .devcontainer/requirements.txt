@@ -21,7 +21,7 @@ yamllint==1.37.1
 pylint==4.0.2
 
 # hashicorp
-hvac==2.3.0
+hvac==2.4.0
 pytz==2025.2
 
 # python base
