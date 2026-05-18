@@ -38,7 +38,7 @@ bcrypt==4.3.0
 
 # other
 pyyaml==6.0.3
-editorconfig-checker==3.4.0
+editorconfig-checker==3.6.1
 
 # for cookiecutter
 pydantic==2.13.3
