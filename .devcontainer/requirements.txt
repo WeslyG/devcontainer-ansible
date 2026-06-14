@@ -18,7 +18,7 @@ jsonpatch==1.33
 ansible-lint==25.9.2
 
 yamllint==1.37.1
-pylint==4.0.2
+pylint==4.0.6
 
 # hashicorp
 hvac==2.3.0
