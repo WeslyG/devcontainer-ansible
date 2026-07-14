@@ -24,7 +24,7 @@
       "package": "elasticdump",
       "version": "6.125.1"
     },
-     "ghcr.io/devcontainers-extra/features/claude-code:1": {},
+     "ghcr.io/devcontainers-extra/features/claude-code:2": {},
     // devfeature docker-in-docker ломается на молекуле (подозреваю коряво работает с arm)
     // если хотите переехать на девфичу, проверьте что apt install сработает в молекуле при запуске тестов)
     // если есть опасения по поводу get.docker.com в рф, то это можно положить внутрь контура
