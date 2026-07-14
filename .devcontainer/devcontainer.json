@@ -5,7 +5,7 @@
   },
   "features": {
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils"
+      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils,nodejs,npm"
     },
     "ghcr.io/dhoeric/features/k9s:1": {
       "version": "0.51.0" // https://github.com/derailed/k9s/releases
@@ -76,9 +76,9 @@
         //"forbeslindesay.forbeslindesay-taskrunner",
         //"technosophos.vscode-make",
         // другое
-        "rjmacarthy.twinny", // ai for ecom.tech см https://space.samokat.ru/pages/viewpage.action?pageId=4172978983
         "editorconfig.editorconfig", // editorconfig очень хорошо работает с crlf/lf - никто больше нормально это не делает
         "eamodio.gitlens", // git
+        "fanaticPythoner.better-todo-tree", // https://github.com/FanaticPythoner/better-todo-tree/issues/142 установится, когда опубликуют обратно
         "adamhartford.vscode-base64", // Base64 works
         "streetsidesoftware.code-spell-checker", // очепятки находить на английском
         "streetsidesoftware.code-spell-checker-russian" // очепятки находить на русском
