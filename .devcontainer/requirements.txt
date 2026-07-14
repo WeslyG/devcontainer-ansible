@@ -42,7 +42,7 @@ editorconfig-checker==3.4.0
 
 # for cookiecutter
 pydantic==2.13.4
-pydantic_core==2.46.4 # 2.46.4 required for pydantic 2.13.4
+pydantic_core==2.47.0 # 2.46.4 required for pydantic 2.13.4
 cookiecutter==2.7.1
 ruamel.yaml==0.19.1
 ruamel.yaml.clib==0.2.15
