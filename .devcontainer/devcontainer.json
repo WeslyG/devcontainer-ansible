@@ -8,16 +8,21 @@
       "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils"
     },
     "ghcr.io/dhoeric/features/k9s:1": {
-      "version": "0.50.18" // https://github.com/derailed/k9s/releases
+      "version": "0.51.0" // https://github.com/derailed/k9s/releases
     },
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "1.35.3",  // kubectl https://dl.k8s.io/release/stable.txt
-      "helm": "4.1.3",    // https://github.com/helm/helm/releases
+      "version": "1.36.2",  // kubectl https://dl.k8s.io/release/stable.txt
+      "helm": "4.2.3",    // https://github.com/helm/helm/releases
       "minikube": "1.38.1" // https://github.com/kubernetes/minikube/releases
     },
     // https://hashicorp-releases.yandexcloud.net
     "ghcr.io/weslyg/features/hashicorp-mirror:2": {
-      "products": "terraform=1.14.8,vault=1.21.4"
+      "products": "terraform=1.15.8,vault=2.0.3"
+    },
+    // https://github.com/elasticsearch-dump/elasticsearch-dump/releases
+    "ghcr.io/devcontainers-extra/features/npm-package:1": {
+      "packages": "elasticdump",
+      "version": "6.125.1"
     },
     // devfeature docker-in-docker ломается на молекуле (подозреваю коряво работает с arm)
     // если хотите переехать на девфичу, проверьте что apt install сработает в молекуле при запуске тестов)
@@ -40,7 +45,6 @@
         "redhat.vscode-yaml", // база
         "redhat.vscode-xml", // на всякий случай
         // python (базовые расширения зашиты уже в образе devcontainers)
-        "visualstudioexptteam.vscodeintellicode", // может помочь с автокомплитом в python
         "ms-python.python",
         "ms-python.isort", // сортировка импортов
         "ms-python.pylint", // линтер, подсветка всего кривого
@@ -74,7 +78,6 @@
         "rjmacarthy.twinny", // ai for ecom.tech см https://space.samokat.ru/pages/viewpage.action?pageId=4172978983
         "editorconfig.editorconfig", // editorconfig очень хорошо работает с crlf/lf - никто больше нормально это не делает
         "eamodio.gitlens", // git
-        "gruntfuggly.todo-tree", // Осознание количества тудушек в коде
         "adamhartford.vscode-base64", // Base64 works
         "streetsidesoftware.code-spell-checker", // очепятки находить на английском
         "streetsidesoftware.code-spell-checker-russian" // очепятки находить на русском
@@ -121,6 +124,7 @@
           "*.yml": "ansible",
           "*.yaml": "ansible"
         },
+        // "todo-tree.ripgrep": "/usr/local/bin/rg",
         // Python
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.analysis.autoImportCompletions": true,
