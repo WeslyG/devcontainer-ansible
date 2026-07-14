@@ -32,6 +32,10 @@
       "command": "curl -fsSL get.docker.com | sh"
     }
   },
+  "overrideFeatureInstallOrder": [
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages",
+    "ghcr.io/devcontainers-extra/features/npm-package"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
