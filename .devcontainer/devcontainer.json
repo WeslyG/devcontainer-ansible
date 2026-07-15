@@ -5,7 +5,8 @@
   },
   "features": {
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils,nodejs,npm"
+      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils",
+      "upgradePackages": true
     },
     "ghcr.io/dhoeric/features/k9s:1": {
       "version": "0.51.0" // https://github.com/derailed/k9s/releases
@@ -29,12 +30,17 @@
     // если хотите переехать на девфичу, проверьте что apt install сработает в молекуле при запуске тестов)
     // если есть опасения по поводу get.docker.com в рф, то это можно положить внутрь контура
     "ghcr.io/devcontainers-extra/features/bash-command:1": {
-      "command": "curl -fsSL get.docker.com | sh"
+      "command": "curl -fsSL get.docker.com | sh && rm -rf /usr/local/share/nvm/test" // linters docker scan
     }
   },
   "overrideFeatureInstallOrder": [
     "ghcr.io/rocker-org/devcontainer-features/apt-packages",
-    "ghcr.io/devcontainers-extra/features/npm-package"
+    "ghcr.io/weslyg/features/hashicorp-mirror",
+    "ghcr.io/devcontainers-extra/features/npm-package",
+    "ghcr.io/devcontainers-extra/features/claude-code",
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube",
+    "ghcr.io/dhoeric/features/k9s",
+    "ghcr.io/devcontainers-extra/features/bash-command"
   ],
   "customizations": {
     "vscode": {
