@@ -5,6 +5,9 @@ on: # rebuild any PRs and main branch changes
       - master
       - kubespray
       - ansible11
+      - ansible12
+      - ansible13
+      - ansible14
 
 jobs:
   build:
