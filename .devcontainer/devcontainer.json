@@ -4,8 +4,20 @@
     "dockerfile": "Dockerfile"
   },
   "features": {
+    "ghcr.io/devcontainers/features/common-utils:2":{
+        "installZsh": "true",
+        "username": "vscode",
+        "userUid": "1000",
+        "userGid": "1000",
+        "upgradePackages": "true"
+    },
+    "ghcr.io/devcontainers/features/python:1": "none", // install python env https://github.com/devcontainers/features/blob/main/src/python/install.sh
+    "ghcr.io/devcontainers/features/git:1": {
+        "version": "latest",
+        "ppa": "false"
+    },
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils",
+      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils,nodejs,npm",
       "upgradePackages": true
     },
     "ghcr.io/dhoeric/features/k9s:1": {
@@ -30,17 +42,20 @@
     // если хотите переехать на девфичу, проверьте что apt install сработает в молекуле при запуске тестов)
     // если есть опасения по поводу get.docker.com в рф, то это можно положить внутрь контура
     "ghcr.io/devcontainers-extra/features/bash-command:1": {
-      "command": "curl -fsSL get.docker.com | sh && rm -rf /usr/local/share/nvm/test" // linters docker scan
+      "command": "curl -fsSL get.docker.com | sh"
     }
   },
   "overrideFeatureInstallOrder": [
     "ghcr.io/rocker-org/devcontainer-features/apt-packages",
+    "ghcr.io/devcontainers/features/common-utils",
+    "ghcr.io/devcontainers/features/git",
+    "ghcr.io/devcontainers/features/python",
     "ghcr.io/weslyg/features/hashicorp-mirror",
-    "ghcr.io/devcontainers-extra/features/npm-package",
     "ghcr.io/devcontainers-extra/features/claude-code",
     "ghcr.io/devcontainers/features/kubectl-helm-minikube",
     "ghcr.io/dhoeric/features/k9s",
-    "ghcr.io/devcontainers-extra/features/bash-command"
+    "ghcr.io/devcontainers-extra/features/bash-command",
+    "ghcr.io/devcontainers-extra/features/npm-package"
   ],
   "customizations": {
     "vscode": {
