@@ -101,6 +101,7 @@
         //"forbeslindesay.forbeslindesay-taskrunner",
         //"technosophos.vscode-make",
         // другое
+        "cweijan.vscode-database-client2",
         "editorconfig.editorconfig", // editorconfig очень хорошо работает с crlf/lf - никто больше нормально это не делает
         "eamodio.gitlens", // git
         "fanaticPythoner.better-todo-tree", // https://github.com/FanaticPythoner/better-todo-tree/issues/142 установится, когда опубликуют обратно

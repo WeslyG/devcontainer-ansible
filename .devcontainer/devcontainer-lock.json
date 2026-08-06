@@ -5,15 +5,35 @@
       "resolved": "ghcr.io/devcontainers-extra/features/bash-command@sha256:796afaa016b6fa448a59d01bfe3db2cf857648829766096d23d4b57b0af2de1e",
       "integrity": "sha256:796afaa016b6fa448a59d01bfe3db2cf857648829766096d23d4b57b0af2de1e"
     },
+    "ghcr.io/devcontainers-extra/features/claude-code:2": {
+      "version": "2.0.3",
+      "resolved": "ghcr.io/devcontainers-extra/features/claude-code@sha256:e119fb3524e9e55d47b84ee32b20085dbeae66f08d8e298e59c57a94f02d5b35",
+      "integrity": "sha256:e119fb3524e9e55d47b84ee32b20085dbeae66f08d8e298e59c57a94f02d5b35"
+    },
     "ghcr.io/devcontainers-extra/features/npm-package:1": {
       "version": "1.0.4",
       "resolved": "ghcr.io/devcontainers-extra/features/npm-package@sha256:ee315c064588643e1178eec33275efa55739f43761fc965b95a5d05eed70c76d",
       "integrity": "sha256:ee315c064588643e1178eec33275efa55739f43761fc965b95a5d05eed70c76d"
     },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "version": "2.5.9",
+      "resolved": "ghcr.io/devcontainers/features/common-utils@sha256:cb0c4d3c276f157eed17935747e364178d75fee17f55c4e129966f64633deb3a",
+      "integrity": "sha256:cb0c4d3c276f157eed17935747e364178d75fee17f55c4e129966f64633deb3a"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "1.3.8",
+      "resolved": "ghcr.io/devcontainers/features/git@sha256:fd75977de13a9979000e0e78baf949adb0ca71d2398995fa22e0a36d7e7e7fe2",
+      "integrity": "sha256:fd75977de13a9979000e0e78baf949adb0ca71d2398995fa22e0a36d7e7e7fe2"
+    },
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
       "version": "1.3.1",
       "resolved": "ghcr.io/devcontainers/features/kubectl-helm-minikube@sha256:bbe8adf6b37fff8c67412ab0a4579f4c2f30bbaba1d9a5cebd9e38bade54025b",
       "integrity": "sha256:bbe8adf6b37fff8c67412ab0a4579f4c2f30bbaba1d9a5cebd9e38bade54025b"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "1.8.0",
+      "resolved": "ghcr.io/devcontainers/features/python@sha256:fbcad6955caeecc5ad3f7886baf652e25cba5225a6c4c2287c536de2e5607511",
+      "integrity": "sha256:fbcad6955caeecc5ad3f7886baf652e25cba5225a6c4c2287c536de2e5607511"
     },
     "ghcr.io/dhoeric/features/k9s:1": {
       "version": "1.0.1",
