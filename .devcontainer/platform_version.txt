@@ -1,1 +1,1 @@
-trixie-python3.13-ansible12-06.08.26
+trixie-python3.13-ansible10-07.08.26
