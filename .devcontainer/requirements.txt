@@ -27,7 +27,7 @@ pytz==2026.2
 # python base
 pip==26.1.2
 setuptools==83.0.0
-wheel==0.47.0
+wheel==0.48.0
 
 # update platform base
 python-gilt==2.2.5
