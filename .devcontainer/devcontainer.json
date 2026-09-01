@@ -43,6 +43,10 @@
     // если есть опасения по поводу get.docker.com в рф, то это можно положить внутрь контура
     "ghcr.io/devcontainers-extra/features/bash-command:1": {
       "command": "curl -fsSL get.docker.com | sh"
+    },
+    // https://github.com/editorconfig-checker/editorconfig-checker/releases
+    "./features/editorconfig-checker": {
+      "version": "3.11.1"
     }
   },
   "overrideFeatureInstallOrder": [
@@ -55,7 +59,8 @@
     "ghcr.io/devcontainers/features/kubectl-helm-minikube",
     "ghcr.io/dhoeric/features/k9s",
     "ghcr.io/devcontainers-extra/features/bash-command",
-    "ghcr.io/devcontainers-extra/features/npm-package"
+    "ghcr.io/devcontainers-extra/features/npm-package",
+    "./features/editorconfig-checker"
   ],
   "customizations": {
     "vscode": {
