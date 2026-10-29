@@ -1,0 +1,34 @@
+{
+  "features": {
+    "ghcr.io/devcontainers-extra/features/bash-command:1": {
+      "version": "1.0.1",
+      "resolved": "ghcr.io/devcontainers-extra/features/bash-command@sha256:796afaa016b6fa448a59d01bfe3db2cf857648829766096d23d4b57b0af2de1e",
+      "integrity": "sha256:796afaa016b6fa448a59d01bfe3db2cf857648829766096d23d4b57b0af2de1e"
+    },
+    "ghcr.io/devcontainers-extra/features/npm-package:1": {
+      "version": "1.0.4",
+      "resolved": "ghcr.io/devcontainers-extra/features/npm-package@sha256:ee315c064588643e1178eec33275efa55739f43761fc965b95a5d05eed70c76d",
+      "integrity": "sha256:ee315c064588643e1178eec33275efa55739f43761fc965b95a5d05eed70c76d"
+    },
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "1.3.1",
+      "resolved": "ghcr.io/devcontainers/features/kubectl-helm-minikube@sha256:bbe8adf6b37fff8c67412ab0a4579f4c2f30bbaba1d9a5cebd9e38bade54025b",
+      "integrity": "sha256:bbe8adf6b37fff8c67412ab0a4579f4c2f30bbaba1d9a5cebd9e38bade54025b"
+    },
+    "ghcr.io/dhoeric/features/k9s:1": {
+      "version": "1.0.1",
+      "resolved": "ghcr.io/dhoeric/features/k9s@sha256:0a575cfb87abd4a03d68696db350c46d54f6f91931021603b3420f2bbbb98683",
+      "integrity": "sha256:0a575cfb87abd4a03d68696db350c46d54f6f91931021603b3420f2bbbb98683"
+    },
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "version": "1.0.2",
+      "resolved": "ghcr.io/rocker-org/devcontainer-features/apt-packages@sha256:87a4d7750a596a5db034ba8508782f31aebdc2ffe955c66aaecb33d9de2ecdae",
+      "integrity": "sha256:87a4d7750a596a5db034ba8508782f31aebdc2ffe955c66aaecb33d9de2ecdae"
+    },
+    "ghcr.io/weslyg/features/hashicorp-mirror:2": {
+      "version": "2.0.2",
+      "resolved": "ghcr.io/weslyg/features/hashicorp-mirror@sha256:27b05af812ba18deecae6b66c88825f69f8c1e573b00e9090ea3cb0c3aee9dd1",
+      "integrity": "sha256:27b05af812ba18deecae6b66c88825f69f8c1e573b00e9090ea3cb0c3aee9dd1"
+    }
+  }
+}

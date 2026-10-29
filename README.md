@@ -12,8 +12,8 @@
 - В ветке kubespray версии пакетов для работы с Kubepsray
 - Есть ветка для последнего Ansible (11)
 
-- Python 3.13
-- Bookworm Debian 12
+- Python 3.14
+- trixie Debian 13
 
 Поддерживает:
 - Разработку модулей python (pylint, isort, black-formatter)
@@ -32,7 +32,7 @@
 - openssl экстеншен (просмотр сертификатов)
 - haproxy/nginx conf + formatter расширения
 - kubernetes extension
-- git + todo tree
+- git + todo tree (временно пропал из marketplace - https://github.com/FanaticPythoner/better-todo-tree/issues/142)
 
 Утилиты:
 - hashicorp vault
@@ -42,8 +42,9 @@
 - kubens/kubectx
 - minkube (ну на всякий случай)
 - k9s
+- elasticdump
 - apt пакеты для всего нужного (если что добавляйте)
-  - curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,s3cmd,ncdu,sshpass,dnsutils
+  - curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils,nodejs,npm
 - docker (для тестов молекулой)
 
 Использование:
