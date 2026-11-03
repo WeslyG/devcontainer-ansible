@@ -18,6 +18,11 @@ RUN curl -fsSL --retry 3 "https://www.kernel.org/pub/software/scm/git/git-${GIT_
         USE_LIBPCRE=YesPlease NO_RUST=YesPlease NO_TCLTK=YesPlease PYTHON_PATH=/usr/local/bin/python3 DESTDIR=/git-runtime install
 
 FROM ${PYTHON_IMAGE}
+ENV PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+COPY --chmod=0755 cache-cleanup.sh /usr/local/share/cache-cleanup.sh
+# Each feature's RUN is cleaned before Docker commits its layer.
+SHELL ["/usr/local/share/cache-cleanup.sh", "-c"]
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates curl libexpat1 libpcre2-8-0 libmagic1t64 make perl \
