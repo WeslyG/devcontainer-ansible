@@ -2,6 +2,13 @@
 set -eu
 python --version
 python -m pip check
+black --version
+isort --version-number
+s3cmd --version
+yq --version
+test "$(printf 'answer: 42\n' | yq -r ' .answer')" = 42
+docker compose version
+docker buildx version
 ansible --version
 ansible-lint --version
 molecule --version
@@ -27,7 +34,13 @@ for module in ['netaddr','dns','docker','testinfra','kubernetes','yaml','jsonpat
 assert version('ansible').startswith('10.')
 assert version('ansible-core').startswith('2.17.')
 import sys
+from pathlib import Path
 assert sys.version_info[:2] == (3, 12)
+assert not Path('/usr/bin/python3').exists(), 'Unexpected second/system Python'
+assert not Path('/usr/local/py-utils').exists(), 'Unexpected duplicate tool environments'
+assert not Path('/usr/bin/dockerd').exists(), 'Docker daemon must stay on the host'
+assert not Path('/usr/bin/gcc').exists(), 'Build compiler must stay in the builder stage'
+assert Path('/usr/local/bin/claude').is_symlink(), 'Claude must not have a second binary copy'
 assert not any(d.metadata['Name'].lower().replace('_', '-') == 'python-gilt' for d in distributions())
 from passlib.hash import bcrypt
 h=bcrypt.hash('smoke-test')

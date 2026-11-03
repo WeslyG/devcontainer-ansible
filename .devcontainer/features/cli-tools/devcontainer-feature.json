@@ -1,0 +1,27 @@
+{
+  "id": "cli-tools",
+  "version": "1.0.0",
+  "name": "Claude Code and elasticdump",
+  "description": "Native Claude Code with one binary copy, and elasticdump without the npm download cache.",
+  "options": {
+    "claudeVersion": {
+      "type": "string",
+      "default": "2.1.317",
+      "description": "Exact native Claude Code release version."
+    },
+    "elasticdumpVersion": {
+      "type": "string",
+      "default": "6.125.1",
+      "description": "Exact elasticdump npm package version."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils",
+    "ghcr.io/devcontainers/features/node"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": ["anthropic.claude-code"]
+    }
+  }
+}

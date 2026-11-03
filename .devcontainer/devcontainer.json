@@ -14,13 +14,18 @@
         "userGid": "1000",
         "upgradePackages": "true"
     },
-    "ghcr.io/devcontainers/features/python:1": "none", // install python env https://github.com/devcontainers/features/blob/main/src/python/install.sh
-    "ghcr.io/devcontainers/features/git:1": {
-        "version": "latest",
-        "ppa": "false"
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "24",
+      "nodeGypDependencies": false,
+      "pnpmVersion": "none"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false,
+      "dockerDashComposeVersion": "none",
+      "installDockerComposeSwitch": false
     },
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils,nodejs,npm",
+      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,ncdu,sshpass,dnsutils,ldap-utils",
       "upgradePackages": true
     },
     "ghcr.io/dhoeric/features/k9s:1": {
@@ -36,29 +41,19 @@
     // "ghcr.io/weslyg/features/hashicorp-mirror:2": {
     //   "products": "terraform=1.15.8,vault=2.0.3"
     // },
-    // https://github.com/elasticsearch-dump/elasticsearch-dump/releases
-    "ghcr.io/devcontainers-extra/features/npm-package:1": {
-      "package": "elasticdump",
-      "version": "6.125.1"
-    },
-     "ghcr.io/devcontainers-extra/features/claude-code:2": {},
-    // devfeature docker-in-docker ломается на молекуле (подозреваю коряво работает с arm)
-    // если хотите переехать на девфичу, проверьте что apt install сработает в молекуле при запуске тестов)
-    // если есть опасения по поводу get.docker.com в рф, то это можно положить внутрь контура
-    "ghcr.io/devcontainers-extra/features/bash-command:1": {
-      "command": "curl -fsSL get.docker.com | sh"
+    "./features/cli-tools": {
+      "claudeVersion": "2.1.317",
+      "elasticdumpVersion": "6.125.1"
     }
   },
   "overrideFeatureInstallOrder": [
-    "ghcr.io/rocker-org/devcontainer-features/apt-packages",
     "ghcr.io/devcontainers/features/common-utils",
-    "ghcr.io/devcontainers/features/git",
-    "ghcr.io/devcontainers/features/python",
-    "ghcr.io/devcontainers-extra/features/claude-code",
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages",
+    "ghcr.io/devcontainers/features/node",
+    "ghcr.io/devcontainers/features/docker-outside-of-docker",
     "ghcr.io/devcontainers/features/kubectl-helm-minikube",
     "ghcr.io/dhoeric/features/k9s",
-    "ghcr.io/devcontainers-extra/features/bash-command",
-    "ghcr.io/devcontainers-extra/features/npm-package",
+    "./features/cli-tools",
     "./features/gilt"
   ],
   "customizations": {
@@ -74,8 +69,10 @@
         // форматы которые мы встречаем
         "redhat.vscode-yaml", // база
         "redhat.vscode-xml", // на всякий случай
-        // python (базовые расширения зашиты уже в образе devcontainers)
+        // Python: интерпретатор и инструменты установлены в Dockerfile
         "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.autopep8",
         "ms-python.isort", // сортировка импортов
         "ms-python.pylint", // линтер, подсветка всего кривого
         "ms-python.black-formatter", // formatting
@@ -161,11 +158,11 @@
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.analysis.autoImportCompletions": true,
         "python.analysis.typeCheckingMode": "standard",
-        "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+        "python.formatting.blackPath": "/usr/local/bin/black",
         "python.formatting.blackArgs": [
           "--line-length=120"
         ],
-        "python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
+        "python.linting.pylintPath": "/usr/local/bin/pylint",
         "python.linting.pylintArgs": [
           "--disable=C0114", // Disable unused-import warnings
           "--disable=C0301", // Disable line-too-long warnings

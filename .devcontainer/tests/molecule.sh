@@ -11,7 +11,7 @@ driver:
   name: docker
 platforms:
   - name: ansible10-molecule-py312
-    image: python:3.12-trixie
+    image: python:3.12.16-slim-trixie
     pre_build_image: true
     command: sleep infinity
   - name: ansible10-molecule-py37

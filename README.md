@@ -13,7 +13,7 @@
 - Ветка `ansible10`: Ansible 10.7.0, ansible-core 2.17.14
 
 - Python 3.12
-- trixie Debian 13
+- slim-trixie Debian 13, один Python 3.12
 
 Зависимости: `bcrypt==4.3.0` оставлен для совместимости с `passlib==1.7.4`; bcrypt 5 ломает инициализацию backend. Ansible 10 использует Python 3.10–3.12 в контейнере и Python 3.7–3.12 на целевых узлах. Molecule, ansible-lint и ansible-compat зафиксированы на последних совместимых версиях 26.6.0: новые версии исключают ansible-core 2.17.
 
@@ -24,7 +24,7 @@
 - Shellcheck для sh (потому что он все равно будет)
 - Editorconfig
 - Helm - поддержка синтаксиса, а также лайв рендеринг шаблонов
-- Python-зависимости фиксированы в requirements.txt, внешние devcontainer features — в lockfile; apt-пакеты, Git и Claude Code обновляются при сборке
+- Python-зависимости фиксированы в requirements.txt, внешние devcontainer features — в lockfile; apt-пакеты и Node.js 24 обновляются при сборке; Git и Claude Code фиксированы
 - Gilt устанавливается локальной [feature](.devcontainer/features/gilt/README.md) из GitHub Releases с фиксированной версией и проверкой SHA256
 - HashiCorp feature временно отключена: зеркало недоступно
 
@@ -46,9 +46,11 @@
 - minkube (ну на всякий случай)
 - k9s
 - elasticdump
+- Node.js 24 и npm
+- s3cmd и Python yq на том же Python 3.12
 - apt пакеты для всего нужного (если что добавляйте)
-  - curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,yq,shellcheck,s3cmd,ncdu,sshpass,dnsutils,ldap-utils,nodejs,npm
-- docker (для тестов молекулой)
+  - curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,ncdu,sshpass,dnsutils,ldap-utils
+- Docker CLI, Buildx и Compose используют Docker хоста (для тестов Molecule); daemon внутри образа отсутствует
 
 Использование:
 
@@ -65,10 +67,8 @@
     "--net=host"            // Optional: Удобно, ходить в kubernetes и другие службы на локальном компе
   ],
   "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/vscode/.ssh,readonly,type=bind",
-    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/vscode/.ssh,readonly,type=bind"
   ],
-  "postCreateCommand": "sudo chown vscode:docker /var/run/docker.sock",
   "remoteUser": "vscode"
 }
 ```
@@ -79,11 +79,10 @@
 
  "mounts": [
      "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/vscode/.ssh,readonly,type=bind",
-     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.dotfiles,target=/home/vscode/.dotfiles,type=bind",
-     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.dotfiles,target=/home/vscode/.dotfiles,type=bind"
    ],
    "initializeCommand": "mkdir -p ~/.dotfiles", // выполнится на вашем компьютере
-   "postCreateCommand": "stow --dir=$HOME/.dotfiles --target=$HOME . && sudo chown vscode:docker /var/run/docker.sock", // выполнится в devcontainer
+   "postCreateCommand": "stow --dir=$HOME/.dotfiles --target=$HOME .", // выполнится в devcontainer
 ```
 
 И запуститесь в vscode
@@ -103,7 +102,7 @@ docker run --rm --user vscode --workdir /tmp \
   -v "$PWD/.devcontainer/tests:/tests:ro" \
   ansible10-local:verify bash /tests/gilt-overlay.sh
 docker run --rm --workdir /tmp \
-  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /var/run/docker.sock:/var/run/docker-host.sock \
   -v "$PWD/.devcontainer/tests:/tests:ro" \
   ansible10-local:verify sh /tests/molecule.sh
 ```
@@ -112,3 +111,31 @@ Smoke-тест проверяет Python 3.12, Ansible 10 / ansible-core 2.17,
 `pip check`, CLI-утилиты, импорты, Ansible Vault, ansible-lint и выполнение playbook.
 Тест Molecule создаёт временные Docker-контейнеры с Python 3.7 и 3.12,
 выполняет converge, idempotence и verify, затем удаляет их. Требуется доступ к Docker socket.
+
+
+### Размер и один Python
+
+База `python:3.12.16-slim-trixie` сохраняет Debian 13 и Python 3.12.
+Python-утилиты s3cmd/yq устанавливаются через pip на этот же интерпретатор;
+Node.js устанавливается готовым дистрибутивом с отключёнными node-gyp dependencies.
+Системный Python Debian и дополнительные Python-окружения не требуются.
+
+Git 2.56.0 собирается в отдельной стадии с проверкой SHA256 исходного архива.
+В конечный образ копируется готовый Git CLI, без компиляторов и заголовков.
+Для сборки собственных нативных расширений компиляторы потребуется установить отдельно.
+
+Claude Code и minikube сохранены. Claude хранит один native бинарник;
+глобальная команда использует ссылку на пользовательский launcher.
+Docker-outside-of-Docker автоматически подключает сокет Docker хоста и
+настраивает доступ для `vscode`. Compose доступен как `docker compose`.
+Пакетные кеши pip/npm исключаются в момент установки, а не удаляются поздним слоем.
+
+
+Измерено для linux/amd64 через `docker image inspect`: **6,26 → 3,61 ГБ**
+без сжатия, сокращение **42,2%**. Размер кеша сборки и старых образов считается
+отдельно. Smoke-тесты и Molecule на Python 3.7/3.12 прошли от `vscode`
+через Docker хоста.
+
+При обновлении Git меняйте `GIT_VERSION` и `GIT_SHA256` в Dockerfile;
+контрольная сумма публикуется в `sha256sums.asc` на kernel.org.
+Версия базового Python задаётся через `PYTHON_IMAGE`.

@@ -1,1 +1,1 @@
-trixie-python3.12-ansible10-04.11.26
+slim-trixie-python3.12-ansible10-04.11.26
