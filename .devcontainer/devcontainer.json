@@ -4,6 +4,9 @@
     "dockerfile": "Dockerfile"
   },
   "features": {
+    "./features/gilt": {
+      "version": "2.2.5"
+    },
     "ghcr.io/devcontainers/features/common-utils:2":{
         "installZsh": "true",
         "username": "vscode",
@@ -51,12 +54,12 @@
     "ghcr.io/devcontainers/features/common-utils",
     "ghcr.io/devcontainers/features/git",
     "ghcr.io/devcontainers/features/python",
-    "ghcr.io/weslyg/features/hashicorp-mirror",
     "ghcr.io/devcontainers-extra/features/claude-code",
     "ghcr.io/devcontainers/features/kubectl-helm-minikube",
     "ghcr.io/dhoeric/features/k9s",
     "ghcr.io/devcontainers-extra/features/bash-command",
-    "ghcr.io/devcontainers-extra/features/npm-package"
+    "ghcr.io/devcontainers-extra/features/npm-package",
+    "./features/gilt"
   ],
   "customizations": {
     "vscode": {

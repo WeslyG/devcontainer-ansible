@@ -10,10 +10,12 @@
 #### Важно
 
 - В ветке kubespray версии пакетов для работы с Kubepsray
-- Есть ветка для последнего Ansible (11)
+- Ветка `ansible10`: Ansible 10.7.0, ansible-core 2.17.14
 
-- Python 3.14
+- Python 3.12
 - trixie Debian 13
+
+Зависимости: `bcrypt==4.3.0` оставлен для совместимости с `passlib==1.7.4`; bcrypt 5 ломает инициализацию backend. Ansible 10 использует Python 3.10–3.12 в контейнере и Python 3.7–3.12 на целевых узлах. Molecule, ansible-lint и ansible-compat зафиксированы на последних совместимых версиях 26.6.0: новые версии исключают ansible-core 2.17.
 
 Поддерживает:
 - Разработку модулей python (pylint, isort, black-formatter)
@@ -22,8 +24,9 @@
 - Shellcheck для sh (потому что он все равно будет)
 - Editorconfig
 - Helm - поддержка синтаксиса, а также лайв рендеринг шаблонов
-- Все версии всех пакетов фиксированы (кроме apt)
-- hashicorp устанавливается из РФ
+- Python-зависимости фиксированы в requirements.txt, внешние devcontainer features — в lockfile; apt-пакеты, Git и Claude Code обновляются при сборке
+- Gilt устанавливается локальной [feature](.devcontainer/features/gilt/README.md) из GitHub Releases с фиксированной версией и проверкой SHA256
+- HashiCorp feature временно отключена: зеркало недоступно
 
 Ну и мелочи:
 - base64 экстеншен
@@ -35,8 +38,8 @@
 - git + todo tree (временно пропал из marketplace - https://github.com/FanaticPythoner/better-todo-tree/issues/142)
 
 Утилиты:
-- hashicorp vault
-- hashicorp terraform
+- hashicorp vault (временно отключён)
+- hashicorp terraform (временно отключён)
 - helm
 - kubectl
 - kubens/kubectx
@@ -88,3 +91,24 @@
 ### Почему нет latest тега?
 
 Тогда vscode никогда не поймет, когда ребилдится, поэтому лучше, чтобы тег всегда был фисирован!
+
+### Проверка ветки ansible10
+
+```sh
+devcontainer build --workspace-folder . --frozen-lockfile --image-name ansible10-local:verify
+docker run --rm --user vscode --workdir /tmp \
+  -v "$PWD/.devcontainer/tests:/tests:ro" \
+  ansible10-local:verify sh /tests/ansible10.sh
+docker run --rm --user vscode --workdir /tmp \
+  -v "$PWD/.devcontainer/tests:/tests:ro" \
+  ansible10-local:verify bash /tests/gilt-overlay.sh
+docker run --rm --workdir /tmp \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v "$PWD/.devcontainer/tests:/tests:ro" \
+  ansible10-local:verify sh /tests/molecule.sh
+```
+
+Smoke-тест проверяет Python 3.12, Ansible 10 / ansible-core 2.17,
+`pip check`, CLI-утилиты, импорты, Ansible Vault, ansible-lint и выполнение playbook.
+Тест Molecule создаёт временные Docker-контейнеры с Python 3.7 и 3.12,
+выполняет converge, idempotence и verify, затем удаляет их. Требуется доступ к Docker socket.

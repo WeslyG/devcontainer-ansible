@@ -1,0 +1,16 @@
+{
+  "id": "gilt",
+  "version": "1.0.0",
+  "name": "Gilt (GitHub Releases)",
+  "description": "Install a pinned Gilt release with SHA256 verification on Linux amd64 or arm64.",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "2.2.5",
+      "description": "Exact Gilt release version, with or without the v prefix."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages"
+  ]
+}

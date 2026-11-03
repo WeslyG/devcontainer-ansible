@@ -1,21 +1,25 @@
 # core
-# ansible 11 required python 3.8 on remote server
+# Ansible 10: Python 3.10-3.12 locally, Python 3.7-3.12 on targets.
 ansible==10.7.0
+ansible-core==2.17.14
 netaddr==1.3.0
-dnspython==2.9.0
+dnspython==2.9.1
 
-molecule==26.6.0 # lock version for ansible10
-molecule-plugins[docker]==26.10.12
+# Newer Molecule excludes ansible-core 2.17.
+molecule==26.6.0
+molecule-plugins[docker]==26.11.0
 docker==7.2.0
 pytest-testinfra==10.2.2
 
 # additional libs for run molceule tests in k8s
 kubernetes==37.0.1
 PyYAML==6.0.3
-jsonpatch==1.38
+jsonpatch==1.41
 
 # linters
-ansible-lint==26.6.0 # lock dependancy
+# Newer ansible-lint and ansible-compat exclude ansible-core 2.17.
+ansible-lint==26.6.0
+ansible-compat==26.6.0
 
 yamllint==1.38.0
 pylint==4.1.3
@@ -25,12 +29,9 @@ hvac==2.4.0
 pytz==2026.6
 
 # python base
-pip==26.2.2
+pip==26.3
 setuptools==84.2.1
 wheel==0.48.0
-
-# update platform base
-python-gilt==2.2.5
 
 # bcrypt
 passlib==1.7.4
@@ -43,7 +44,7 @@ editorconfig-checker==3.11.1
 pynetbox==7.9.0
 
 # for cookiecutter
-pydantic==2.14.1
+pydantic==2.14.2
 cookiecutter==2.7.1
 ruamel.yaml==0.19.1
 ruamel.yaml.clib==0.2.15
