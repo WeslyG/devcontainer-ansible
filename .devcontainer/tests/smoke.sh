@@ -32,24 +32,38 @@ import importlib
 from importlib.metadata import distributions, version
 for module in ['netaddr','dns','docker','testinfra','kubernetes','yaml','jsonpatch','hvac','pytz','pynetbox','pydantic','cookiecutter','ruamel.yaml']:
     importlib.import_module(module)
-assert version('ansible').startswith('10.')
-assert version('ansible-core').startswith('2.17.')
+import os
+major=os.environ['ANSIBLE_MAJOR']
+core={'10':'2.17.','12':'2.19.','14':'2.21.'}[major]
+assert version('ansible').startswith(major+'.')
+assert version('ansible-core').startswith(core)
 import sys
 from pathlib import Path
-assert sys.version_info[:2] == (3, 12)
+assert sys.version_info[:2] == {'10':(3,12),'12':(3,13),'14':(3,14)}[major]
 assert not Path('/usr/bin/python3').exists(), 'Unexpected second/system Python'
 assert not Path('/usr/local/py-utils').exists(), 'Unexpected duplicate tool environments'
 assert not Path('/usr/bin/dockerd').exists(), 'Docker daemon must stay on the host'
 assert not Path('/usr/bin/gcc').exists(), 'Build compiler must stay in the builder stage'
 assert Path('/usr/local/bin/claude').is_symlink(), 'Claude must not have a second binary copy'
+native=Path.home()/'.local/share/claude/versions'
+assert native.parent.stat().st_uid==os.getuid(), 'Native Claude layout must belong to vscode'
+assert len(list(native.iterdir()))==1, 'Keep only one native Claude release'
+assert Path('/usr/local/bin/claude').resolve().parent==native.resolve()
+assert not Path('/usr/local/lib/node_modules/@anthropic-ai/claude-code').exists(), 'Do not duplicate the native CLI with an npm wrapper'
 assert not any(d.metadata['Name'].lower().replace('_', '-') == 'python-gilt' for d in distributions())
 from passlib.hash import bcrypt
 h=bcrypt.hash('smoke-test')
 assert bcrypt.verify('smoke-test',h)
 from ansible.parsing.vault import VaultLib, VaultSecret
 vault = VaultLib([('default', VaultSecret(b'public-smoke-test-secret'))])
-assert vault.decrypt(vault.encrypt(b'ansible10-vault-test')) == b'ansible10-vault-test'
-print('Python imports, bcrypt and Ansible Vault roundtrips OK')
+assert vault.decrypt(vault.encrypt(b'ansible-vault-test')) == b'ansible-vault-test'
+import magic
+assert magic.from_buffer(b'plain text payload\n'*8,mime=True).startswith('text/')
+import testinfra
+host=testinfra.get_host('local://')
+assert host.file('/usr/local/bin/python').exists
+assert host.run('python --version').rc==0
+print('Python imports, bcrypt, Vault, libmagic and Testinfra local backend OK')
 PY
 mkdir -p /tmp/ansible-smoke
 cat > /tmp/ansible-smoke/playbook.yml <<'YAML'

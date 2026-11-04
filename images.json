@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-04",
+  "default": "14",
+  "devcontainerCli": "0.90.0",
+  "variants": {
+    "10": {
+      "pythonMinor": "3.12",
+      "coreMinor": "2.17",
+      "pythonImage": "python:3.12.16-slim-trixie@sha256:b18b261e1b4974b4f321451ad5251ded85abb22c2b8b262da527dda1d031ab30",
+      "targetPython": [
+        "3.7",
+        "3.8",
+        "3.9",
+        "3.10",
+        "3.11",
+        "3.12"
+      ],
+      "maxImageBytes": 3850000000
+    },
+    "12": {
+      "pythonMinor": "3.13",
+      "coreMinor": "2.19",
+      "pythonImage": "python:3.13.18-slim-trixie@sha256:ae14d4ce8771606477a81446e7ef429edd6762305fc50c84507c1041fa8285d1",
+      "targetPython": [
+        "3.8",
+        "3.9",
+        "3.10",
+        "3.11",
+        "3.12",
+        "3.13"
+      ],
+      "maxImageBytes": 3900000000
+    },
+    "14": {
+      "pythonMinor": "3.14",
+      "coreMinor": "2.21",
+      "pythonImage": "python:3.14.10-slim-trixie@sha256:930e1abba7c4e8f96ed93e8012c35d174d7732752731bbd5e8e757d7ec6f3966",
+      "targetPython": [
+        "3.9",
+        "3.10",
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14"
+      ],
+      "maxImageBytes": 3900000000
+    }
+  },
+  "tools": {
+    "git": {
+      "version": "2.56.0",
+      "sha256": "26c56c296b38c0695b26fa95f475f1d01704d2d38e73465ca30b0b2f5dc789d3"
+    },
+    "node": {
+      "version": "26.13.0",
+      "sha256Amd64": "d28a96af6c38596f6d9d97c0ee531c13d238d757742387d1928de822d959e997",
+      "sha256Arm64": "406fe3fbde1c054adff8b297c16fdb5af6659db327c1ac8acd46b56ef1af9a92",
+      "npmVersion": "12.2.1"
+    },
+    "gilt": "2.2.5",
+    "cliTools": {
+      "claudeVersion": "2.1.318",
+      "elasticdumpVersion": "6.125.1",
+      "claudeIntegrityAmd64": "sha512-GX+7CUng2R5f7SsA2w0LaXlH2f62fRCFD/Z2SUexoeH3B0KfulKQt5DtY9NeD2Yp3VEBz6/k/xWSbGPUi6NV2A==",
+      "claudeIntegrityArm64": "sha512-FUVVH3aQbLEChjv5wQLdFbpBC7bclVIdVYO5hDzJthDyf2OQtdubIP5QqLPgEScQb3CVIAFg2IPJ5nihJa8Ndw=="
+    },
+    "k9s": "0.51.0",
+    "kubernetes": {
+      "version": "1.37.2",
+      "helm": "4.3.1",
+      "minikube": "1.39.0"
+    }
+  },
+  "actions": {
+    "actions/checkout": "v7.0.1",
+    "actions/setup-node": "v7.1.0",
+    "actions/upload-artifact": "v7.0.2",
+    "docker/setup-buildx-action": "v4.4.1"
+  },
+  "gitBuilderImage": "debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4"
+}

@@ -1,0 +1,2 @@
+ansible>=12,<13
+ansible-core>=2.19,<2.20

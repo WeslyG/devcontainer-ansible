@@ -6,18 +6,23 @@
   "options": {
     "version": {
       "type": "string",
-      "default": "24.22.2",
+      "default": "26.13.0",
       "description": "Exact Node.js release version; latest/lts and major-only selectors are not supported."
     },
     "sha256Amd64": {
       "type": "string",
-      "default": "48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75",
+      "default": "d28a96af6c38596f6d9d97c0ee531c13d238d757742387d1928de822d959e997",
       "description": "SHA256 of the official linux-x64.tar.xz archive for the selected release."
     },
     "sha256Arm64": {
       "type": "string",
-      "default": "eb187837a2230d4047161ac0be008584e16b46f726e9c9490ee35dc6b17d9ba8",
+      "default": "406fe3fbde1c054adff8b297c16fdb5af6659db327c1ac8acd46b56ef1af9a92",
       "description": "SHA256 of the official linux-arm64.tar.xz archive for the selected release."
+    },
+    "npmVersion": {
+      "type": "string",
+      "default": "12.2.1",
+      "description": "Exact npm release, independently updated from the Node archive bundled version."
     }
   },
   "installsAfter": [

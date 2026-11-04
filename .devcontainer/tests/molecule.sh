@@ -1,8 +1,9 @@
 #!/bin/sh
 set -eu
-mkdir -p /tmp/molecule-smoke/molecule/default
-cd /tmp/molecule-smoke
-cat > molecule/default/molecule.yml <<'YAML'
+work_dir="$(mktemp -d)"
+mkdir -p "$work_dir/molecule/default"
+cd "$work_dir"
+cat > molecule/default/molecule.yml <<YAML
 ---
 dependency:
   name: galaxy
@@ -10,20 +11,11 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: ansible10-molecule-py312
-    image: python:3.12.16-slim-trixie
+  - name: ansible${ANSIBLE_MAJOR}-molecule-${MOLECULE_TEST_ID:-local}
+    image: ${MOLECULE_TARGET_IMAGE:?Set a supported target image}
     pre_build_image: true
     command: sleep infinity
 YAML
-# Python 3.7 is an optional external managed-node compatibility test.
-if [ "${TEST_LEGACY_PYTHON:-0}" = 1 ]; then
-cat >> molecule/default/molecule.yml <<'YAML'
-  - name: ansible10-molecule-py37
-    image: python:3.7-slim-bullseye
-    pre_build_image: true
-    command: sleep infinity
-YAML
-fi
 cat >> molecule/default/molecule.yml <<'YAML'
 provisioner:
   name: ansible
@@ -52,8 +44,8 @@ cat > molecule/default/converge.yml <<'YAML'
   tasks:
     - name: Write verification file
       ansible.builtin.copy:
-        content: ansible10 works
-        dest: /tmp/ansible10-smoke
+        content: ansible works
+        dest: /tmp/ansible-smoke
         mode: '0644'
 YAML
 cat > molecule/default/verify.yml <<'YAML'
@@ -66,15 +58,15 @@ cat > molecule/default/verify.yml <<'YAML'
       ansible.builtin.assert:
         that:
           - ansible_facts.python.version.major == 3
-          - ansible_facts.python.version.minor in [7, 12]
+          - ansible_facts.python.version.minor >= 9
     - name: Read verification file
       ansible.builtin.slurp:
-        src: /tmp/ansible10-smoke
+        src: /tmp/ansible-smoke
       register: smoke_file
     - name: Check verification file
       ansible.builtin.assert:
         that:
-          - smoke_file.content | b64decode == 'ansible10 works'
+          - smoke_file.content | b64decode == 'ansible works'
 YAML
-trap 'molecule destroy' EXIT
+trap 'molecule destroy; rm -rf -- "$work_dir"' EXIT
 molecule test

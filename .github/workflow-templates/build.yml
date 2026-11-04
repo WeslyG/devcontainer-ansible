@@ -1,0 +1,48 @@
+name: Build and test Ansible images
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  image:
+    strategy:
+      fail-fast: false
+      matrix:
+        ansible: ['10', '12', '14']
+        machine:
+          - {runner: ubuntu-24.04, arch: amd64}
+          - {runner: ubuntu-24.04-arm, arch: arm64}
+    runs-on: ${{ matrix.machine.runner }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@@CHECKOUT@
+      - uses: actions/setup-node@@SETUP_NODE@
+        with:
+          node-version: '@NODE@'
+      - uses: docker/setup-buildx-action@@BUILDX@
+      - name: Install pinned devcontainer CLI
+        run: npm install --global @devcontainers/cli@@DEVCONTAINER@
+      - name: Check repository invariants
+        run: |
+          python3 scripts/check.py
+          python3 -m unittest discover -s tests
+      - name: Build and test without publishing
+        run: python3 scripts/build.py --variants ${{ matrix.ansible }} --test
+      - name: Prepare explicit public reports
+        if: always()
+        run: python3 scripts/artifacts.py build --arch ${{ matrix.machine.arch }}
+      - uses: actions/upload-artifact@@UPLOAD@
+        if: always()
+        with:
+          name: validation-ansible${{ matrix.ansible }}-${{ matrix.machine.arch }}
+          path: |
+            artifacts/status.json
+            artifacts/results.json
+            artifacts/images.json
+          retention-days: 14

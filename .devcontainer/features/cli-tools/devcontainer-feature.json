@@ -6,18 +6,27 @@
   "options": {
     "claudeVersion": {
       "type": "string",
-      "default": "2.1.317",
+      "default": "2.1.318",
       "description": "Exact native Claude Code release version."
     },
     "elasticdumpVersion": {
       "type": "string",
       "default": "6.125.1",
       "description": "Exact elasticdump npm package version."
+    },
+    "claudeIntegrityAmd64": {
+      "type": "string",
+      "default": "sha512-GX+7CUng2R5f7SsA2w0LaXlH2f62fRCFD/Z2SUexoeH3B0KfulKQt5DtY9NeD2Yp3VEBz6/k/xWSbGPUi6NV2A==",
+      "description": "Pinned SHA512 npm integrity of the official native Claude x64 archive."
+    },
+    "claudeIntegrityArm64": {
+      "type": "string",
+      "default": "sha512-FUVVH3aQbLEChjv5wQLdFbpBC7bclVIdVYO5hDzJthDyf2OQtdubIP5QqLPgEScQb3CVIAFg2IPJ5nihJa8Ndw==",
+      "description": "Pinned SHA512 npm integrity of the official native Claude arm64 archive."
     }
   },
   "installsAfter": [
-    "ghcr.io/devcontainers/features/common-utils",
-    "./features/node"
+    "ghcr.io/devcontainers/features/common-utils"
   ],
   "customizations": {
     "vscode": {

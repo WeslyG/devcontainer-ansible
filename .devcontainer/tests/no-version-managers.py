@@ -3,7 +3,7 @@ from pathlib import Path
 from shutil import which
 
 managers=['nvm','fnm','n','nodenv','nvs','volta','asdf','mise','pyenv','uv','rye',
-          'conda','mamba','micromamba','rbenv','rvm','gvm','rustup','sdk','jenv',
+          'pipx','conda','mamba','micromamba','rbenv','rvm','gvm','rustup','sdk','jenv',
           'corepack','yarn','yarnpkg','pnpm','pnpx']
 assert not [name for name in managers if which(name)], 'Unexpected version manager/dispatcher on PATH'
 homes=[Path('/home/vscode')]
@@ -23,4 +23,4 @@ assert which('npm')=='/usr/local/bin/npm'
 assert which('npx')=='/usr/local/bin/npx'
 assert not Path('/usr/bin/python3').exists(), 'Unexpected second/system Python'
 assert not list(Path('/usr/local/bin').glob('python3.7*'))
-print('PASS: direct Node/npm/npx, one Python 3.12, no runtime version managers or Corepack')
+print('PASS: direct Node/npm/npx, one controller Python, no runtime version managers or Corepack')

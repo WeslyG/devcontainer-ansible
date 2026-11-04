@@ -1,23 +1,20 @@
 {
-  "name": "ansible-dev",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
   "features": {
     "./features/node": {
-      "version": "24.22.2",
-      "sha256Amd64": "48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75",
-      "sha256Arm64": "eb187837a2230d4047161ac0be008584e16b46f726e9c9490ee35dc6b17d9ba8"
+      "version": "26.13.0",
+      "sha256Amd64": "d28a96af6c38596f6d9d97c0ee531c13d238d757742387d1928de822d959e997",
+      "sha256Arm64": "406fe3fbde1c054adff8b297c16fdb5af6659db327c1ac8acd46b56ef1af9a92",
+      "npmVersion": "12.2.1"
     },
     "./features/gilt": {
       "version": "2.2.5"
     },
-    "ghcr.io/devcontainers/features/common-utils:2":{
-        "installZsh": "true",
-        "username": "vscode",
-        "userUid": "1000",
-        "userGid": "1000",
-        "upgradePackages": "true"
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "true",
+      "username": "vscode",
+      "userUid": "1000",
+      "userGid": "1000",
+      "upgradePackages": "true"
     },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "moby": false,
@@ -29,21 +26,18 @@
       "upgradePackages": true
     },
     "ghcr.io/dhoeric/features/k9s:1": {
-      "version": "0.51.0" // https://github.com/derailed/k9s/releases
+      "version": "0.51.0"
     },
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "1.37.2",  // kubectl https://dl.k8s.io/release/stable.txt
-      "helm": "4.3.1",    // https://github.com/helm/helm/releases
-      "minikube": "1.39.0" // https://github.com/kubernetes/minikube/releases
+      "version": "1.37.2",
+      "helm": "4.3.1",
+      "minikube": "1.39.0"
     },
-    // https://hashicorp-releases.yandexcloud.net
-    // Временно не работает пока облако не починят!
-    // "ghcr.io/weslyg/features/hashicorp-mirror:2": {
-    //   "products": "terraform=1.15.8,vault=2.0.3"
-    // },
     "./features/cli-tools": {
-      "claudeVersion": "2.1.317",
-      "elasticdumpVersion": "6.125.1"
+      "claudeVersion": "2.1.318",
+      "elasticdumpVersion": "6.125.1",
+      "claudeIntegrityAmd64": "sha512-GX+7CUng2R5f7SsA2w0LaXlH2f62fRCFD/Z2SUexoeH3B0KfulKQt5DtY9NeD2Yp3VEBz6/k/xWSbGPUi6NV2A==",
+      "claudeIntegrityArm64": "sha512-FUVVH3aQbLEChjv5wQLdFbpBC7bclVIdVYO5hDzJthDyf2OQtdubIP5QqLPgEScQb3CVIAFg2IPJ5nihJa8Ndw=="
     }
   },
   "overrideFeatureInstallOrder": [
@@ -59,66 +53,48 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        // ansible база
         "redhat.ansible",
-        "blauwelucht.ansible-go-to-definition", // возможно ерунда, и не будет работать - первый кандидат на снос
-        "ikbengeenrobot.ansible-variable-lookup", // рекомендовали в статьях
-        "samuelcolvin.jinjahtml", // подсветка и работа с jinja
-        "oderwat.indent-rainbow", // если слишком лгбд то уберем
-        "esbenp.prettier-vscode", // потому что redhat-yaml Не может форматить ansible
-        // форматы которые мы встречаем
-        "redhat.vscode-yaml", // база
-        "redhat.vscode-xml", // на всякий случай
-        // Python: интерпретатор и инструменты установлены в Dockerfile
+        "blauwelucht.ansible-go-to-definition",
+        "ikbengeenrobot.ansible-variable-lookup",
+        "samuelcolvin.jinjahtml",
+        "oderwat.indent-rainbow",
+        "esbenp.prettier-vscode",
+        "redhat.vscode-yaml",
+        "redhat.vscode-xml",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-python.autopep8",
-        "ms-python.isort", // сортировка импортов
-        "ms-python.pylint", // линтер, подсветка всего кривого
-        "ms-python.black-formatter", // formatting
-        "twixes.pypi-assistant", // помощь с зависимостями
-        // terraform - базовый, без сбора данных
+        "ms-python.isort",
+        "ms-python.pylint",
+        "ms-python.black-formatter",
+        "twixes.pypi-assistant",
         "4ops.terraform",
-        // Postman analog
         "vasubasraj.flashpost",
-        // докер, для автокомплита dockerfile
         "ms-azuretools.vscode-docker",
-        // k8s
         "ms-kubernetes-tools.vscode-kubernetes-tools",
-        // helm
         "tim-koehler.helm-intellisense",
-        "VadzimNestsiarenka.helm-template-preview-and-more", // live preview
-        // nginx
-        "ahmadalli.vscode-nginx-conf", // nginx autocomplete + syntax
-        "raynigon.nginx-formatter", // nginx formatter
-        // haproxy
-        "bmarkovic.haproxy", // haproxy syntax highlight
-        // work with openssl
+        "VadzimNestsiarenka.helm-template-preview-and-more",
+        "ahmadalli.vscode-nginx-conf",
+        "raynigon.nginx-formatter",
+        "bmarkovic.haproxy",
         "geeksharp.openssl-configuration-file",
         "ffaraone.opensslutils",
-        // shell
-        "timonwong.shellcheck", // bash script check
-        "eric-blanquer.ansi-automatic-clean-viewer", // view gitlab raw
-        // попытки поиграть в таск раннер
-        //"forbeslindesay.forbeslindesay-taskrunner",
-        //"technosophos.vscode-make",
-        // другое
+        "timonwong.shellcheck",
+        "eric-blanquer.ansi-automatic-clean-viewer",
         "cweijan.vscode-database-client2",
-        "editorconfig.editorconfig", // editorconfig очень хорошо работает с crlf/lf - никто больше нормально это не делает
-        "eamodio.gitlens", // git
-        "fanaticPythoner.better-todo-tree", // https://github.com/FanaticPythoner/better-todo-tree/issues/142 установится, когда опубликуют обратно
-        "adamhartford.vscode-base64", // Base64 works
-        "streetsidesoftware.code-spell-checker", // очепятки находить на английском
-        "streetsidesoftware.code-spell-checker-russian" // очепятки находить на русском
+        "editorconfig.editorconfig",
+        "eamodio.gitlens",
+        "fanaticPythoner.better-todo-tree",
+        "adamhartford.vscode-base64",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-russian"
       ],
       "settings": {
-        // общее
         "telemetry.telemetryLevel": "off",
         "redhat.telemetry.enabled": false,
         "extensions.ignoreRecommendations": true,
         "diffEditor.renderSideBySide": true,
         "workbench.startupEditor": "none",
-        // подсветка не ASCII букв в коде, но не в комментах для всяких русских букв С например
         "editor.unicodeHighlight.allowedCharacters": {},
         "editor.unicodeHighlight.ambiguousCharacters": true,
         "editor.unicodeHighlight.includeComments": false,
@@ -137,7 +113,6 @@
         "editor.tabSize": 2,
         "explorer.confirmDelete": false,
         "explorer.confirmDragAndDrop": false,
-        // Ansible
         "indentRainbow.includedLanguages": [
           "ansible",
           "yaml",
@@ -145,16 +120,12 @@
         ],
         "ansible.ansible.path": "/usr/local/bin/ansible",
         "ansible.validation.lint.path": "/usr/local/bin/ansible-lint",
-        "ansible.ansible.useFullyQualifiedCollectionNames": true, // всегда полные имена модулей!
-        "ansible.python.interpreterPath": "/usr/local/bin/python", // таков контейнер
-        // ассоциации с ansible в плагине, для чтения
-        // Обсуждаемо, согласно схеме именований файлов (может бесить при работе с k8s)
+        "ansible.ansible.useFullyQualifiedCollectionNames": true,
+        "ansible.python.interpreterPath": "/usr/local/bin/python",
         "files.associations": {
           "*.yml": "ansible",
           "*.yaml": "ansible"
         },
-        // "todo-tree.ripgrep": "/usr/local/bin/rg",
-        // Python
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.analysis.autoImportCompletions": true,
         "python.analysis.typeCheckingMode": "standard",
@@ -164,9 +135,9 @@
         ],
         "python.linting.pylintPath": "/usr/local/bin/pylint",
         "python.linting.pylintArgs": [
-          "--disable=C0114", // Disable unused-import warnings
-          "--disable=C0301", // Disable line-too-long warnings
-          "--disable=C0116"  // Disable missing doctyping
+          "--disable=C0114",
+          "--disable=C0301",
+          "--disable=C0116"
         ],
         "pylint.importStrategy": "fromEnvironment",
         "[python]": {
@@ -175,9 +146,7 @@
             "source.organizeImports": "explicit"
           },
           "editor.formatOnSave": true
-          // "editor.formatOnType": true,
         },
-        // Очепятки
         "cSpell.enabled": true,
         "cSpell.language": "en,ru",
         "cSpell.ignorePaths": [
@@ -188,7 +157,6 @@
         "[ansible]": {
           "editor.autoIndent": "advanced",
           "editor.defaultFormatter": "esbenp.prettier-vscode"
-          // "editor.formatOnSave": true
         },
         "[xml]": {
           "editor.defaultFormatter": "redhat.vscode-xml"
@@ -207,40 +175,29 @@
           "editor.unicodeHighlight.nonBasicASCII": false,
           "diffEditor.ignoreTrimWhitespace": false
         }
-        // оно не работает, но идея была хороша
-        // "[jinja-yaml]": {
-        //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-        // },
-        // "[jinja-py]": {
-        //   "editor.defaultFormatter": "ms-python.black-formatter"
-        // }
       }
     }
   },
   "runArgs": [
-    "--cap-add=SYS_ADMIN", // Optional: Adds capabilities required by some applications
-    "--net=host" // Optional: Единая сеть между контейнером и контейнером
+    "--cap-add=SYS_ADMIN",
+    "--net=host"
   ],
-  // port forward example на всякий пожарный, хотя net=host но просто для примера
-  // "forwardPorts": [6443],
-
-  // Если нужны еще ENV
-  // "containerEnv": {
-  //   "ANSIBLE_HOME": "/home/vscode/.ansible"
-  // },
-
-  // Ssh конфигурация монтируется в ro режиме, чтобы можно было ходить из контейнера, везде где нужно.
-  // Конфигурации остального окружения монтируются из папки .dotfiles если у вас ее нет - все упадет (см инструкцию)
-  // после копирования всех ваших .dotfiles на них создадутся симлинки в корень (см postCreateCommand)
-  // если нужны алиасы для bash то создайте файл .dotconfig/.bash_aliases он вычитывается стандартным .bashrc
-  // "mounts": [
-  //   "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/vscode/.ssh,readonly,type=bind",
-  //   "source=${localEnv:HOME}${localEnv:USERPROFILE}/.dotfiles,target=/home/vscode/.dotfiles,type=bind",
-  //   "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-  // ],
-  // "initializeCommand": "mkdir -p ~/.dotfiles",
-  // "postCreateCommand": "stow --dir=$HOME/.dotfiles --target=$HOME . && sudo chown vscode:docker /var/run/docker.sock && make deps",
-  
-  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  "name": "Ansible 14",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {
+      "PYTHON_IMAGE": "python:3.14.10-slim-trixie@sha256:930e1abba7c4e8f96ed93e8012c35d174d7732752731bbd5e8e757d7ec6f3966",
+      "REQUIREMENTS_FILE": "requirements/ansible14.txt",
+      "ANSIBLE_MAJOR": "14",
+      "GIT_BUILDER_IMAGE": "debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4",
+      "GIT_VERSION": "2.56.0",
+      "GIT_SHA256": "26c56c296b38c0695b26fa95f475f1d01704d2d38e73465ca30b0b2f5dc789d3"
+    }
+  },
+  "containerEnv": {
+    "ANSIBLE_MAJOR": "14",
+    "MOLECULE_TARGET_IMAGE": "python:3.14.10-slim-trixie@sha256:930e1abba7c4e8f96ed93e8012c35d174d7732752731bbd5e8e757d7ec6f3966"
+  }
 }

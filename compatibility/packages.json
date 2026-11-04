@@ -1,0 +1,1481 @@
+{
+  "updatedAt": "2026-11-04",
+  "variants": {
+    "10": {
+      "aiohappyeyeballs": {
+        "selected": "2.7.1",
+        "latest": "2.7.1",
+        "reason": "latest stable"
+      },
+      "aiohttp": {
+        "selected": "3.14.5",
+        "latest": "3.14.5",
+        "reason": "latest stable"
+      },
+      "aiohttp-retry": {
+        "selected": "2.9.1",
+        "latest": "2.9.1",
+        "reason": "latest stable"
+      },
+      "aiosignal": {
+        "selected": "1.4.0",
+        "latest": "1.4.0",
+        "reason": "latest stable"
+      },
+      "annotated-types": {
+        "selected": "0.8.0",
+        "latest": "0.8.0",
+        "reason": "latest stable"
+      },
+      "ansible": {
+        "selected": "10.7.0",
+        "latest": "14.5.0",
+        "reason": "pinned Ansible major / supported core family"
+      },
+      "ansible-compat": {
+        "selected": "26.6.0",
+        "latest": "26.10.0",
+        "reason": "resolver selected a version compatible with the full environment; see .build/resolve-10.json"
+      },
+      "ansible-core": {
+        "selected": "2.17.14",
+        "latest": "2.22.0",
+        "reason": "pinned Ansible major / supported core family"
+      },
+      "ansible-lint": {
+        "selected": "26.6.0",
+        "latest": "26.10.1",
+        "reason": "resolver selected a version compatible with the full environment; see .build/resolve-10.json"
+      },
+      "argcomplete": {
+        "selected": "3.7.2",
+        "latest": "3.7.2",
+        "reason": "latest stable"
+      },
+      "arrow": {
+        "selected": "1.4.0",
+        "latest": "1.4.0",
+        "reason": "latest stable"
+      },
+      "astroid": {
+        "selected": "4.3.4",
+        "latest": "4.3.4",
+        "reason": "latest stable"
+      },
+      "attrs": {
+        "selected": "26.1.0",
+        "latest": "26.1.0",
+        "reason": "latest stable"
+      },
+      "bcrypt": {
+        "selected": "4.3.0",
+        "latest": "5.0.0",
+        "reason": "passlib 1.7.4 rejects bcrypt 5 (long-password backend probe); runtime roundtrip tested"
+      },
+      "binaryornot": {
+        "selected": "0.6.0",
+        "latest": "0.6.0",
+        "reason": "latest stable"
+      },
+      "black": {
+        "selected": "26.10.1",
+        "latest": "26.10.1",
+        "reason": "latest stable"
+      },
+      "bracex": {
+        "selected": "3.2.1",
+        "latest": "3.2.1",
+        "reason": "latest stable"
+      },
+      "certifi": {
+        "selected": "2026.10.23",
+        "latest": "2026.10.23",
+        "reason": "latest stable"
+      },
+      "cffi": {
+        "selected": "2.1.1",
+        "latest": "2.1.1",
+        "reason": "latest stable"
+      },
+      "charset-normalizer": {
+        "selected": "3.5.2",
+        "latest": "3.5.2",
+        "reason": "latest stable"
+      },
+      "click": {
+        "selected": "8.5.0",
+        "latest": "8.5.0",
+        "reason": "latest stable"
+      },
+      "cookiecutter": {
+        "selected": "2.7.1",
+        "latest": "2.7.1",
+        "reason": "latest stable"
+      },
+      "cryptography": {
+        "selected": "50.0.2",
+        "latest": "50.0.2",
+        "reason": "latest stable"
+      },
+      "dill": {
+        "selected": "0.4.1",
+        "latest": "0.4.1",
+        "reason": "latest stable"
+      },
+      "distro": {
+        "selected": "1.9.0",
+        "latest": "1.9.0",
+        "reason": "latest stable"
+      },
+      "dnspython": {
+        "selected": "2.9.2",
+        "latest": "2.9.2",
+        "reason": "latest stable"
+      },
+      "docker": {
+        "selected": "7.2.0",
+        "latest": "7.2.0",
+        "reason": "latest stable"
+      },
+      "durationpy": {
+        "selected": "0.11",
+        "latest": "0.11",
+        "reason": "latest stable"
+      },
+      "editorconfig-checker": {
+        "selected": "3.11.1",
+        "latest": "3.11.1",
+        "reason": "latest stable"
+      },
+      "enrich": {
+        "selected": "1.2.7",
+        "latest": "1.2.7",
+        "reason": "latest stable"
+      },
+      "filelock": {
+        "selected": "4.2.7",
+        "latest": "4.2.7",
+        "reason": "latest stable"
+      },
+      "frozenlist": {
+        "selected": "1.8.0",
+        "latest": "1.8.0",
+        "reason": "latest stable"
+      },
+      "hvac": {
+        "selected": "2.4.0",
+        "latest": "2.4.0",
+        "reason": "latest stable"
+      },
+      "idna": {
+        "selected": "3.20",
+        "latest": "3.20",
+        "reason": "latest stable"
+      },
+      "iniconfig": {
+        "selected": "2.3.1",
+        "latest": "2.3.1",
+        "reason": "latest stable"
+      },
+      "isort": {
+        "selected": "9.0.2",
+        "latest": "9.0.2",
+        "reason": "latest stable"
+      },
+      "jinja2": {
+        "selected": "3.1.6",
+        "latest": "3.1.6",
+        "reason": "latest stable"
+      },
+      "jsonpatch": {
+        "selected": "1.41",
+        "latest": "1.41",
+        "reason": "latest stable"
+      },
+      "jsonpointer": {
+        "selected": "3.8",
+        "latest": "3.8",
+        "reason": "latest stable"
+      },
+      "jsonschema": {
+        "selected": "4.26.0",
+        "latest": "4.26.0",
+        "reason": "latest stable"
+      },
+      "jsonschema-specifications": {
+        "selected": "2025.9.1",
+        "latest": "2025.9.1",
+        "reason": "latest stable"
+      },
+      "kubernetes": {
+        "selected": "37.0.1",
+        "latest": "37.0.1",
+        "reason": "latest stable"
+      },
+      "markdown-it-py": {
+        "selected": "4.2.0",
+        "latest": "4.2.0",
+        "reason": "latest stable"
+      },
+      "markupsafe": {
+        "selected": "3.0.4",
+        "latest": "3.0.4",
+        "reason": "latest stable"
+      },
+      "mccabe": {
+        "selected": "0.7.0",
+        "latest": "0.7.0",
+        "reason": "latest stable"
+      },
+      "mdurl": {
+        "selected": "0.1.2",
+        "latest": "0.1.2",
+        "reason": "latest stable"
+      },
+      "molecule": {
+        "selected": "26.6.0",
+        "latest": "26.10.0",
+        "reason": "resolver selected a version compatible with the full environment; see .build/resolve-10.json"
+      },
+      "molecule-plugins": {
+        "selected": "26.11.0",
+        "latest": "26.11.0",
+        "reason": "latest stable"
+      },
+      "multidict": {
+        "selected": "7.2.1",
+        "latest": "7.2.1",
+        "reason": "latest stable"
+      },
+      "mypy-extensions": {
+        "selected": "1.2.0",
+        "latest": "1.2.0",
+        "reason": "latest stable"
+      },
+      "netaddr": {
+        "selected": "1.3.0",
+        "latest": "1.3.0",
+        "reason": "latest stable"
+      },
+      "oauthlib": {
+        "selected": "4.0.1",
+        "latest": "4.0.1",
+        "reason": "latest stable"
+      },
+      "packaging": {
+        "selected": "26.3",
+        "latest": "26.3",
+        "reason": "latest stable"
+      },
+      "passlib": {
+        "selected": "1.7.4",
+        "latest": "1.7.4",
+        "reason": "latest stable"
+      },
+      "pathspec": {
+        "selected": "1.1.1",
+        "latest": "1.1.1",
+        "reason": "latest stable"
+      },
+      "pip": {
+        "selected": "26.3",
+        "latest": "26.3",
+        "reason": "latest stable"
+      },
+      "platformdirs": {
+        "selected": "4.14.3",
+        "latest": "4.14.3",
+        "reason": "latest stable"
+      },
+      "pluggy": {
+        "selected": "1.7.0",
+        "latest": "1.7.0",
+        "reason": "latest stable"
+      },
+      "propcache": {
+        "selected": "0.5.4",
+        "latest": "0.5.4",
+        "reason": "latest stable"
+      },
+      "pycparser": {
+        "selected": "3.12",
+        "latest": "3.12",
+        "reason": "latest stable"
+      },
+      "pydantic": {
+        "selected": "2.14.2",
+        "latest": "2.14.2",
+        "reason": "latest stable"
+      },
+      "pydantic-core": {
+        "selected": "2.50.2",
+        "latest": "2.50.2",
+        "reason": "latest stable"
+      },
+      "pygments": {
+        "selected": "2.21.0",
+        "latest": "2.21.0",
+        "reason": "latest stable"
+      },
+      "pylint": {
+        "selected": "4.1.3",
+        "latest": "4.1.3",
+        "reason": "latest stable"
+      },
+      "pynetbox": {
+        "selected": "7.9.0",
+        "latest": "7.9.0",
+        "reason": "latest stable"
+      },
+      "pytest": {
+        "selected": "9.2.0",
+        "latest": "9.2.0",
+        "reason": "latest stable"
+      },
+      "pytest-testinfra": {
+        "selected": "10.2.2",
+        "latest": "10.2.2",
+        "reason": "latest stable"
+      },
+      "python-dateutil": {
+        "selected": "4.0.0",
+        "latest": "4.0.0",
+        "reason": "latest stable"
+      },
+      "python-magic": {
+        "selected": "0.4.27",
+        "latest": "0.4.27",
+        "reason": "latest stable"
+      },
+      "python-slugify": {
+        "selected": "9.1.3",
+        "latest": "9.1.3",
+        "reason": "latest stable"
+      },
+      "pytokens": {
+        "selected": "0.4.1",
+        "latest": "0.4.1",
+        "reason": "latest stable"
+      },
+      "pytz": {
+        "selected": "2026.6",
+        "latest": "2026.6",
+        "reason": "latest stable"
+      },
+      "pyyaml": {
+        "selected": "6.0.3",
+        "latest": "6.0.3",
+        "reason": "latest stable"
+      },
+      "referencing": {
+        "selected": "0.37.0",
+        "latest": "0.37.0",
+        "reason": "latest stable"
+      },
+      "requests": {
+        "selected": "2.34.2",
+        "latest": "2.34.2",
+        "reason": "latest stable"
+      },
+      "requests-oauthlib": {
+        "selected": "2.0.0",
+        "latest": "2.0.0",
+        "reason": "latest stable"
+      },
+      "resolvelib": {
+        "selected": "1.0.1",
+        "latest": "1.2.1",
+        "reason": "resolver selected a version compatible with the full environment; see .build/resolve-10.json"
+      },
+      "rich": {
+        "selected": "15.0.0",
+        "latest": "15.0.0",
+        "reason": "latest stable"
+      },
+      "rpds-py": {
+        "selected": "2026.9.1",
+        "latest": "2026.9.1",
+        "reason": "latest stable"
+      },
+      "ruamel.yaml": {
+        "selected": "0.19.1",
+        "latest": "0.19.1",
+        "reason": "latest stable"
+      },
+      "ruamel.yaml.clib": {
+        "selected": "0.2.15",
+        "latest": "0.2.15",
+        "reason": "latest stable"
+      },
+      "s3cmd": {
+        "selected": "2.4.0",
+        "latest": "2.4.0",
+        "reason": "latest stable"
+      },
+      "selinux": {
+        "selected": "0.3.0",
+        "latest": "0.3.0",
+        "reason": "latest stable"
+      },
+      "setuptools": {
+        "selected": "84.2.1",
+        "latest": "84.2.1",
+        "reason": "latest stable"
+      },
+      "subprocess-tee": {
+        "selected": "0.4.2",
+        "latest": "0.4.2",
+        "reason": "latest stable"
+      },
+      "text-unidecode": {
+        "selected": "1.3",
+        "latest": "1.3",
+        "reason": "latest stable"
+      },
+      "tomlkit": {
+        "selected": "0.15.2",
+        "latest": "0.15.2",
+        "reason": "latest stable"
+      },
+      "typing-extensions": {
+        "selected": "4.16.0",
+        "latest": "4.16.0",
+        "reason": "latest stable"
+      },
+      "typing-inspection": {
+        "selected": "0.4.4",
+        "latest": "0.4.4",
+        "reason": "latest stable"
+      },
+      "tzdata": {
+        "selected": "2026.6",
+        "latest": "2026.6",
+        "reason": "latest stable"
+      },
+      "urllib3": {
+        "selected": "2.8.0",
+        "latest": "2.8.0",
+        "reason": "latest stable"
+      },
+      "wcmatch": {
+        "selected": "12.0",
+        "latest": "12.0",
+        "reason": "latest stable"
+      },
+      "websocket-client": {
+        "selected": "1.9.2",
+        "latest": "1.9.2",
+        "reason": "latest stable"
+      },
+      "wheel": {
+        "selected": "0.48.0",
+        "latest": "0.48.0",
+        "reason": "latest stable"
+      },
+      "xmltodict": {
+        "selected": "1.0.4",
+        "latest": "1.0.4",
+        "reason": "latest stable"
+      },
+      "yamllint": {
+        "selected": "1.38.0",
+        "latest": "1.38.0",
+        "reason": "latest stable"
+      },
+      "yarl": {
+        "selected": "1.25.1",
+        "latest": "1.25.1",
+        "reason": "latest stable"
+      },
+      "yq": {
+        "selected": "4.4.5",
+        "latest": "4.4.5",
+        "reason": "latest stable"
+      }
+    },
+    "12": {
+      "aiohappyeyeballs": {
+        "selected": "2.7.1",
+        "latest": "2.7.1",
+        "reason": "latest stable"
+      },
+      "aiohttp": {
+        "selected": "3.14.5",
+        "latest": "3.14.5",
+        "reason": "latest stable"
+      },
+      "aiohttp-retry": {
+        "selected": "2.9.1",
+        "latest": "2.9.1",
+        "reason": "latest stable"
+      },
+      "aiosignal": {
+        "selected": "1.4.0",
+        "latest": "1.4.0",
+        "reason": "latest stable"
+      },
+      "annotated-types": {
+        "selected": "0.8.0",
+        "latest": "0.8.0",
+        "reason": "latest stable"
+      },
+      "ansible": {
+        "selected": "12.3.0",
+        "latest": "14.5.0",
+        "reason": "pinned Ansible major / supported core family"
+      },
+      "ansible-compat": {
+        "selected": "26.10.0",
+        "latest": "26.10.0",
+        "reason": "latest stable"
+      },
+      "ansible-core": {
+        "selected": "2.19.15",
+        "latest": "2.22.0",
+        "reason": "pinned Ansible major / supported core family"
+      },
+      "ansible-lint": {
+        "selected": "26.10.1",
+        "latest": "26.10.1",
+        "reason": "latest stable"
+      },
+      "argcomplete": {
+        "selected": "3.7.2",
+        "latest": "3.7.2",
+        "reason": "latest stable"
+      },
+      "arrow": {
+        "selected": "1.4.0",
+        "latest": "1.4.0",
+        "reason": "latest stable"
+      },
+      "astroid": {
+        "selected": "4.3.4",
+        "latest": "4.3.4",
+        "reason": "latest stable"
+      },
+      "attrs": {
+        "selected": "26.1.0",
+        "latest": "26.1.0",
+        "reason": "latest stable"
+      },
+      "bcrypt": {
+        "selected": "4.3.0",
+        "latest": "5.0.0",
+        "reason": "passlib 1.7.4 rejects bcrypt 5 (long-password backend probe); runtime roundtrip tested"
+      },
+      "binaryornot": {
+        "selected": "0.6.0",
+        "latest": "0.6.0",
+        "reason": "latest stable"
+      },
+      "black": {
+        "selected": "26.10.1",
+        "latest": "26.10.1",
+        "reason": "latest stable"
+      },
+      "bracex": {
+        "selected": "3.2.1",
+        "latest": "3.2.1",
+        "reason": "latest stable"
+      },
+      "certifi": {
+        "selected": "2026.10.23",
+        "latest": "2026.10.23",
+        "reason": "latest stable"
+      },
+      "cffi": {
+        "selected": "2.1.1",
+        "latest": "2.1.1",
+        "reason": "latest stable"
+      },
+      "charset-normalizer": {
+        "selected": "3.5.2",
+        "latest": "3.5.2",
+        "reason": "latest stable"
+      },
+      "click": {
+        "selected": "8.5.0",
+        "latest": "8.5.0",
+        "reason": "latest stable"
+      },
+      "cookiecutter": {
+        "selected": "2.7.1",
+        "latest": "2.7.1",
+        "reason": "latest stable"
+      },
+      "cryptography": {
+        "selected": "50.0.2",
+        "latest": "50.0.2",
+        "reason": "latest stable"
+      },
+      "dill": {
+        "selected": "0.4.1",
+        "latest": "0.4.1",
+        "reason": "latest stable"
+      },
+      "distro": {
+        "selected": "1.9.0",
+        "latest": "1.9.0",
+        "reason": "latest stable"
+      },
+      "dnspython": {
+        "selected": "2.9.2",
+        "latest": "2.9.2",
+        "reason": "latest stable"
+      },
+      "docker": {
+        "selected": "7.2.0",
+        "latest": "7.2.0",
+        "reason": "latest stable"
+      },
+      "durationpy": {
+        "selected": "0.11",
+        "latest": "0.11",
+        "reason": "latest stable"
+      },
+      "editorconfig-checker": {
+        "selected": "3.11.1",
+        "latest": "3.11.1",
+        "reason": "latest stable"
+      },
+      "enrich": {
+        "selected": "1.2.7",
+        "latest": "1.2.7",
+        "reason": "latest stable"
+      },
+      "filelock": {
+        "selected": "4.2.7",
+        "latest": "4.2.7",
+        "reason": "latest stable"
+      },
+      "frozenlist": {
+        "selected": "1.8.0",
+        "latest": "1.8.0",
+        "reason": "latest stable"
+      },
+      "hvac": {
+        "selected": "2.4.0",
+        "latest": "2.4.0",
+        "reason": "latest stable"
+      },
+      "idna": {
+        "selected": "3.20",
+        "latest": "3.20",
+        "reason": "latest stable"
+      },
+      "iniconfig": {
+        "selected": "2.3.1",
+        "latest": "2.3.1",
+        "reason": "latest stable"
+      },
+      "isort": {
+        "selected": "9.0.2",
+        "latest": "9.0.2",
+        "reason": "latest stable"
+      },
+      "jinja2": {
+        "selected": "3.1.6",
+        "latest": "3.1.6",
+        "reason": "latest stable"
+      },
+      "jsonpatch": {
+        "selected": "1.41",
+        "latest": "1.41",
+        "reason": "latest stable"
+      },
+      "jsonpointer": {
+        "selected": "3.8",
+        "latest": "3.8",
+        "reason": "latest stable"
+      },
+      "jsonschema": {
+        "selected": "4.26.0",
+        "latest": "4.26.0",
+        "reason": "latest stable"
+      },
+      "jsonschema-specifications": {
+        "selected": "2025.9.1",
+        "latest": "2025.9.1",
+        "reason": "latest stable"
+      },
+      "kubernetes": {
+        "selected": "37.0.1",
+        "latest": "37.0.1",
+        "reason": "latest stable"
+      },
+      "markdown-it-py": {
+        "selected": "4.2.0",
+        "latest": "4.2.0",
+        "reason": "latest stable"
+      },
+      "markupsafe": {
+        "selected": "3.0.4",
+        "latest": "3.0.4",
+        "reason": "latest stable"
+      },
+      "mccabe": {
+        "selected": "0.7.0",
+        "latest": "0.7.0",
+        "reason": "latest stable"
+      },
+      "mdurl": {
+        "selected": "0.1.2",
+        "latest": "0.1.2",
+        "reason": "latest stable"
+      },
+      "molecule": {
+        "selected": "26.10.0",
+        "latest": "26.10.0",
+        "reason": "latest stable"
+      },
+      "molecule-plugins": {
+        "selected": "26.11.0",
+        "latest": "26.11.0",
+        "reason": "latest stable"
+      },
+      "multidict": {
+        "selected": "7.2.1",
+        "latest": "7.2.1",
+        "reason": "latest stable"
+      },
+      "mypy-extensions": {
+        "selected": "1.2.0",
+        "latest": "1.2.0",
+        "reason": "latest stable"
+      },
+      "netaddr": {
+        "selected": "1.3.0",
+        "latest": "1.3.0",
+        "reason": "latest stable"
+      },
+      "oauthlib": {
+        "selected": "4.0.1",
+        "latest": "4.0.1",
+        "reason": "latest stable"
+      },
+      "packaging": {
+        "selected": "26.3",
+        "latest": "26.3",
+        "reason": "latest stable"
+      },
+      "passlib": {
+        "selected": "1.7.4",
+        "latest": "1.7.4",
+        "reason": "latest stable"
+      },
+      "pathspec": {
+        "selected": "1.1.1",
+        "latest": "1.1.1",
+        "reason": "latest stable"
+      },
+      "pip": {
+        "selected": "26.3",
+        "latest": "26.3",
+        "reason": "latest stable"
+      },
+      "platformdirs": {
+        "selected": "4.14.3",
+        "latest": "4.14.3",
+        "reason": "latest stable"
+      },
+      "pluggy": {
+        "selected": "1.7.0",
+        "latest": "1.7.0",
+        "reason": "latest stable"
+      },
+      "propcache": {
+        "selected": "0.5.4",
+        "latest": "0.5.4",
+        "reason": "latest stable"
+      },
+      "pycparser": {
+        "selected": "3.12",
+        "latest": "3.12",
+        "reason": "latest stable"
+      },
+      "pydantic": {
+        "selected": "2.14.2",
+        "latest": "2.14.2",
+        "reason": "latest stable"
+      },
+      "pydantic-core": {
+        "selected": "2.50.2",
+        "latest": "2.50.2",
+        "reason": "latest stable"
+      },
+      "pygments": {
+        "selected": "2.21.0",
+        "latest": "2.21.0",
+        "reason": "latest stable"
+      },
+      "pylint": {
+        "selected": "4.1.3",
+        "latest": "4.1.3",
+        "reason": "latest stable"
+      },
+      "pynetbox": {
+        "selected": "7.9.0",
+        "latest": "7.9.0",
+        "reason": "latest stable"
+      },
+      "pytest": {
+        "selected": "9.2.0",
+        "latest": "9.2.0",
+        "reason": "latest stable"
+      },
+      "pytest-testinfra": {
+        "selected": "10.2.2",
+        "latest": "10.2.2",
+        "reason": "latest stable"
+      },
+      "python-dateutil": {
+        "selected": "4.0.0",
+        "latest": "4.0.0",
+        "reason": "latest stable"
+      },
+      "python-magic": {
+        "selected": "0.4.27",
+        "latest": "0.4.27",
+        "reason": "latest stable"
+      },
+      "python-slugify": {
+        "selected": "9.1.3",
+        "latest": "9.1.3",
+        "reason": "latest stable"
+      },
+      "pytokens": {
+        "selected": "0.4.1",
+        "latest": "0.4.1",
+        "reason": "latest stable"
+      },
+      "pytz": {
+        "selected": "2026.6",
+        "latest": "2026.6",
+        "reason": "latest stable"
+      },
+      "pyyaml": {
+        "selected": "6.0.3",
+        "latest": "6.0.3",
+        "reason": "latest stable"
+      },
+      "referencing": {
+        "selected": "0.37.0",
+        "latest": "0.37.0",
+        "reason": "latest stable"
+      },
+      "requests": {
+        "selected": "2.34.2",
+        "latest": "2.34.2",
+        "reason": "latest stable"
+      },
+      "requests-oauthlib": {
+        "selected": "2.0.0",
+        "latest": "2.0.0",
+        "reason": "latest stable"
+      },
+      "resolvelib": {
+        "selected": "1.2.1",
+        "latest": "1.2.1",
+        "reason": "latest stable"
+      },
+      "rich": {
+        "selected": "15.0.0",
+        "latest": "15.0.0",
+        "reason": "latest stable"
+      },
+      "rpds-py": {
+        "selected": "2026.9.1",
+        "latest": "2026.9.1",
+        "reason": "latest stable"
+      },
+      "ruamel.yaml": {
+        "selected": "0.19.1",
+        "latest": "0.19.1",
+        "reason": "latest stable"
+      },
+      "ruamel.yaml.clib": {
+        "selected": "0.2.15",
+        "latest": "0.2.15",
+        "reason": "latest stable"
+      },
+      "s3cmd": {
+        "selected": "2.4.0",
+        "latest": "2.4.0",
+        "reason": "latest stable"
+      },
+      "selinux": {
+        "selected": "0.3.0",
+        "latest": "0.3.0",
+        "reason": "latest stable"
+      },
+      "setuptools": {
+        "selected": "84.2.1",
+        "latest": "84.2.1",
+        "reason": "latest stable"
+      },
+      "subprocess-tee": {
+        "selected": "0.4.2",
+        "latest": "0.4.2",
+        "reason": "latest stable"
+      },
+      "text-unidecode": {
+        "selected": "1.3",
+        "latest": "1.3",
+        "reason": "latest stable"
+      },
+      "tomlkit": {
+        "selected": "0.15.2",
+        "latest": "0.15.2",
+        "reason": "latest stable"
+      },
+      "typing-extensions": {
+        "selected": "4.16.0",
+        "latest": "4.16.0",
+        "reason": "latest stable"
+      },
+      "typing-inspection": {
+        "selected": "0.4.4",
+        "latest": "0.4.4",
+        "reason": "latest stable"
+      },
+      "tzdata": {
+        "selected": "2026.6",
+        "latest": "2026.6",
+        "reason": "latest stable"
+      },
+      "urllib3": {
+        "selected": "2.8.0",
+        "latest": "2.8.0",
+        "reason": "latest stable"
+      },
+      "wcmatch": {
+        "selected": "12.0",
+        "latest": "12.0",
+        "reason": "latest stable"
+      },
+      "websocket-client": {
+        "selected": "1.9.2",
+        "latest": "1.9.2",
+        "reason": "latest stable"
+      },
+      "wheel": {
+        "selected": "0.48.0",
+        "latest": "0.48.0",
+        "reason": "latest stable"
+      },
+      "xmltodict": {
+        "selected": "1.0.4",
+        "latest": "1.0.4",
+        "reason": "latest stable"
+      },
+      "yamllint": {
+        "selected": "1.38.0",
+        "latest": "1.38.0",
+        "reason": "latest stable"
+      },
+      "yarl": {
+        "selected": "1.25.1",
+        "latest": "1.25.1",
+        "reason": "latest stable"
+      },
+      "yq": {
+        "selected": "4.4.5",
+        "latest": "4.4.5",
+        "reason": "latest stable"
+      }
+    },
+    "14": {
+      "aiohappyeyeballs": {
+        "selected": "2.7.1",
+        "latest": "2.7.1",
+        "reason": "latest stable"
+      },
+      "aiohttp": {
+        "selected": "3.14.5",
+        "latest": "3.14.5",
+        "reason": "latest stable"
+      },
+      "aiohttp-retry": {
+        "selected": "2.9.1",
+        "latest": "2.9.1",
+        "reason": "latest stable"
+      },
+      "aiosignal": {
+        "selected": "1.4.0",
+        "latest": "1.4.0",
+        "reason": "latest stable"
+      },
+      "annotated-types": {
+        "selected": "0.8.0",
+        "latest": "0.8.0",
+        "reason": "latest stable"
+      },
+      "ansible": {
+        "selected": "14.5.0",
+        "latest": "14.5.0",
+        "reason": "latest stable"
+      },
+      "ansible-compat": {
+        "selected": "26.10.0",
+        "latest": "26.10.0",
+        "reason": "latest stable"
+      },
+      "ansible-core": {
+        "selected": "2.21.6",
+        "latest": "2.22.0",
+        "reason": "pinned Ansible major / supported core family"
+      },
+      "ansible-lint": {
+        "selected": "26.10.1",
+        "latest": "26.10.1",
+        "reason": "latest stable"
+      },
+      "argcomplete": {
+        "selected": "3.7.2",
+        "latest": "3.7.2",
+        "reason": "latest stable"
+      },
+      "arrow": {
+        "selected": "1.4.0",
+        "latest": "1.4.0",
+        "reason": "latest stable"
+      },
+      "astroid": {
+        "selected": "4.3.4",
+        "latest": "4.3.4",
+        "reason": "latest stable"
+      },
+      "attrs": {
+        "selected": "26.1.0",
+        "latest": "26.1.0",
+        "reason": "latest stable"
+      },
+      "bcrypt": {
+        "selected": "4.3.0",
+        "latest": "5.0.0",
+        "reason": "passlib 1.7.4 rejects bcrypt 5 (long-password backend probe); runtime roundtrip tested"
+      },
+      "binaryornot": {
+        "selected": "0.6.0",
+        "latest": "0.6.0",
+        "reason": "latest stable"
+      },
+      "black": {
+        "selected": "26.10.1",
+        "latest": "26.10.1",
+        "reason": "latest stable"
+      },
+      "bracex": {
+        "selected": "3.2.1",
+        "latest": "3.2.1",
+        "reason": "latest stable"
+      },
+      "certifi": {
+        "selected": "2026.10.23",
+        "latest": "2026.10.23",
+        "reason": "latest stable"
+      },
+      "cffi": {
+        "selected": "2.1.1",
+        "latest": "2.1.1",
+        "reason": "latest stable"
+      },
+      "charset-normalizer": {
+        "selected": "3.5.2",
+        "latest": "3.5.2",
+        "reason": "latest stable"
+      },
+      "click": {
+        "selected": "8.5.0",
+        "latest": "8.5.0",
+        "reason": "latest stable"
+      },
+      "cookiecutter": {
+        "selected": "2.7.1",
+        "latest": "2.7.1",
+        "reason": "latest stable"
+      },
+      "cryptography": {
+        "selected": "50.0.2",
+        "latest": "50.0.2",
+        "reason": "latest stable"
+      },
+      "dill": {
+        "selected": "0.4.1",
+        "latest": "0.4.1",
+        "reason": "latest stable"
+      },
+      "distro": {
+        "selected": "1.9.0",
+        "latest": "1.9.0",
+        "reason": "latest stable"
+      },
+      "dnspython": {
+        "selected": "2.9.2",
+        "latest": "2.9.2",
+        "reason": "latest stable"
+      },
+      "docker": {
+        "selected": "7.2.0",
+        "latest": "7.2.0",
+        "reason": "latest stable"
+      },
+      "durationpy": {
+        "selected": "0.11",
+        "latest": "0.11",
+        "reason": "latest stable"
+      },
+      "editorconfig-checker": {
+        "selected": "3.11.1",
+        "latest": "3.11.1",
+        "reason": "latest stable"
+      },
+      "enrich": {
+        "selected": "1.2.7",
+        "latest": "1.2.7",
+        "reason": "latest stable"
+      },
+      "filelock": {
+        "selected": "4.2.7",
+        "latest": "4.2.7",
+        "reason": "latest stable"
+      },
+      "frozenlist": {
+        "selected": "1.8.0",
+        "latest": "1.8.0",
+        "reason": "latest stable"
+      },
+      "hvac": {
+        "selected": "2.4.0",
+        "latest": "2.4.0",
+        "reason": "latest stable"
+      },
+      "idna": {
+        "selected": "3.20",
+        "latest": "3.20",
+        "reason": "latest stable"
+      },
+      "iniconfig": {
+        "selected": "2.3.1",
+        "latest": "2.3.1",
+        "reason": "latest stable"
+      },
+      "isort": {
+        "selected": "9.0.2",
+        "latest": "9.0.2",
+        "reason": "latest stable"
+      },
+      "jinja2": {
+        "selected": "3.1.6",
+        "latest": "3.1.6",
+        "reason": "latest stable"
+      },
+      "jsonpatch": {
+        "selected": "1.41",
+        "latest": "1.41",
+        "reason": "latest stable"
+      },
+      "jsonpointer": {
+        "selected": "3.8",
+        "latest": "3.8",
+        "reason": "latest stable"
+      },
+      "jsonschema": {
+        "selected": "4.26.0",
+        "latest": "4.26.0",
+        "reason": "latest stable"
+      },
+      "jsonschema-specifications": {
+        "selected": "2025.9.1",
+        "latest": "2025.9.1",
+        "reason": "latest stable"
+      },
+      "kubernetes": {
+        "selected": "37.0.1",
+        "latest": "37.0.1",
+        "reason": "latest stable"
+      },
+      "markdown-it-py": {
+        "selected": "4.2.0",
+        "latest": "4.2.0",
+        "reason": "latest stable"
+      },
+      "markupsafe": {
+        "selected": "3.0.4",
+        "latest": "3.0.4",
+        "reason": "latest stable"
+      },
+      "mccabe": {
+        "selected": "0.7.0",
+        "latest": "0.7.0",
+        "reason": "latest stable"
+      },
+      "mdurl": {
+        "selected": "0.1.2",
+        "latest": "0.1.2",
+        "reason": "latest stable"
+      },
+      "molecule": {
+        "selected": "26.10.0",
+        "latest": "26.10.0",
+        "reason": "latest stable"
+      },
+      "molecule-plugins": {
+        "selected": "26.11.0",
+        "latest": "26.11.0",
+        "reason": "latest stable"
+      },
+      "multidict": {
+        "selected": "7.2.1",
+        "latest": "7.2.1",
+        "reason": "latest stable"
+      },
+      "mypy-extensions": {
+        "selected": "1.2.0",
+        "latest": "1.2.0",
+        "reason": "latest stable"
+      },
+      "netaddr": {
+        "selected": "1.3.0",
+        "latest": "1.3.0",
+        "reason": "latest stable"
+      },
+      "oauthlib": {
+        "selected": "4.0.1",
+        "latest": "4.0.1",
+        "reason": "latest stable"
+      },
+      "packaging": {
+        "selected": "26.3",
+        "latest": "26.3",
+        "reason": "latest stable"
+      },
+      "passlib": {
+        "selected": "1.7.4",
+        "latest": "1.7.4",
+        "reason": "latest stable"
+      },
+      "pathspec": {
+        "selected": "1.1.1",
+        "latest": "1.1.1",
+        "reason": "latest stable"
+      },
+      "pip": {
+        "selected": "26.3",
+        "latest": "26.3",
+        "reason": "latest stable"
+      },
+      "platformdirs": {
+        "selected": "4.14.3",
+        "latest": "4.14.3",
+        "reason": "latest stable"
+      },
+      "pluggy": {
+        "selected": "1.7.0",
+        "latest": "1.7.0",
+        "reason": "latest stable"
+      },
+      "propcache": {
+        "selected": "0.5.4",
+        "latest": "0.5.4",
+        "reason": "latest stable"
+      },
+      "pycparser": {
+        "selected": "3.12",
+        "latest": "3.12",
+        "reason": "latest stable"
+      },
+      "pydantic": {
+        "selected": "2.14.2",
+        "latest": "2.14.2",
+        "reason": "latest stable"
+      },
+      "pydantic-core": {
+        "selected": "2.50.2",
+        "latest": "2.50.2",
+        "reason": "latest stable"
+      },
+      "pygments": {
+        "selected": "2.21.0",
+        "latest": "2.21.0",
+        "reason": "latest stable"
+      },
+      "pylint": {
+        "selected": "4.1.3",
+        "latest": "4.1.3",
+        "reason": "latest stable"
+      },
+      "pynetbox": {
+        "selected": "7.9.0",
+        "latest": "7.9.0",
+        "reason": "latest stable"
+      },
+      "pytest": {
+        "selected": "9.2.0",
+        "latest": "9.2.0",
+        "reason": "latest stable"
+      },
+      "pytest-testinfra": {
+        "selected": "10.2.2",
+        "latest": "10.2.2",
+        "reason": "latest stable"
+      },
+      "python-dateutil": {
+        "selected": "4.0.0",
+        "latest": "4.0.0",
+        "reason": "latest stable"
+      },
+      "python-magic": {
+        "selected": "0.4.27",
+        "latest": "0.4.27",
+        "reason": "latest stable"
+      },
+      "python-slugify": {
+        "selected": "9.1.3",
+        "latest": "9.1.3",
+        "reason": "latest stable"
+      },
+      "pytokens": {
+        "selected": "0.4.1",
+        "latest": "0.4.1",
+        "reason": "latest stable"
+      },
+      "pytz": {
+        "selected": "2026.6",
+        "latest": "2026.6",
+        "reason": "latest stable"
+      },
+      "pyyaml": {
+        "selected": "6.0.3",
+        "latest": "6.0.3",
+        "reason": "latest stable"
+      },
+      "referencing": {
+        "selected": "0.37.0",
+        "latest": "0.37.0",
+        "reason": "latest stable"
+      },
+      "requests": {
+        "selected": "2.34.2",
+        "latest": "2.34.2",
+        "reason": "latest stable"
+      },
+      "requests-oauthlib": {
+        "selected": "2.0.0",
+        "latest": "2.0.0",
+        "reason": "latest stable"
+      },
+      "resolvelib": {
+        "selected": "1.2.1",
+        "latest": "1.2.1",
+        "reason": "latest stable"
+      },
+      "rich": {
+        "selected": "15.0.0",
+        "latest": "15.0.0",
+        "reason": "latest stable"
+      },
+      "rpds-py": {
+        "selected": "2026.9.1",
+        "latest": "2026.9.1",
+        "reason": "latest stable"
+      },
+      "ruamel.yaml": {
+        "selected": "0.19.1",
+        "latest": "0.19.1",
+        "reason": "latest stable"
+      },
+      "ruamel.yaml.clib": {
+        "selected": "0.2.15",
+        "latest": "0.2.15",
+        "reason": "latest stable"
+      },
+      "s3cmd": {
+        "selected": "2.4.0",
+        "latest": "2.4.0",
+        "reason": "latest stable"
+      },
+      "selinux": {
+        "selected": "0.3.0",
+        "latest": "0.3.0",
+        "reason": "latest stable"
+      },
+      "setuptools": {
+        "selected": "84.2.1",
+        "latest": "84.2.1",
+        "reason": "latest stable"
+      },
+      "subprocess-tee": {
+        "selected": "0.4.2",
+        "latest": "0.4.2",
+        "reason": "latest stable"
+      },
+      "text-unidecode": {
+        "selected": "1.3",
+        "latest": "1.3",
+        "reason": "latest stable"
+      },
+      "tomlkit": {
+        "selected": "0.15.2",
+        "latest": "0.15.2",
+        "reason": "latest stable"
+      },
+      "typing-extensions": {
+        "selected": "4.16.0",
+        "latest": "4.16.0",
+        "reason": "latest stable"
+      },
+      "typing-inspection": {
+        "selected": "0.4.4",
+        "latest": "0.4.4",
+        "reason": "latest stable"
+      },
+      "tzdata": {
+        "selected": "2026.6",
+        "latest": "2026.6",
+        "reason": "latest stable"
+      },
+      "urllib3": {
+        "selected": "2.8.0",
+        "latest": "2.8.0",
+        "reason": "latest stable"
+      },
+      "wcmatch": {
+        "selected": "12.0",
+        "latest": "12.0",
+        "reason": "latest stable"
+      },
+      "websocket-client": {
+        "selected": "1.9.2",
+        "latest": "1.9.2",
+        "reason": "latest stable"
+      },
+      "wheel": {
+        "selected": "0.48.0",
+        "latest": "0.48.0",
+        "reason": "latest stable"
+      },
+      "xmltodict": {
+        "selected": "1.0.4",
+        "latest": "1.0.4",
+        "reason": "latest stable"
+      },
+      "yamllint": {
+        "selected": "1.38.0",
+        "latest": "1.38.0",
+        "reason": "latest stable"
+      },
+      "yarl": {
+        "selected": "1.25.1",
+        "latest": "1.25.1",
+        "reason": "latest stable"
+      },
+      "yq": {
+        "selected": "4.4.5",
+        "latest": "4.4.5",
+        "reason": "latest stable"
+      }
+    }
+  }
+}

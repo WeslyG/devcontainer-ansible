@@ -1,174 +1,211 @@
-## Devcontainer Ansible vscode
+# Ansible devcontainers: 10, 12 и 14
 
-Контейнер для разработки на ansible
+Одна ветка `main` собирает три независимых образа из общего Dockerfile,
+локальных features и тестов. Конфигурация по умолчанию — Ansible 14.
+Сборки и workflows ничего не публикуют в реестры и не выполняют git push.
 
-Контейнер с доклада https://rutube.ru/video/4f714749277839fba776b057db4cd791/ 
+## Матрица совместимости
 
-Поддерживает архитектуры arm64/amd64
-Проверен запуск на windows 11 + wsl2 и на маке с m1 + процессорами
+<!-- compatibility:start -->
+| Образ | Ansible | ansible-core | Python контроллера | Python целевых узлов (upstream) | Molecule | ansible-lint / ansible-compat |
+|---|---|---|---|---|---|---|
+| 10 | 10.7.0 | 2.17.14 | 3.12.16 | 3.7–3.12 | 26.6.0 | 26.6.0 / 26.6.0 |
+| 12 | 12.3.0 | 2.19.15 | 3.13.18 | 3.8–3.13 | 26.10.0 | 26.10.1 / 26.10.0 |
+| 14 | 14.5.0 | 2.21.6 | 3.14.10 | 3.9–3.14 | 26.10.0 | 26.10.1 / 26.10.0 |
+<!-- compatibility:end -->
 
-#### Важно
+Это последние стабильные совместимые версии на дату в `images.json`.
+Python выбирается по верхней границе поддержки соответствующего ansible-core,
+а не только по `Requires-Python` PyPI: эта метаинформация часто задаёт лишь минимум.
+Источники: [официальная матрица Ansible](https://docs.ansible.com/projects/ansible-core/2.21/reference_appendices/release_and_maintenance.html),
+[PyPI](https://pypi.org/), [официальные Python images](https://hub.docker.com/_/python).
+Ansible 10 и 12 — исторические ветки community package; новая major-версия core
+в них не подставляется даже тогда, когда pip разрешает более широкий диапазон.
 
-- В ветке kubespray версии пакетов для работы с Kubepsray
-- Ветка `ansible10`: Ansible 10.7.0, ansible-core 2.17.14
+Ограничения совместимости:
 
-- Python 3.12
-- slim-trixie Debian 13, один Python 3.12
+- Ansible 10 требует старые совместимые Molecule, ansible-lint и ansible-compat:
+  новые версии явно исключают ansible-core 2.17.
+- `bcrypt<5`: passlib 1.7.4 проверяет backend длинным паролем, который bcrypt 5
+  отклоняет. Smoke-тест выполняет bcrypt roundtrip и Ansible `password_hash`.
+- Входные требования остальных Python-пакетов не ограничены старыми версиями:
+  resolver каждый раз выбирает свежие совместимые выпуски. В том числе yq
+  обновлён до 4.x; его jq-совместимый вызов проверяется тестом.
 
-Зависимости: `bcrypt==4.3.0` оставлен для совместимости с `passlib==1.7.4`; bcrypt 5 ломает инициализацию backend. Ansible 10 использует Python 3.10–3.12 в контейнере и Python 3.7–3.12 на целевых узлах. Molecule, ansible-lint и ansible-compat зафиксированы на последних совместимых версиях 26.6.0: новые версии исключают ansible-core 2.17.
+Все выбранные транзитивные версии: `compatibility/resolved.json`.
+Сравнение selected/latest с объяснениями: `compatibility/packages.json`.
+Результаты реальных прогонов и размеры: `compatibility/validation.json`;
+полная локальная диагностика находится в игнорируемом каталоге `.build/`.
+Диапазон поддержки целевых Python в таблице взят из upstream; обычный Molecule
+проверяет один внешний узел на версии Python своего контроллера, а не весь диапазон.
 
-Поддерживает:
-- Разработку модулей python (pylint, isort, black-formatter)
-- Разработку на ansible (поддержка файлов yaml = ansible - может вызывать проблемы при работе с k8s/helm) а также плагины для поддержки синтаксиса ansible, linter ansible
-- Полный набор утилит для yaml (линтеры, форматтеры, подсветки отступов и конфигурация yamllint для линтера)
-- Shellcheck для sh (потому что он все равно будет)
-- Editorconfig
-- Helm - поддержка синтаксиса, а также лайв рендеринг шаблонов
-- Python-зависимости фиксированы в requirements.txt, внешние devcontainer features — в lockfile; apt-пакеты обновляются при сборке; Node.js, Git и Claude Code фиксированы
-- Gilt устанавливается локальной [feature](.devcontainer/features/gilt/README.md) из GitHub Releases с фиксированной версией и проверкой SHA256
-- HashiCorp feature временно отключена: зеркало недоступно
+## Структура
 
-Ну и мелочи:
-- base64 экстеншен
-- проверка очепяток (ru/en языки),
-- проверка странных русских букв С там где их быть не должно
-- openssl экстеншен (просмотр сертификатов)
-- haproxy/nginx conf + formatter расширения
-- kubernetes extension
-- git + todo tree (временно пропал из marketplace - https://github.com/FanaticPythoner/better-todo-tree/issues/142)
+Общие CLI для всех трёх вариантов:
 
-Утилиты:
-- hashicorp vault (временно отключён)
-- hashicorp terraform (временно отключён)
-- helm
-- kubectl
-- kubens/kubectx
-- minkube (ну на всякий случай)
-- k9s
-- elasticdump
-- Node.js 24.22.2, npm и npx — напрямую из официального архива
-- s3cmd и Python yq на том же Python 3.12
-- apt пакеты для всего нужного (если что добавляйте)
-  - curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,ncdu,sshpass,dnsutils,ldap-utils
-- Docker CLI, Buildx и Compose используют Docker хоста (для тестов Molecule); daemon внутри образа отсутствует
+<!-- tools:start -->
+| Инструмент | Версия |
+|---|---|
+| Node.js | 26.13.0 |
+| npm | 12.2.1 |
+| Git | 2.56.0 |
+| Claude Code | 2.1.318 |
+| elasticdump | 6.125.1 |
+| kubectl | 1.37.2 |
+| Helm | 4.3.1 |
+| minikube | 1.39.0 |
+| k9s | 0.51.0 |
+| Gilt | 2.2.5 |
+| devcontainer CLI (host/CI) | 0.90.0 |
+<!-- tools:end -->
 
-Использование:
-
-Создайте в своем репозитории папку `.devcontainer` с файлом `devcontainer.json`
-
-С содержимым (уточнить актуальную версию тега)
-
-```
-{
-  "name": "my-infra",
-  "image": "weslyg/ansible-infra:TAG_VERSION",
-  "runArgs": [
-    "--cap-add=SYS_ADMIN",  // Optional: Adds capabilities required by some applications
-    "--net=host"            // Optional: Удобно, ходить в kubernetes и другие службы на локальном компе
-  ],
-  "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/vscode/.ssh,readonly,type=bind"
-  ],
-  "remoteUser": "vscode"
-}
-```
-
-Можно примантировать dotfiles вот так
-
+```text
+images.json                         # версии CLI, Python image digests, семейства и бюджеты размера
+requirements/common.in              # общие прямые Python-зависимости и исключения
+requirements/ansible{10,12,14}.in    # разрешённые Ansible/core families
+requirements/ansible{10,12,14}.txt   # полные точные locks с SHA256
+.devcontainer/Dockerfile            # общий runtime и отдельная стадия сборки Git
+.devcontainer/template.json         # общий шаблон настроек редактора и features
+.devcontainer/ansible{10,12,14}/     # сгенерированные configs и отдельные feature locks
+.devcontainer/devcontainer.json     # сгенерированная конфигурация по умолчанию (14)
+.devcontainer/features/             # Node, Gilt и Claude Code/elasticdump
+.devcontainer/tests/                # runtime, lock, cache, Gilt и Molecule tests
+scripts/                            # обнаружение версий, resolver, генератор, build/test runner
+compatibility/                      # проверяемые отчёты для следующего обновления
+.github/workflow-templates/          # источники workflows; Actions versions из images.json
 ```
 
- "mounts": [
-     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/vscode/.ssh,readonly,type=bind",
-     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.dotfiles,target=/home/vscode/.dotfiles,type=bind"
-   ],
-   "initializeCommand": "mkdir -p ~/.dotfiles", // выполнится на вашем компьютере
-   "postCreateCommand": "stow --dir=$HOME/.dotfiles --target=$HOME .", // выполнится в devcontainer
+Генерируемые configs и workflows не редактируются вручную.
+`python3 scripts/render.py --check` проверяет отсутствие рассинхронизации.
+Внешние features закреплены отдельными `devcontainer-lock.json`; локальные
+features закреплены самим git-коммитом и в этих lockfiles не перечисляются.
+
+## Состав и размер
+
+Один Python на образ, без системного `/usr/bin/python3`, pipx/uv/pyenv/conda,
+NVM и других менеджеров версий. pip и npm остаются штатными установщиками
+пакетов: они нужны для Python-библиотек и elasticdump. Corepack/Yarn/pnpm нет.
+
+Node устанавливает локальная feature из официального архива с фиксированными
+SHA256 для amd64/arm64. Gilt устанавливается официальным GitHub-бинарником,
+так как опубликованный python-gilt 2.2.5 содержит некорректный wheel tag.
+Git собирается в отдельной стадии; компилятор не копируется в runtime.
+Claude Code и minikube сохранены. Claude использует один native-бинарник и
+пользовательский launcher, глобальная команда — symlink.
+Native Claude извлекается из официального платформенного npm-архива Anthropic
+с зафиксированным SHA512 integrity; npm-wrapper и второй бинарник не устанавливаются.
+Это устраняет зависимость сборки от меняющегося bootstrap и недоступного здесь
+`downloads.claude.ai`. Updater закрепляет integrity отдельно для amd64/arm64.
+Docker установлен только как CLI с Compose/Buildx; daemon используется с хоста.
+Сокет автоматически подключает docker-outside-of-docker feature.
+
+apt lists/archives и pip/npm download caches удаляются в том же слое `RUN`,
+где создаются. Общая shell-обёртка очищает также сторонние features.
+Проверка кешей выполняется на чистом образе до запуска инструментов:
+работающие инструменты позже могут создать свои пользовательские кеши.
+
+Размеры измеряются в несжатых байтах `docker image inspect`, отдельно для каждой
+архитектуры. Порог `maxImageBytes` в `images.json` проверяется runner-ом;
+его нельзя повышать автоматически при обновлении. Учёт слоёв отдельного образа
+не равен дополнительному месту всех трёх образов: часть слоёв общая.
+Старые образы, Docker build cache и пользовательские контейнеры автоматически
+не удаляются. Общий `docker system prune` здесь не используется.
+
+<!-- sizes:start -->
+| Платформа | Образ | Несжатый размер | Проверено | Состояние lock |
+|---|---|---|---|---|
+| amd64 | 10 | 3,494,194,197 байт | 2026-11-04 | текущий |
+| amd64 | 12 | 3,531,469,380 байт | 2026-11-04 | текущий |
+| amd64 | 14 | 3,531,017,955 байт | 2026-11-04 | текущий |
+<!-- sizes:end -->
+
+## Сборка и тесты
+
+Нужны Docker с Buildx, Python 3.10+ на хосте, Node/npm и devcontainer CLI версии
+из `images.json`. На хосте скрипты используют стандартную библиотеку Python.
+GNU Make нужен только для коротких команд ниже; можно запускать соответствующие
+`python3 scripts/*.py` напрямую, как показано в Makefile.
+
+```bash
+npm install --global @devcontainers/cli@0.90.0
+make check
+make test                         # все три образа, сборка и проверки
+make test VARIANTS=14             # один вариант
+make build VARIANTS='10 12 14'     # только сборки
+make record                       # сохранить результаты всех трёх успешных native-прогонов
 ```
 
-И запуститесь в vscode
+Если CLI отсутствует в PATH, задайте `DEVCONTAINER_CLI=/полный/путь/devcontainer`.
+Образы получают локальные теги `ansible-infra:ansible10-local` и аналогичные.
+Для VS Code выберите конфигурацию Ansible 10/12/14 через Reopen in Container.
+Эквивалент явного запуска:
 
-### Почему нет latest тега?
-
-Тогда vscode никогда не поймет, когда ребилдится, поэтому лучше, чтобы тег всегда был фисирован!
-
-### Проверка ветки ansible10
-
-```sh
-devcontainer build --workspace-folder . --frozen-lockfile --image-name ansible10-local:verify
-docker run --rm --user vscode --workdir /tmp \
-  -v "$PWD/.devcontainer/tests:/tests:ro" \
-  ansible10-local:verify sh /tests/ansible10.sh
-docker run --rm --user vscode --workdir /tmp \
-  -v "$PWD/.devcontainer/tests:/tests:ro" \
-  ansible10-local:verify bash /tests/gilt-overlay.sh
-docker run --rm --workdir /tmp \
-  -v /var/run/docker.sock:/var/run/docker-host.sock \
-  -v "$PWD/.devcontainer/tests:/tests:ro" \
-  ansible10-local:verify sh /tests/molecule.sh
+```bash
+devcontainer up --workspace-folder . --config .devcontainer/ansible12/devcontainer.json
 ```
 
-Smoke-тест проверяет Python 3.12, Ansible 10 / ansible-core 2.17,
-`pip check`, CLI-утилиты, импорты, Ansible Vault, ansible-lint и выполнение playbook.
-Обычный тест Molecule создаёт один внешний целевой контейнер с Python 3.12,
-выполняет converge, idempotence и verify, затем удаляет его.
-Проверка старого целевого узла Python 3.7 включается только явно: передайте
-`-e TEST_LEGACY_PYTHON=1` контейнеру с тестами. Python 3.7 не устанавливается
-в рабочий devcontainer. Требуется доступ к Docker socket.
+Проверяется точное совпадение всех установленных Python-пакетов с lockfile,
+`pip check`, отсутствие лишних runtime/managers/compiler/daemon, пустота кешей,
+CLI-команды, импорты библиотек, yq, bcrypt/Vault, ansible-lint/playbook, Gilt overlay.
+Molecule выполняет create → converge → idempotence → verify → destroy от `vscode`
+через Docker хоста. Имена его узлов уникальны для прогона.
+Runner удаляет только собственные временные контейнеры с уникальной меткой.
 
+Полные тесты запускаются на native-архитектуре. CI содержит независимые jobs
+для amd64 и arm64; наличие arm64 в workflow само по себе не означает успешный
+локальный arm64-прогон. Фактически проверенные платформы перечисляет validation.json.
+Логи каждого этапа и данные о размере записываются в `.build/<arch>/`.
 
-### Размер и один Python
+## Следующее обновление
 
-База `python:3.12.16-slim-trixie` сохраняет Debian 13 и Python 3.12.
-Python-утилиты s3cmd/yq устанавливаются через pip на этот же интерпретатор;
-Локальная feature `.devcontainer/features/node` устанавливает Node.js непосредственно в `/usr/local` из официального архива
-с проверкой SHA256 для amd64/arm64. NVM и другие менеджеры версий языков,
-Corepack и шими Yarn/pnpm отсутствуют. Доступны Node.js, npm и npx.
-Системный Python Debian и дополнительные Python-окружения не требуются.
+```bash
+make audit       # только свежие данные в .build/, исходники не меняются
+make update      # обновить metadata/configs/workflows, pip locks и feature locks
+make check
+make test
+make record
+git diff --check
+git diff         # просмотреть версии, исключения, размеры и generated files перед коммитом
+```
 
-Git 2.56.0 собирается в отдельной стадии с проверкой SHA256 исходного архива.
-В конечный образ копируется готовый Git CLI, без компиляторов и заголовков.
-Для сборки собственных нативных расширений компиляторы потребуется установить отдельно.
+Updater проверяет официальные реестры Python/Node/PyPI/npm, GitHub Releases,
+kernel.org и Kubernetes stable.txt; prerelease Node не выбирается. Python base
+фиксируется по patch-тегу и multiarch digest. Для каждого варианта pip resolver
+работает в его собственном Python, без установки менеджеров в конечный образ.
+Все non-yanked SHA256 артефактов каждой выбранной версии попадают в lock, что
+позволяет устанавливать amd64/arm64 wheels. `--require-hashes` включён при сборке.
+Для релизного локального обновления используйте `make test BUILD_FLAGS=--no-cache`,
+чтобы освежить также apt-пакеты и build dependencies, даже если Python/CLI pins
+не изменились. Обычные повторные проверки используют кеш. В CI каждый native
+runner начинает без нашего кеша образов и устанавливает свежие apt-пакеты.
+Отдельные исходные sdist могут потребовать build-зависимости: финальная сборка
+и runtime-тесты обязательны даже после успешного dry-run resolver.
 
-Claude Code и minikube сохранены. Claude хранит один native бинарник;
-глобальная команда использует ссылку на пользовательский launcher.
-Docker-outside-of-Docker автоматически подключает сокет Docker хоста и
-настраивает доступ для `vscode`. Compose доступен как `docker compose`.
-Пакетные кеши pip/npm исключаются в момент установки, а не удаляются поздним слоем.
+Таблицы совместимости и размеров обновляет `render.py`: версии из resolved.json,
+а размеры из validation.json. Если lock изменился после замера, таблица явно
+помечает прежний результат как предыдущее окружение.
 
+При добавлении нового Ansible сначала обновите контроллер/target ranges по
+официальной матрице и `FAMILIES` в updater; не повышайте Python за границу
+поддержки core. После обновления проверьте таблицу README и причины отставания
+от latest в compatibility/packages.json. Проверьте новые ограничения пакетов,
+изменения синтаксиса CLI и release notes. Не обходите конфликт через `--no-deps`.
 
-Измерено для linux/amd64 через `docker image inspect`: **6,26 → 3,46 ГБ**
-без сжатия, сокращение **44,8%**. Размер кеша сборки и старых образов считается
-отдельно. Smoke-тесты и обычный Molecule на Python 3.12 прошли от `vscode`
-через Docker хоста.
+CI `build.yml` на main/PR/ручном запуске собирает и тестирует матрицу 3×2,
+сохраняет сводку результата и размеры артефактами, без входа в registry и публикации.
+CI `update.yml` раз в неделю или вручную рассчитывает обновление и отдаёт
+`update.patch`, latest releases и compatibility reports как review-артефакт.
+Он не создаёт коммит, PR и не пушит изменения. После применения patch нужно
+запустить полную сборку/тесты; сам update workflow её не заменяет.
+Renovate отключён, чтобы не было второй независимой автоматики изменения pins.
+Экспорт CI ограничен явным списком файлов в `scripts/artifacts.py`; весь `.build`
+и скрытые файлы не загружаются. Полные логи остаются локально, при ошибке последние
+80 строк выводятся в обычный CI log.
 
-При обновлении Git меняйте `GIT_VERSION` и `GIT_SHA256` в Dockerfile;
-контрольная сумма публикуется в `sha256sums.asc` на kernel.org.
-Версия базового Python задаётся через `PYTHON_IMAGE`.
+## Особенности runtime
 
-
-### Кеши сборки
-
-Dockerfile использует shell-обёртку для `RUN`: после успешной команды она
-очищает apt archives/lists, pip/npm-кеши root и пользователей, временные архивы
-и временную загрузку k9s. Очистка происходит до сохранения слоя, включая
-слои devcontainer features. Интерактивный shell и entrypoint контейнера не меняются.
-
-`apt-get update` и `apt-get install` следует выполнять в одном `RUN`.
-Кеш pip и проверка его обновлений отключены через переменные окружения.
-Проверка чистого образа: `python .devcontainer/tests/caches.py` от root
-в одноразовом контейнере до запуска инструментов, которые могут создать новый кеш.
-
-
-Версия Node.js и SHA256 архивов для amd64/arm64 задаются в `devcontainer.json`
-через параметры локальной feature `./features/node`: `version`, `sha256Amd64`,
-`sha256Arm64`. Контрольные суммы берутся из `SHASUMS256.txt` соответствующего
-релиза на https://nodejs.org/dist/. Для обновления укажите точную версию и обе
-контрольные суммы, затем пересоберите контейнер. Значения по умолчанию в
-`devcontainer-feature.json` относятся к Node.js 24.22.2.
-
-Feature поддерживает Debian/Ubuntu (apt), Linux amd64/arm64. Устанавливает
-системные библиотеки и готовый официальный архив в `/usr/local`, удаляет
-Corepack/Yarn/pnpm и временные загрузки. NVM, nanolayer и дополнительные
-Python-окружения не устанавливаются. CLI-tools устанавливается после Node.
-Селекторы `latest`, `lts` и версии без patch запрещены; ошибка SHA256
-останавливает сборку.
+Upstream passlib 1.7.4 может вывести сообщение об отсутствии `bcrypt.__about__`;
+это известная диагностика старого passlib с современным bcrypt 4.x.
+Проверки хеширования и Ansible-фильтра должны всё равно успешно пройти.
+Включать bcrypt 5 или подавлять реальные ошибки ради зелёной сборки нельзя.
+Hashicorp mirror не включается обновлятором.

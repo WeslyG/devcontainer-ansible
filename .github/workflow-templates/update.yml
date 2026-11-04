@@ -1,0 +1,41 @@
+name: Prepare dependency update artifact
+on:
+  schedule:
+    - cron: '15 5 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@@CHECKOUT@
+      - uses: actions/setup-node@@SETUP_NODE@
+        with:
+          node-version: '@NODE@'
+      - name: Install pinned devcontainer CLI
+        run: npm install --global @devcontainers/cli@@DEVCONTAINER@
+      - name: Discover and resolve compatible updates
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/update.py --write --resolve --features
+          python3 scripts/audit.py --write
+          python3 scripts/check.py
+          git add images.json requirements compatibility .devcontainer .github/workflows
+          git diff --cached --binary > .build/update.patch
+      - name: Prepare explicit public update files
+        if: always()
+        run: python3 scripts/artifacts.py update
+      - uses: actions/upload-artifact@@UPLOAD@
+        if: always()
+        with:
+          name: dependency-update-review
+          path: |
+            artifacts/status.json
+            artifacts/update.patch
+            artifacts/latest-releases.json
+            artifacts/packages.json
+            artifacts/resolved.json
+          retention-days: 30

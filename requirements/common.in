@@ -1,0 +1,32 @@
+# Broad inputs: the resolver chooses newest versions compatible with the pinned core family.
+ansible-lint
+ansible-compat
+molecule
+molecule-plugins[docker]
+docker
+pytest-testinfra
+kubernetes
+netaddr
+dnspython
+PyYAML
+jsonpatch
+yamllint
+pylint
+black
+isort
+hvac
+pytz
+pip
+setuptools
+wheel
+passlib
+# passlib 1.7.4 probes a long password; bcrypt 5 rejects it. Verified by smoke test.
+bcrypt<5
+editorconfig-checker
+pynetbox
+pydantic
+cookiecutter
+ruamel.yaml
+ruamel.yaml.clib
+s3cmd
+yq

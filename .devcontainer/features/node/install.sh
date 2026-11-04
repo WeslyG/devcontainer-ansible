@@ -25,6 +25,11 @@ apt-get install -y --no-install-recommends ca-certificates curl libatomic1 libst
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 
+npm_version="${NPMVERSION:?Set an exact npm version}"
+if [[ ! "$npm_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "npmVersion must be an exact release version." >&2
+    exit 1
+fi
 work_dir="$(mktemp -d)"
 trap 'rm -rf -- "$work_dir"' EXIT
 archive="node-v${version}-linux-${architecture}.tar.xz"
@@ -37,5 +42,7 @@ tar -xJf "$work_dir/$archive" -C /usr/local --strip-components=1 --no-same-owner
 rm -rf /usr/local/lib/node_modules/corepack
 rm -f /usr/local/bin/corepack /usr/local/bin/pnpm /usr/local/bin/pnpx \
     /usr/local/bin/yarn /usr/local/bin/yarnpkg
+npm install --global --omit=dev "npm@$npm_version"
+npm cache clean --force
 node --version
 npm --version

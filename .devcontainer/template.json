@@ -1,0 +1,168 @@
+{
+  "features": {
+    "./features/node": {},
+    "./features/gilt": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "true",
+      "username": "vscode",
+      "userUid": "1000",
+      "userGid": "1000",
+      "upgradePackages": "true"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false,
+      "dockerDashComposeVersion": "none",
+      "installDockerComposeSwitch": false
+    },
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,ncdu,sshpass,dnsutils,ldap-utils",
+      "upgradePackages": true
+    },
+    "ghcr.io/dhoeric/features/k9s:1": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+    "./features/cli-tools": {}
+  },
+  "overrideFeatureInstallOrder": [
+    "ghcr.io/devcontainers/features/common-utils",
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages",
+    "ghcr.io/devcontainers/features/docker-outside-of-docker",
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube",
+    "ghcr.io/dhoeric/features/k9s",
+    "./features/node",
+    "./features/cli-tools",
+    "./features/gilt"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.ansible",
+        "blauwelucht.ansible-go-to-definition",
+        "ikbengeenrobot.ansible-variable-lookup",
+        "samuelcolvin.jinjahtml",
+        "oderwat.indent-rainbow",
+        "esbenp.prettier-vscode",
+        "redhat.vscode-yaml",
+        "redhat.vscode-xml",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.autopep8",
+        "ms-python.isort",
+        "ms-python.pylint",
+        "ms-python.black-formatter",
+        "twixes.pypi-assistant",
+        "4ops.terraform",
+        "vasubasraj.flashpost",
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "tim-koehler.helm-intellisense",
+        "VadzimNestsiarenka.helm-template-preview-and-more",
+        "ahmadalli.vscode-nginx-conf",
+        "raynigon.nginx-formatter",
+        "bmarkovic.haproxy",
+        "geeksharp.openssl-configuration-file",
+        "ffaraone.opensslutils",
+        "timonwong.shellcheck",
+        "eric-blanquer.ansi-automatic-clean-viewer",
+        "cweijan.vscode-database-client2",
+        "editorconfig.editorconfig",
+        "eamodio.gitlens",
+        "fanaticPythoner.better-todo-tree",
+        "adamhartford.vscode-base64",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-russian"
+      ],
+      "settings": {
+        "telemetry.telemetryLevel": "off",
+        "redhat.telemetry.enabled": false,
+        "extensions.ignoreRecommendations": true,
+        "diffEditor.renderSideBySide": true,
+        "workbench.startupEditor": "none",
+        "editor.unicodeHighlight.allowedCharacters": {},
+        "editor.unicodeHighlight.ambiguousCharacters": true,
+        "editor.unicodeHighlight.includeComments": false,
+        "editor.unicodeHighlight.includeStrings": true,
+        "editor.unicodeHighlight.invisibleCharacters": true,
+        "editor.unicodeHighlight.nonBasicASCII": true,
+        "files.exclude": {
+          "**/.classpath": true,
+          "**/.DS_Store": true,
+          "**/.project": true,
+          "**/.settings": true
+        },
+        "editor.wordWrap": "off",
+        "editor.renderWhitespace": "all",
+        "editor.suggestSelection": "first",
+        "editor.tabSize": 2,
+        "explorer.confirmDelete": false,
+        "explorer.confirmDragAndDrop": false,
+        "indentRainbow.includedLanguages": [
+          "ansible",
+          "yaml",
+          "xml"
+        ],
+        "ansible.ansible.path": "/usr/local/bin/ansible",
+        "ansible.validation.lint.path": "/usr/local/bin/ansible-lint",
+        "ansible.ansible.useFullyQualifiedCollectionNames": true,
+        "ansible.python.interpreterPath": "/usr/local/bin/python",
+        "files.associations": {
+          "*.yml": "ansible",
+          "*.yaml": "ansible"
+        },
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.analysis.autoImportCompletions": true,
+        "python.analysis.typeCheckingMode": "standard",
+        "python.formatting.blackPath": "/usr/local/bin/black",
+        "python.formatting.blackArgs": [
+          "--line-length=120"
+        ],
+        "python.linting.pylintPath": "/usr/local/bin/pylint",
+        "python.linting.pylintArgs": [
+          "--disable=C0114",
+          "--disable=C0301",
+          "--disable=C0116"
+        ],
+        "pylint.importStrategy": "fromEnvironment",
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          },
+          "editor.formatOnSave": true
+        },
+        "cSpell.enabled": true,
+        "cSpell.language": "en,ru",
+        "cSpell.ignorePaths": [
+          ".ansible",
+          ".temp",
+          ".git"
+        ],
+        "[ansible]": {
+          "editor.autoIndent": "advanced",
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[xml]": {
+          "editor.defaultFormatter": "redhat.vscode-xml"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "vscode.json-language-features"
+        },
+        "[yaml]": {
+          "editor.defaultFormatter": "redhat.vscode-yaml"
+        },
+        "[markdown]": {
+          "editor.unicodeHighlight.ambiguousCharacters": false,
+          "editor.unicodeHighlight.includeComments": false,
+          "editor.unicodeHighlight.includeStrings": false,
+          "editor.unicodeHighlight.invisibleCharacters": false,
+          "editor.unicodeHighlight.nonBasicASCII": false,
+          "diffEditor.ignoreTrimWhitespace": false
+        }
+      }
+    }
+  },
+  "runArgs": [
+    "--cap-add=SYS_ADMIN",
+    "--net=host"
+  ],
+  "remoteUser": "vscode"
+}
