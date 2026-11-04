@@ -24,7 +24,7 @@
 - Shellcheck для sh (потому что он все равно будет)
 - Editorconfig
 - Helm - поддержка синтаксиса, а также лайв рендеринг шаблонов
-- Python-зависимости фиксированы в requirements.txt, внешние devcontainer features — в lockfile; apt-пакеты и Node.js 24 обновляются при сборке; Git и Claude Code фиксированы
+- Python-зависимости фиксированы в requirements.txt, внешние devcontainer features — в lockfile; apt-пакеты обновляются при сборке; Node.js, Git и Claude Code фиксированы
 - Gilt устанавливается локальной [feature](.devcontainer/features/gilt/README.md) из GitHub Releases с фиксированной версией и проверкой SHA256
 - HashiCorp feature временно отключена: зеркало недоступно
 
@@ -46,7 +46,7 @@
 - minkube (ну на всякий случай)
 - k9s
 - elasticdump
-- Node.js 24 и npm
+- Node.js 24.22.2, npm и npx — напрямую из официального архива
 - s3cmd и Python yq на том же Python 3.12
 - apt пакеты для всего нужного (если что добавляйте)
   - curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,ncdu,sshpass,dnsutils,ldap-utils
@@ -109,15 +109,20 @@ docker run --rm --workdir /tmp \
 
 Smoke-тест проверяет Python 3.12, Ansible 10 / ansible-core 2.17,
 `pip check`, CLI-утилиты, импорты, Ansible Vault, ansible-lint и выполнение playbook.
-Тест Molecule создаёт временные Docker-контейнеры с Python 3.7 и 3.12,
-выполняет converge, idempotence и verify, затем удаляет их. Требуется доступ к Docker socket.
+Обычный тест Molecule создаёт один внешний целевой контейнер с Python 3.12,
+выполняет converge, idempotence и verify, затем удаляет его.
+Проверка старого целевого узла Python 3.7 включается только явно: передайте
+`-e TEST_LEGACY_PYTHON=1` контейнеру с тестами. Python 3.7 не устанавливается
+в рабочий devcontainer. Требуется доступ к Docker socket.
 
 
 ### Размер и один Python
 
 База `python:3.12.16-slim-trixie` сохраняет Debian 13 и Python 3.12.
 Python-утилиты s3cmd/yq устанавливаются через pip на этот же интерпретатор;
-Node.js устанавливается готовым дистрибутивом с отключёнными node-gyp dependencies.
+Node.js устанавливается непосредственно в `/usr/local` из официального архива
+с проверкой SHA256 для amd64/arm64. NVM и другие менеджеры версий языков,
+Corepack и шими Yarn/pnpm отсутствуют. Доступны Node.js, npm и npx.
 Системный Python Debian и дополнительные Python-окружения не требуются.
 
 Git 2.56.0 собирается в отдельной стадии с проверкой SHA256 исходного архива.
@@ -131,8 +136,8 @@ Docker-outside-of-Docker автоматически подключает сок�
 Пакетные кеши pip/npm исключаются в момент установки, а не удаляются поздним слоем.
 
 
-Измерено для linux/amd64 через `docker image inspect`: **6,26 → 3,47 ГБ**
-без сжатия, сокращение **44,6%**. Размер кеша сборки и старых образов считается
+Измерено для linux/amd64 через `docker image inspect`: **6,26 → 3,46 ГБ**
+без сжатия, сокращение **44,8%**. Размер кеша сборки и старых образов считается
 отдельно. Smoke-тесты и Molecule на Python 3.7/3.12 прошли от `vscode`
 через Docker хоста.
 
@@ -144,7 +149,7 @@ Docker-outside-of-Docker автоматически подключает сок�
 ### Кеши сборки
 
 Dockerfile использует shell-обёртку для `RUN`: после успешной команды она
-очищает apt archives/lists, pip/npm-кеши root и пользователей, архивы Node/NVM
+очищает apt archives/lists, pip/npm-кеши root и пользователей, временные архивы
 и временную загрузку k9s. Очистка происходит до сохранения слоя, включая
 слои devcontainer features. Интерактивный shell и entrypoint контейнера не меняются.
 
@@ -152,3 +157,9 @@ Dockerfile использует shell-обёртку для `RUN`: после у
 Кеш pip и проверка его обновлений отключены через переменные окружения.
 Проверка чистого образа: `python .devcontainer/tests/caches.py` от root
 в одноразовом контейнере до запуска инструментов, которые могут создать новый кеш.
+
+
+Версия Node.js и SHA256 архивов для amd64/arm64 задаются через `NODE_VERSION`,
+`NODE_SHA256_AMD64`, `NODE_SHA256_ARM64` в Dockerfile. Для обновления Node.js
+пересоберите образ с новой зафиксированной версией и контрольными суммами;
+менеджер переключения версий для этого не используется.

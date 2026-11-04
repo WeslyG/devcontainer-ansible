@@ -2,6 +2,7 @@
 set -eu
 python --version
 python -m pip check
+python "$(dirname "$0")/no-version-managers.py"
 black --version
 isort --version-number
 s3cmd --version

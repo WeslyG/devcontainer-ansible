@@ -14,11 +14,6 @@
         "userGid": "1000",
         "upgradePackages": "true"
     },
-    "ghcr.io/devcontainers/features/node:2": {
-      "version": "24",
-      "nodeGypDependencies": false,
-      "pnpmVersion": "none"
-    },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "moby": false,
       "dockerDashComposeVersion": "none",
@@ -49,7 +44,6 @@
   "overrideFeatureInstallOrder": [
     "ghcr.io/devcontainers/features/common-utils",
     "ghcr.io/rocker-org/devcontainer-features/apt-packages",
-    "ghcr.io/devcontainers/features/node",
     "ghcr.io/devcontainers/features/docker-outside-of-docker",
     "ghcr.io/devcontainers/features/kubectl-helm-minikube",
     "ghcr.io/dhoeric/features/k9s",

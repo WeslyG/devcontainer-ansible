@@ -15,7 +15,7 @@ if [ "$(id -u)" -eq 0 ]; then
         [ -d "$cache_home" ] || continue
         rm -rf -- "$cache_home/.cache/pip" "$cache_home/.npm"
     done
-    rm -rf /usr/local/share/nvm/.cache /tmp/tmp-k9s
+    rm -rf /tmp/tmp-k9s
 else
     cache_home="$(getent passwd "$(id -u)" | cut -d: -f6)"
     if [ -n "$cache_home" ]; then

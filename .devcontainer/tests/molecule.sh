@@ -14,10 +14,17 @@ platforms:
     image: python:3.12.16-slim-trixie
     pre_build_image: true
     command: sleep infinity
+YAML
+# Python 3.7 is an optional external managed-node compatibility test.
+if [ "${TEST_LEGACY_PYTHON:-0}" = 1 ]; then
+cat >> molecule/default/molecule.yml <<'YAML'
   - name: ansible10-molecule-py37
     image: python:3.7-slim-bullseye
     pre_build_image: true
     command: sleep infinity
+YAML
+fi
+cat >> molecule/default/molecule.yml <<'YAML'
 provisioner:
   name: ansible
   inventory:

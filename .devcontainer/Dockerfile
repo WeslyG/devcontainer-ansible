@@ -35,3 +35,13 @@ RUN python -m pip install --no-cache-dir -r /tmp/requirements.txt \
     && rm /tmp/requirements.txt
 
 COPY --from=git-builder /git-runtime/usr/local/ /usr/local/
+
+
+# One fixed Node.js runtime; no language-version manager is installed.
+ARG NODE_VERSION=24.22.2
+ARG NODE_SHA256_AMD64=48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75
+ARG NODE_SHA256_ARM64=eb187837a2230d4047161ac0be008584e16b46f726e9c9490ee35dc6b17d9ba8
+RUN --mount=type=bind,source=install-node.sh,target=/tmp/install-node.sh \
+    apt-get update \
+    && apt-get install -y --no-install-recommends libatomic1 libstdc++6 xz-utils \
+    && /bin/bash /tmp/install-node.sh

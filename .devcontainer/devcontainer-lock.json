@@ -15,11 +15,6 @@
       "resolved": "ghcr.io/devcontainers/features/kubectl-helm-minikube@sha256:bbe8adf6b37fff8c67412ab0a4579f4c2f30bbaba1d9a5cebd9e38bade54025b",
       "integrity": "sha256:bbe8adf6b37fff8c67412ab0a4579f4c2f30bbaba1d9a5cebd9e38bade54025b"
     },
-    "ghcr.io/devcontainers/features/node:2": {
-      "version": "2.1.1",
-      "resolved": "ghcr.io/devcontainers/features/node@sha256:2a19d3b0b3879437637cfd292eb29fee0afcfbe6364e33db9afc4f80c5c1f956",
-      "integrity": "sha256:2a19d3b0b3879437637cfd292eb29fee0afcfbe6364e33db9afc4f80c5c1f956"
-    },
     "ghcr.io/dhoeric/features/k9s:1": {
       "version": "1.0.1",
       "resolved": "ghcr.io/dhoeric/features/k9s@sha256:0a575cfb87abd4a03d68696db350c46d54f6f91931021603b3420f2bbbb98683",
