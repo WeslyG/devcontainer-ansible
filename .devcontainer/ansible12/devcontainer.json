@@ -191,6 +191,7 @@
       "PYTHON_IMAGE": "python:3.13.18-slim-trixie@sha256:ae14d4ce8771606477a81446e7ef429edd6762305fc50c84507c1041fa8285d1",
       "REQUIREMENTS_FILE": "requirements/ansible12.txt",
       "ANSIBLE_MAJOR": "12",
+      "PLATFORM_VERSION": "${localEnv:PLATFORM_VERSION}",
       "GIT_BUILDER_IMAGE": "debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4",
       "GIT_VERSION": "2.56.0",
       "GIT_SHA256": "26c56c296b38c0695b26fa95f475f1d01704d2d38e73465ca30b0b2f5dc789d3"

@@ -16,7 +16,7 @@ def generated():
             cfg['name']=f'Ansible {major}'
             cfg['build']={'dockerfile':'Dockerfile' if default else '../Dockerfile','context':'..' if default else '../..','args':{
                 'PYTHON_IMAGE':variant['pythonImage'], 'REQUIREMENTS_FILE':f'requirements/ansible{major}.txt',
-                'ANSIBLE_MAJOR':major, 'GIT_BUILDER_IMAGE':data['gitBuilderImage'],
+                'ANSIBLE_MAJOR':major, 'PLATFORM_VERSION':'${localEnv:PLATFORM_VERSION}', 'GIT_BUILDER_IMAGE':data['gitBuilderImage'],
                 'GIT_VERSION':data['tools']['git']['version'], 'GIT_SHA256':data['tools']['git']['sha256']}}
             prefix='./features/' if default else '../features/'
             features=cfg['features']
@@ -67,13 +67,13 @@ def generated():
               'k9s':tools['k9s'],'Gilt':tools['gilt'],'devcontainer CLI (host/CI)':data['devcontainerCli']}
         tool_table='| Инструмент | Версия |\n|---|---|\n'+'\n'.join(f'| {name} | {value} |' for name,value in rows.items())
         text=re.sub(r'<!-- tools:start -->.*?<!-- tools:end -->','<!-- tools:start -->\n'+tool_table+'\n<!-- tools:end -->',text,flags=re.S)
-        sizes=['| Платформа | Образ | Несжатый размер | Проверено | Состояние lock |','|---|---|---|---|---|']
+        sizes=['| Платформа | Тег образа | Несжатый размер | Проверено | Состояние lock |','|---|---|---|---|---|']
         validation=ROOT/'compatibility/validation.json'
         if validation.exists():
             for arch,report in read_json(validation).items():
                 for major,row in report['images'].items():
                     current=hashlib.sha256((ROOT/f'requirements/ansible{major}.txt').read_bytes()).hexdigest()==row['lockSha256'] and row['pythonImage']==data['variants'][major]['pythonImage'] and row.get('manifestSha256')==hashlib.sha256((ROOT/'images.json').read_bytes()).hexdigest()
-                    sizes.append(f'| {arch} | {major} | {row["bytes"]:,} байт | {report["date"][:10]} | '+('текущий' if current else 'предыдущее окружение')+' |')
+                    sizes.append(f'| {arch} | {row["image"]} | {row["bytes"]:,} байт | {report["date"][:10]} | '+('текущий' if current else 'предыдущее окружение')+' |')
         else:sizes=['Полный прогон ещё не записан. Выполните `make test` и `make record`.']
         text=re.sub(r'<!-- sizes:start -->.*?<!-- sizes:end -->','<!-- sizes:start -->\n'+'\n'.join(sizes)+'\n<!-- sizes:end -->',text,flags=re.S)
         result[readme]=text

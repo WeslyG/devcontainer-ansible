@@ -10,7 +10,22 @@ concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  version:
+    runs-on: ubuntu-24.04
+    outputs:
+      release: ${{ steps.version.outputs.release }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Choose dated release from published tags
+        id: version
+        run: |
+          release=$(python3 scripts/version.py --check-registry)
+          echo "release=$release" >> "$GITHUB_OUTPUT"
   image:
+    needs: version
+    env:
+      PLATFORM_VERSION: ${{ needs.version.outputs.release }}
+      TAG_VERSION: ${{ needs.version.outputs.release }}
     strategy:
       fail-fast: false
       matrix:
@@ -40,7 +55,7 @@ jobs:
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
-          name: validation-ansible${{ matrix.ansible }}-${{ matrix.machine.arch }}
+          name: validation-ansible${{ matrix.ansible }}-${{ env.TAG_VERSION }}-${{ matrix.machine.arch }}
           path: |
             artifacts/status.json
             artifacts/results.json

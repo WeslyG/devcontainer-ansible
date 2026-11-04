@@ -10,6 +10,7 @@ import subprocess
 import uuid
 from common import ROOT, matrix, cli, config, image, run, write_json, read_json
 from render import render
+from version import select, validate as validate_version
 
 def logged(args,path):
     print('+', ' '.join(map(str,args)), '->', path, flush=True)
@@ -32,6 +33,12 @@ def outcome(path):
 def validate(major,report_dir):
     data=matrix();variant=data['variants'][major]
     tag=image(major)
+    expected=os.environ['PLATFORM_VERSION']
+    actual=subprocess.check_output(['docker','run','--rm',tag,'cat','/etc/platform_version'],text=True).strip()
+    inspected=json.loads(subprocess.check_output(['docker','image','inspect',tag]))[0]['Config']
+    assert actual==expected
+    assert f'PLATFORM_VERSION={expected}' in inspected['Env']
+    assert inspected['Labels']['org.opencontainers.image.version']==expected
     tests=ROOT/'.devcontainer/tests'
     # Audit the pristine image before running user tools that may create runtime caches.
     for script in ['caches.py','no-version-managers.py']:
@@ -72,6 +79,11 @@ def main():
         raise SystemExit('Full tests require a native runner; use the matching architecture CI matrix job.')
     folder=ROOT/'.build'/arch;folder.mkdir(parents=True,exist_ok=True)
     data=matrix()
+    if not os.environ.get('PLATFORM_VERSION'):
+        if args.test_only:raise SystemExit('Set PLATFORM_VERSION to the existing dated release for --test-only')
+        os.environ['PLATFORM_VERSION']=select()
+    validate_version(os.environ['PLATFORM_VERSION'])
+    print('Release:',os.environ['PLATFORM_VERSION'],flush=True)
     old=folder/'results.json'
     results=read_json(old)['images'] if old.exists() else {}
     for major in args.variants:
@@ -85,7 +97,7 @@ def main():
         limit=data['variants'][major]['maxImageBytes']
         if size>limit:raise SystemExit(f'Ansible {major}: image {size} bytes exceeds reviewed budget {limit}')
         results[major]={'image':image(major),'bytes':size,'budgetBytes':limit,'platform':args.platform,'tested':False,
-                        'pythonImage':data['variants'][major]['pythonImage'],
+                        'pythonImage':data['variants'][major]['pythonImage'],'platformVersion':os.environ['PLATFORM_VERSION'],
                         'manifestSha256':hashlib.sha256((ROOT/'images.json').read_bytes()).hexdigest(),
                         'lockSha256':hashlib.sha256((ROOT/f'requirements/ansible{major}.txt').read_bytes()).hexdigest()}
         write_json(folder/'results.json',{'date':datetime.now(timezone.utc).isoformat(),'images':results})

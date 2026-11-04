@@ -40,4 +40,4 @@ def config(major):
     return ROOT/f'.devcontainer/ansible{major}/devcontainer.json'
 
 def image(major):
-    return f'ansible-infra:ansible{major}-local'
+    return f'ansible-infra:ansible{major}-{os.environ["PLATFORM_VERSION"]}'

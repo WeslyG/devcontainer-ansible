@@ -35,7 +35,12 @@ ENV ANSIBLE_MAJOR=${ANSIBLE_MAJOR}
 COPY ${REQUIREMENTS_FILE} /tmp/requirements.txt
 RUN python -m pip install --no-cache-dir --require-hashes -r /tmp/requirements.txt \
     && python -m pip check \
-    && rm /tmp/requirements.txt \
-    && printf "ansible%s-python%s\n" "$ANSIBLE_MAJOR" "$PYTHON_VERSION" > /etc/platform_version
+    && rm /tmp/requirements.txt
 
 COPY --from=git-builder /git-runtime/usr/local/ /usr/local/
+
+# The build runner/CI chooses one dated release identity for the whole matrix.
+ARG PLATFORM_VERSION
+ENV PLATFORM_VERSION=${PLATFORM_VERSION}
+LABEL org.opencontainers.image.version=${PLATFORM_VERSION}
+RUN test -n "$PLATFORM_VERSION" && printf '%s\n' "$PLATFORM_VERSION" > /etc/platform_version

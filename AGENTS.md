@@ -52,3 +52,11 @@ pip check, cache/runtime audit, CLI smoke, Gilt и Molecule lifecycle через
 
 В update workflow результат — только patch/reports artifact. Применение patch
 требует дальнейших build/tests; workflow не должен самостоятельно коммитить/пушить.
+
+## Датированные релизы
+
+- Не возвращать ручные platform_version.txt и не вводить вручную версии Python в тег.
+- scripts/version.py: Asia/Yekaterinburg, YYYY.MM.DD, затем -1/-2; проверять
+  существующие локальные теги и опубликованные Docker Hub tags в CI.
+- Один выбор PLATFORM_VERSION на всю матрицу; сохранить его в ENV,
+  /etc/platform_version, OCI label, image tags и отчётах. Ничего не публиковать.
