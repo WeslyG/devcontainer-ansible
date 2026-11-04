@@ -16,11 +16,14 @@
     }
   },
   "installsAfter": [
-    "ghcr.io/devcontainers/features/common-utils"
+    "ghcr.io/devcontainers/features/common-utils",
+    "./features/node"
   ],
   "customizations": {
     "vscode": {
-      "extensions": ["anthropic.claude-code"]
+      "extensions": [
+        "anthropic.claude-code"
+      ]
     }
   }
 }

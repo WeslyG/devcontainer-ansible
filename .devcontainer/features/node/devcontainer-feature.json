@@ -1,0 +1,27 @@
+{
+  "id": "node",
+  "version": "1.0.0",
+  "name": "Node.js (direct official archive)",
+  "description": "Install one pinned Node.js runtime with npm/npx and SHA256 verification, without version managers or Corepack.",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "24.22.2",
+      "description": "Exact Node.js release version; latest/lts and major-only selectors are not supported."
+    },
+    "sha256Amd64": {
+      "type": "string",
+      "default": "48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75",
+      "description": "SHA256 of the official linux-x64.tar.xz archive for the selected release."
+    },
+    "sha256Arm64": {
+      "type": "string",
+      "default": "eb187837a2230d4047161ac0be008584e16b46f726e9c9490ee35dc6b17d9ba8",
+      "description": "SHA256 of the official linux-arm64.tar.xz archive for the selected release."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils",
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages"
+  ]
+}

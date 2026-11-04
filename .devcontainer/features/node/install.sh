@@ -1,20 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-version="${NODE_VERSION:?Set the exact Node.js release version}"
+version="${VERSION:?Set the exact Node.js release version}"
 if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "NODE_VERSION must be an exact release version." >&2
+    echo "version must be an exact release version." >&2
     exit 1
 fi
 case "$(dpkg --print-architecture)" in
-    amd64) architecture=x64; checksum="${NODE_SHA256_AMD64:?Missing amd64 checksum}" ;;
-    arm64) architecture=arm64; checksum="${NODE_SHA256_ARM64:?Missing arm64 checksum}" ;;
+    amd64) architecture=x64; checksum="${SHA256AMD64:?Missing amd64 checksum}" ;;
+    arm64) architecture=arm64; checksum="${SHA256ARM64:?Missing arm64 checksum}" ;;
     *) echo "Node.js installation supports amd64 and arm64 only." >&2; exit 1 ;;
 esac
 if [[ ! "$checksum" =~ ^[a-f0-9]{64}$ ]]; then
     echo "Expected a SHA256 checksum for the Node.js release archive." >&2
     exit 1
 fi
+if [ "$(id -u)" -ne 0 ]; then
+    echo "The Node.js feature must be installed as root." >&2
+    exit 1
+fi
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get install -y --no-install-recommends ca-certificates curl libatomic1 libstdc++6 xz-utils
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+
 work_dir="$(mktemp -d)"
 trap 'rm -rf -- "$work_dir"' EXIT
 archive="node-v${version}-linux-${architecture}.tar.xz"
