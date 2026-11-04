@@ -1,8 +1,9 @@
 # Ansible devcontainers: 10, 12 и 14
 
-Одна ветка `main` собирает три независимых образа из общего Dockerfile,
-локальных features и тестов. Конфигурация по умолчанию — Ansible 14.
-Сборки и workflows ничего не публикуют в реестры и не выполняют git push.
+Ветка `main` содержит три образа из общего Dockerfile, локальных features и
+тестов. Конфигурация по умолчанию — Ansible 14. GitHub Actions собирает и
+проверяет каждый вариант на native amd64/arm64 и публикует образы в
+[`weslyg/ansible-infra`](https://hub.docker.com/r/weslyg/ansible-infra).
 
 ## Матрица совместимости
 
@@ -14,37 +15,28 @@
 | 14 | 14.5.0 | 2.21.6 | 3.14.10 | 3.9–3.14 | 26.10.0 | 26.10.1 / 26.10.0 |
 <!-- compatibility:end -->
 
-Это последние стабильные совместимые версии на дату в `images.json`.
-Python выбирается по верхней границе поддержки соответствующего ansible-core,
-а не только по `Requires-Python` PyPI: эта метаинформация часто задаёт лишь минимум.
-Источники: [официальная матрица Ansible](https://docs.ansible.com/projects/ansible-core/2.21/reference_appendices/release_and_maintenance.html),
-[PyPI](https://pypi.org/), [официальные Python images](https://hub.docker.com/_/python).
-Ansible 10 и 12 — исторические ветки community package; новая major-версия core
-в них не подставляется даже тогда, когда pip разрешает более широкий диапазон.
+Версии соответствуют дате `updatedAt` в `images.json`. Python контроллера
+выбирается в пределах поддержки ansible-core по
+[официальной матрице Ansible](https://docs.ansible.com/projects/ansible-core/2.21/reference_appendices/release_and_maintenance.html).
+Диапазоны Python на удалённых хостах включают обе границы. Коллекции и модули
+могут предъявлять дополнительные требования к Python и установленным библиотекам.
+Molecule проверяет внешний узел на версии Python соответствующего контроллера;
+полный диапазон удалённых Python указан как upstream-совместимость.
 
-Ограничения совместимости:
+Ограничения разрешения зависимостей:
 
-- Ansible 10 требует старые совместимые Molecule, ansible-lint и ansible-compat:
-  новые версии явно исключают ansible-core 2.17.
-- `bcrypt<5`: passlib 1.7.4 проверяет backend длинным паролем, который bcrypt 5
-  отклоняет. Smoke-тест выполняет bcrypt roundtrip и Ansible `password_hash`.
-- Входные требования остальных Python-пакетов не ограничены старыми версиями:
-  resolver каждый раз выбирает свежие совместимые выпуски. В том числе yq
-  обновлён до 4.x; его jq-совместимый вызов проверяется тестом.
+- Ansible 10 использует core 2.17 и совместимые Molecule, ansible-lint и ansible-compat.
+- Ansible 12 использует core 2.19, Ansible 14 — core 2.21.
+- `bcrypt<5` необходим для backend-проверки passlib 1.7.4. Smoke-тесты проверяют
+  bcrypt roundtrip и Ansible `password_hash`.
+- Общие Python-зависимости разрешаются до последних стабильных совместимых
+  версий. yq предоставляет jq-совместимый интерфейс, проверяемый smoke-тестом.
 
-Все выбранные транзитивные версии: `compatibility/resolved.json`.
-Сравнение selected/latest с объяснениями: `compatibility/packages.json`.
-Результаты реальных прогонов и размеры: `compatibility/validation.json`;
-полная локальная диагностика находится в игнорируемом каталоге `.build/`.
-Диапазоны Python на удалённых хостах включают обе границы и относятся к поддержке
-управляемых узлов соответствующим ansible-core. Отдельные коллекции и модули могут
-предъявлять дополнительные требования к Python и установленным библиотекам.
-Обычный Molecule проверяет один внешний узел на версии Python своего контроллера,
-а не весь поддерживаемый диапазон.
+Полные выбранные версии находятся в `compatibility/resolved.json`, сравнение
+selected/latest с причинами ограничений — в `compatibility/packages.json`.
+Зафиксированные native-прогоны и размеры — в `compatibility/validation.json`.
 
-## Структура
-
-Общие CLI для всех трёх вариантов:
+## Состав образов
 
 <!-- tools:start -->
 | Инструмент | Версия |
@@ -62,179 +54,216 @@ Ansible 10 и 12 — исторические ветки community package; но
 | devcontainer CLI (host/CI) | 0.90.0 |
 <!-- tools:end -->
 
+Каждый образ содержит один Python из официального `python:*-slim-trixie`,
+Ansible и вспомогательные Python-пакеты. Полные транзитивные версии и SHA256
+зафиксированы в `requirements/ansible{10,12,14}.txt`; установка использует
+`--require-hashes` и проверку `pip check`.
+
+Node устанавливается локальной feature из официального архива с SHA256 для
+amd64/arm64. npm и npx входят в инструментальную среду. NVM, fnm, asdf, mise,
+pyenv, uv, pipx, conda, Corepack, Yarn и pnpm отсутствуют.
+Gilt устанавливается из официального GitHub release с проверкой checksum.
+Git собирается в отдельной стадии; runtime содержит Git без компилятора.
+
+Claude Code представлен одним native-бинарником из официального платформенного
+npm-архива Anthropic с SHA512 integrity. Команда доступна через symlink;
+пользовательская установка принадлежит `vscode`. Образы также содержат
+minikube, kubectl, Helm, k9s и elasticdump.
+
+Docker используется как CLI с Compose/Buildx. Daemon работает на хосте,
+сокет подключает feature docker-outside-of-docker. Docker Desktop должен
+предоставлять доступ к daemon из WSL/devcontainer.
+
+## Структура репозитория
+
 ```text
-images.json                         # версии CLI, Python image digests, семейства и бюджеты размера
-requirements/common.in              # общие прямые Python-зависимости и исключения
-requirements/ansible{10,12,14}.in    # разрешённые Ansible/core families
+images.json                         # версии CLI/actions, Python digests, семейства и бюджеты
+requirements/common.in              # общие прямые Python-зависимости
+requirements/ansible{10,12,14}.in    # разрешённые семейства Ansible/core
 requirements/ansible{10,12,14}.txt   # полные точные locks с SHA256
-.devcontainer/Dockerfile            # общий runtime и отдельная стадия сборки Git
-.devcontainer/template.json         # общий шаблон настроек редактора и features
-.devcontainer/ansible{10,12,14}/     # сгенерированные configs и отдельные feature locks
-.devcontainer/devcontainer.json     # сгенерированная конфигурация по умолчанию (14)
-.devcontainer/features/             # Node, Gilt и Claude Code/elasticdump
-.devcontainer/tests/                # runtime, lock, cache, Gilt и Molecule tests
-scripts/                            # обнаружение версий, resolver, генератор, build/test runner
-compatibility/                      # проверяемые отчёты для следующего обновления
-.github/workflow-templates/          # источники workflows; Actions versions из images.json
+.devcontainer/Dockerfile            # общий runtime и сборочная стадия Git
+.devcontainer/template.json         # настройки редактора и features
+.devcontainer/ansible{10,12,14}/     # конфигурации вариантов и feature locks
+.devcontainer/devcontainer.json     # конфигурация по умолчанию
+.devcontainer/features/             # Node, Gilt, Claude Code/elasticdump
+.devcontainer/tests/                # runtime, locks, кеши, Gilt и Molecule
+scripts/                            # обновление, генерация, build/test и публикация
+compatibility/                      # отчёты зависимостей и измерений
+.github/workflow-templates/          # исходники workflows
+.github/workflows/                   # сгенерированные workflows
 ```
 
-Генерируемые configs и workflows не редактируются вручную.
-`python3 scripts/render.py --check` проверяет отсутствие рассинхронизации.
+`python3 scripts/render.py` генерирует configs, workflows и таблицы README.
+`python3 scripts/render.py --check` проверяет соответствие исходникам.
 Внешние features закреплены отдельными `devcontainer-lock.json`; локальные
-features закреплены самим git-коммитом и в этих lockfiles не перечисляются.
+features фиксируются git-коммитом. Сборка использует `--frozen-lockfile`.
 
-## Состав и размер
+## Локальная сборка и тесты
 
-Один Python на образ, без системного `/usr/bin/python3`, pipx/uv/pyenv/conda,
-NVM и других менеджеров версий. pip и npm остаются штатными установщиками
-пакетов: они нужны для Python-библиотек и elasticdump. Corepack/Yarn/pnpm нет.
-
-Node устанавливает локальная feature из официального архива с фиксированными
-SHA256 для amd64/arm64. Gilt устанавливается официальным GitHub-бинарником,
-так как опубликованный python-gilt 2.2.5 содержит некорректный wheel tag.
-Git собирается в отдельной стадии; компилятор не копируется в runtime.
-Claude Code и minikube сохранены. Claude использует один native-бинарник и
-пользовательский launcher, глобальная команда — symlink.
-Native Claude извлекается из официального платформенного npm-архива Anthropic
-с зафиксированным SHA512 integrity; npm-wrapper и второй бинарник не устанавливаются.
-Это устраняет зависимость сборки от меняющегося bootstrap и недоступного здесь
-`downloads.claude.ai`. Updater закрепляет integrity отдельно для amd64/arm64.
-Docker установлен только как CLI с Compose/Buildx; daemon используется с хоста.
-Сокет автоматически подключает docker-outside-of-docker feature.
-
-apt lists/archives и pip/npm download caches удаляются в том же слое `RUN`,
-где создаются. Общая shell-обёртка очищает также сторонние features.
-Проверка кешей выполняется на чистом образе до запуска инструментов:
-работающие инструменты позже могут создать свои пользовательские кеши.
-
-Размеры измеряются в несжатых байтах `docker image inspect`, отдельно для каждой
-архитектуры. Порог `maxImageBytes` в `images.json` проверяется runner-ом;
-его нельзя повышать автоматически при обновлении. Учёт слоёв отдельного образа
-не равен дополнительному месту всех трёх образов: часть слоёв общая.
-Старые образы, Docker build cache и пользовательские контейнеры автоматически
-не удаляются. Общий `docker system prune` здесь не используется.
-
-<!-- sizes:start -->
-| Платформа | Тег образа | Несжатый размер | Проверено | Состояние lock |
-|---|---|---|---|---|
-| amd64 | ansible-infra:ansible10-local | 3,494,194,197 байт | 2026-11-04 | текущий |
-| amd64 | ansible-infra:ansible12-local | 3,531,469,380 байт | 2026-11-04 | текущий |
-| amd64 | ansible-infra:ansible14-local | 3,531,017,955 байт | 2026-11-04 | текущий |
-<!-- sizes:end -->
-
-## Сборка и тесты
-
-Нужны Docker с Buildx, Python 3.10+ на хосте, Node/npm и devcontainer CLI версии
-из `images.json`. На хосте скрипты используют стандартную библиотеку Python.
-GNU Make нужен только для коротких команд ниже; можно запускать соответствующие
-`python3 scripts/*.py` напрямую, как показано в Makefile.
+Нужны Docker с Buildx, Python 3.10+, Node/npm и devcontainer CLI версии из
+`images.json`. Скрипты на хосте используют стандартную библиотеку Python.
+GNU Make предоставляет короткие команды; соответствующие вызовы Python
+перечислены в Makefile.
 
 ```bash
 npm install --global @devcontainers/cli@0.90.0
 make check
-make test                         # все три образа, сборка и проверки
-make test VARIANTS=14             # один вариант
-make build VARIANTS='10 12 14'     # только сборки
-make record                       # сохранить результаты всех трёх успешных native-прогонов
+make test                          # все три образа, сборка и проверки
+make test VARIANTS=14              # один вариант
+make build VARIANTS='10 12 14'      # сборка без runtime-тестов
+make record                        # записать полный успешный native-прогон
 ```
 
-Если CLI отсутствует в PATH, задайте `DEVCONTAINER_CLI=/полный/путь/devcontainer`.
-Образы получают локальные теги `ansible-infra:ansible10-YYYY.MM.DD` и аналогичные; повторная сборка за день получает суффикс `-1`, `-2` и далее.
-Для VS Code выберите конфигурацию Ansible 10/12/14 через Reopen in Container.
-Эквивалент явного запуска:
+Путь к CLI можно задать через `DEVCONTAINER_CLI`.
+Локальные теги имеют вид `ansible-infra:ansible10-YYYY.MM.DD`.
+Для VS Code или прямого вызова devcontainer CLI выберите общую версию выпуска
+в окружении, из которого запускается редактор/CLI:
 
 ```bash
+export PLATFORM_VERSION=$(python3 scripts/version.py)
 devcontainer up --workspace-folder . --config .devcontainer/ansible12/devcontainer.json
 ```
 
-Проверяется точное совпадение всех установленных Python-пакетов с lockfile,
-`pip check`, отсутствие лишних runtime/managers/compiler/daemon, пустота кешей,
-CLI-команды, импорты библиотек, yq, bcrypt/Vault, ansible-lint/playbook, Gilt overlay.
-Molecule выполняет create → converge → idempotence → verify → destroy от `vscode`
-через Docker хоста. Имена его узлов уникальны для прогона.
-Runner удаляет только собственные временные контейнеры с уникальной меткой.
-
-Полные тесты запускаются на native-архитектуре. CI содержит независимые jobs
-для amd64 и arm64; наличие arm64 в workflow само по себе не означает успешный
-локальный arm64-прогон. Фактически проверенные платформы перечисляет validation.json.
-Логи каждого этапа и данные о размере записываются в `.build/<arch>/`.
-
-## Следующее обновление
+`make build` и `make test` выбирают версию автоматически, если переменная
+не задана. Повторная проверка конкретного образа требует его версии:
 
 ```bash
-make audit       # только свежие данные в .build/, исходники не меняются
-make update      # обновить metadata/configs/workflows, pip locks и feature locks
-make check
-make test
-make record
-git diff --check
-git diff         # просмотреть версии, исключения, размеры и generated files перед коммитом
+PLATFORM_VERSION=2026.11.04 python3 scripts/build.py --variants 12 --test-only
 ```
 
-Updater проверяет официальные реестры Python/Node/PyPI/npm, GitHub Releases,
-kernel.org и Kubernetes stable.txt; prerelease Node не выбирается. Python base
-фиксируется по patch-тегу и multiarch digest. Для каждого варианта pip resolver
-работает в его собственном Python, без установки менеджеров в конечный образ.
-Все non-yanked SHA256 артефактов каждой выбранной версии попадают в lock, что
-позволяет устанавливать amd64/arm64 wheels. `--require-hashes` включён при сборке.
-Для релизного локального обновления используйте `make test BUILD_FLAGS=--no-cache`,
-чтобы освежить также apt-пакеты и build dependencies, даже если Python/CLI pins
-не изменились. Обычные повторные проверки используют кеш. В CI каждый native
-runner начинает без нашего кеша образов и устанавливает свежие apt-пакеты.
-Отдельные исходные sdist могут потребовать build-зависимости: финальная сборка
-и runtime-тесты обязательны даже после успешного dry-run resolver.
+Тесты проверяют Python hash-lock, `pip check`, один Python, отсутствие менеджеров
+версий, компилятора и Docker daemon, пустоту кешей, версии CLI, импорты,
+yq, bcrypt/Vault, ansible-lint/playbook и Gilt overlay. Версия в ENV,
+`/etc/platform_version` и OCI label сверяется с выпуском.
+Molecule выполняет create → converge → idempotence → verify → destroy от `vscode`
+через daemon хоста. Временные контейнеры имеют уникальные имена и метки;
+runner удаляет только ресурсы собственного прогона.
 
-Таблицы совместимости и размеров обновляет `render.py`: версии из resolved.json,
-а размеры из validation.json. Если lock изменился после замера, таблица явно
-помечает прежний результат как предыдущее окружение.
+Полные runtime-тесты выполняются на native-архитектуре. Логи, размеры и
+идентификаторы проверенных образов находятся в `.build/<arch>/`.
 
-При добавлении нового Ansible сначала обновите контроллер/target ranges по
-официальной матрице и `FAMILIES` в updater; не повышайте Python за границу
-поддержки core. После обновления проверьте таблицу README и причины отставания
-от latest в compatibility/packages.json. Проверьте новые ограничения пакетов,
-изменения синтаксиса CLI и release notes. Не обходите конфликт через `--no-deps`.
+## Размер и кеши
 
-CI `build.yml` на main/PR/ручном запуске собирает и тестирует матрицу 3×2,
-сохраняет сводку результата и размеры артефактами, без входа в registry и публикации.
-CI `update.yml` раз в неделю или вручную рассчитывает обновление и отдаёт
-`update.patch`, latest releases и compatibility reports как review-артефакт.
-Он не создаёт коммит, PR и не пушит изменения. После применения patch нужно
-запустить полную сборку/тесты; сам update workflow её не заменяет.
-Renovate отключён, чтобы не было второй независимой автоматики изменения pins.
-Экспорт CI ограничен явным списком файлов в `scripts/artifacts.py`; весь `.build`
-и скрытые файлы не загружаются. Полные логи остаются локально, при ошибке последние
-80 строк выводятся в обычный CI log.
+apt lists/archives, pip/npm caches и временные загрузки очищаются в создающем
+их слое `RUN`. Общая shell-обёртка применяется и к сторонним features.
+Аудит кешей выполняется на чистом образе до запуска пользовательских инструментов.
 
-## Особенности runtime
+Размер измеряется в несжатых байтах через `docker image inspect` отдельно для
+каждой архитектуры. Runner проверяет `maxImageBytes` из `images.json`.
+Повышение бюджета требует анализа роста. Общие слои разных образов учитываются
+Docker отдельно от суммы их индивидуальных размеров. Пользовательские образы,
+контейнеры, volumes и общий build cache сохраняются.
 
-Upstream passlib 1.7.4 может вывести сообщение об отсутствии `bcrypt.__about__`;
-это известная диагностика старого passlib с современным bcrypt 4.x.
-Проверки хеширования и Ansible-фильтра должны всё равно успешно пройти.
-Включать bcrypt 5 или подавлять реальные ошибки ради зелёной сборки нельзя.
-Hashicorp mirror не включается обновлятором.
+<!-- sizes:start -->
+| Платформа | Тег образа | Несжатый размер | Проверено | Состояние lock |
+|---|---|---|---|---|
+| amd64 | ansible-infra:ansible10-local | 3,494,194,197 байт | 2026-11-04 | требует проверки |
+| amd64 | ansible-infra:ansible12-local | 3,531,469,380 байт | 2026-11-04 | требует проверки |
+| amd64 | ansible-infra:ansible14-local | 3,531,017,955 байт | 2026-11-04 | требует проверки |
+<!-- sizes:end -->
 
-## Дата сборки и теги
+Таблица строится из зафиксированных измерений. Состояние «требует проверки»
+означает несовпадение проверенных входных данных с текущими manifest/locks.
+Результаты CI доступны в артефактах соответствующего запуска.
 
-Ручного platform_version.txt больше нет. В день сборки runner выбирает дату
-в часовом поясе Asia/Yekaterinburg, строго `YYYY.MM.DD` с ведущими нулями.
-Теги: `ansible10-2026.11.04`, `ansible12-2026.11.04`, `ansible14-2026.11.04`.
-Повторный выпуск в тот же день: `ansible10-2026.11.04-1`, затем `-2` и т.д.
-Дата отделена точками, порядковый номер — дефисом; регулярное выражение:
+## Дата выпуска и теги Docker Hub
+
+В начале сборки выбирается дата в часовом поясе `Asia/Yekaterinburg`, строго
+`YYYY.MM.DD` с ведущими нулями. Повторные выпуски за день получают `-1`, `-2`
+и следующие номера. Одна версия применяется ко всей матрице.
+
+Multiarch-теги:
+
+```text
+weslyg/ansible-infra:ansible10-2026.11.04
+weslyg/ansible-infra:ansible12-2026.11.04
+weslyg/ansible-infra:ansible14-2026.11.04
+weslyg/ansible-infra:ansible14-2026.11.04-1
+```
+
+Каждый такой тег содержит `linux/amd64` и `linux/arm64`. Регулярное выражение:
 `^ansible(10|12|14)-(\d{4}\.\d{2}\.\d{2})(?:-([1-9]\d*))?$`.
+Native-теги имеют префикс архитектуры, например
+`amd64-ansible14-2026.11.04` и `arm64-ansible14-2026.11.04`.
+Слои native-образов и multiarch-манифеста совместно используются registry.
 
-Локальная сборка проверяет существующие локальные теги. CI один раз для всей
-матрицы проверяет также опубликованные теги Docker Hub `weslyg/ansible-infra`
-(все страницы), выбирает следующий номер и передаёт его всем шести заданиям.
-Ошибка чтения registry останавливает выбор версии; молчаливого сброса номера нет.
-Пока публикация отключена, CI сам не резервирует номер в registry; параллельные
-workflow могут выбрать одинаковую дату/номер. Перед будущим включением публикации
-нужно сериализовать выбор версии и публикацию, чтобы исключить такую гонку.
+Локальный выбор учитывает локальные теги. CI читает все страницы опубликованных
+native- и multiarch-тегов Docker Hub и выбирает свободный номер. Native-теги
+учитываются и при неполном выпуске. Ошибка registry останавливает выбор версии.
+Запуски workflow для `main` выполняются последовательно от выбора версии до
+публикации, без отмены выполняющегося выпуска.
 
-`PLATFORM_VERSION` / CI `TAG_VERSION` содержат дату с необязательным номером,
-без префикса Ansible. Эта же строка записана в `/etc/platform_version`, ENV,
-OCI label `org.opencontainers.image.version` и results.json.
-`make test` выбирает её автоматически. Для прямого запуска devcontainer CLI
-или VS Code сначала запустите `export PLATFORM_VERSION=$(python3 scripts/version.py)`
-в том же окружении; пустая версия останавливает сборку.
-Для повторных тестов существующего образа задайте его PLATFORM_VERSION явно.
-Никаких push или публикации CI не выполняет.
+`PLATFORM_VERSION` и CI-переменная `TAG_VERSION` содержат дату с необязательным номером. То же значение
+записано в `/etc/platform_version`, ENV образа, OCI label
+`org.opencontainers.image.version` и отчёты сборки.
+
+```bash
+docker pull weslyg/ansible-infra:ansible14-2026.11.04
+```
+
+## GitHub Actions
+
+`build.yml` запускается при push в `main`, в PR и вручную:
+
+1. На `main` проверяет авторизацию Docker Hub и выбирает общую версию выпуска.
+2. Собирает и полностью тестирует матрицу Ansible 10/12/14 × amd64/arm64.
+3. На `main` каждое успешное native-задание отправляет проверенный образ в
+   Docker Hub под native-тегом и сохраняет digest/идентичность образа в артефакт.
+4. После успеха всех шести заданий job `publish` проверяет шесть отчётов,
+   создаёт три multiarch-тега по точным digest и проверяет состав манифестов.
+
+PR и ручные запуски других веток выполняют сборку и тесты. Авторизация Docker Hub
+и публикация доступны push/ручному запуску `main`. GitHub token имеет
+`contents: read`. Публикация использует repository secrets:
+
+- `DOCKERHUB_USERNAME` — пользователь с правами записи в `weslyg/ansible-infra`;
+- `DOCKERHUB_TOKEN` или `DOCKERHUB_PASSWORD` — Docker Hub access token/пароль.
+
+Публикация использует Docker Engine API 1.46+ (Docker 27+) и сверяет ID
+локального образа после тестов, затем сравнивает контрольные суммы слоёв
+и настройки запуска с опубликованным образом.
+Занятый тег с другим содержимым вызывает ошибку; повтор того же job может
+использовать идентичный опубликованный образ. Сборка пакетов при push не выполняется.
+Native-теги доступны независимо; наличие multiarch-тега означает успех всей
+native-матрицы и проверку итогового манифеста.
+
+CI экспортирует только явно перечисленные публичные отчёты из `scripts/artifacts.py`.
+Скрытые файлы, credentials и весь каталог `.build` в артефакты не включаются.
+При ошибке последние 80 строк build/test-лога выводятся в CI log.
+
+## Обновление зависимостей
+
+```bash
+make audit
+make update
+make check
+make test BUILD_FLAGS=--no-cache
+make record
+git diff --check
+git diff
+```
+
+`make audit` записывает сведения о выпусках в `.build`. `make update` обновляет
+metadata, configs/workflows, Python locks и feature locks. Updater использует
+официальные Python/Node/PyPI/npm registries, GitHub Releases, kernel.org и
+Kubernetes stable.txt. Выбираются стабильные совместимые выпуски.
+Python base фиксируется patch-тегом и multiarch digest. Pip resolver работает
+в Python каждого варианта; lock включает SHA256 всех non-yanked артефактов
+для установки amd64/arm64 wheels. Финальная сборка проверяет применимость lock.
+
+Для релизного обновления `--no-cache` освежает apt и build dependencies.
+Версии GitHub Actions находятся в `images.json` и обновляются общей автоматикой.
+При добавлении Ansible major нужно определить controller/target ranges по
+официальной матрице, обновить `FAMILIES` в updater и проверить ограничения пакетов.
+
+`update.yml` по понедельникам и при ручном запуске рассчитывает совместимые
+зависимости и выдаёт `update.patch`, latest releases и compatibility reports
+как review-артефакт. Применённый patch проходит сборку и тесты в `build.yml`.
+Renovate имеет `enabled: false`; источником обновлений служит `scripts/update.py`.
+Инструкции для сопровождающих находятся в [AGENTS.md](AGENTS.md).
+
+## Диагностика runtime
+
+Passlib 1.7.4 может вывести сообщение об отсутствии `bcrypt.__about__` с bcrypt
+4.x. Проверки хеширования и Ansible-фильтра должны успешно пройти.
+Hashicorp mirror находится вне набора автоматически устанавливаемых инструментов.

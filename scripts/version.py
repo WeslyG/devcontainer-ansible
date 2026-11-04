@@ -16,15 +16,16 @@ def validate(value):
 
 def choose(day,tags):
     datetime.strptime(day,'%Y.%m.%d')
-    pattern=re.compile(r'ansible(?:10|12|14)-'+re.escape(day)+r'(?:-([1-9]\d*))?')
+    pattern=re.compile(r'(?:(?:amd64|arm64)-)?ansible(?:10|12|14)-'+re.escape(day)+r'(?:-([1-9]\d*))?')
     used=[int(m[1] or 0) for tag in tags if (m:=pattern.fullmatch(tag))]
     return day if not used else f'{day}-{max(used)+1}'
 
 def registry_tags(day):
-    # Docker Hub's public API, filtered by each image family; consume every page.
+    # Filter native and multiarch prefixes, consuming every page for each.
     tags=[]
-    for major in ['10','12','14']:
-        url=f'https://hub.docker.com/v2/repositories/{REPOSITORY}/tags?page_size=100&name=ansible{major}-{day}'
+    prefixes=[prefix+'ansible'+major for prefix in ['', 'amd64-', 'arm64-'] for major in ['10','12','14']]
+    for prefix in prefixes:
+        url=f'https://hub.docker.com/v2/repositories/{REPOSITORY}/tags?page_size=100&name={prefix}-{day}'
         while url:
             if not url.startswith(f'https://hub.docker.com/v2/repositories/{REPOSITORY}/tags'):
                 raise ValueError('Unexpected registry pagination URL')

@@ -22,11 +22,17 @@ def check():
     assert {p.name for p in (ROOT/'.github/workflows').glob('*.yml')}=={'build.yml','update.yml'}
     for path in (ROOT/'.github/workflows').glob('*.yml'):
         workflow=path.read_text()
-        assert '--push' not in workflow and 'login-action' not in workflow
+        if path.name=='update.yml':
+            assert 'scripts/publish.py' not in workflow and 'login-action' not in workflow
+        else:
+            assert 'needs: [version, image]' in workflow
+            assert 'cancel-in-progress: false' in workflow
+            assert workflow.count("if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'")>=4
+            assert 'scripts/publish.py stage' in workflow and 'scripts/publish.py merge' in workflow
         assert 'contents: read' in workflow
         assert 'include-hidden-files: true' not in workflow
         assert 'scripts/artifacts.py' in workflow
         assert 'path: artifacts/\n' not in workflow
-    print('PASS: generated configs, all core families/hash locks, feature locks and build-only CI')
+    print('PASS: generated configs, all core families/hash locks, feature locks and tested main-only Docker Hub publication')
 
 if __name__=='__main__':check()

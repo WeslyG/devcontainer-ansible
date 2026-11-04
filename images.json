@@ -76,7 +76,9 @@
     "actions/checkout": "v7.0.1",
     "actions/setup-node": "v7.1.0",
     "actions/upload-artifact": "v7.0.2",
-    "docker/setup-buildx-action": "v4.4.1"
+    "docker/setup-buildx-action": "v4.4.1",
+    "docker/login-action": "v4.7.0",
+    "actions/download-artifact": "v8.0.2"
   },
   "gitBuilderImage": "debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4"
 }

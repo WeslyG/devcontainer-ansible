@@ -42,7 +42,7 @@ def discover(data):
     sums=fetch('https://www.kernel.org/pub/software/scm/git/sha256sums.asc',False)
     digest=re.search(r'^([a-f0-9]{64})\s+git-'+re.escape(git)+r'\.tar\.xz$',sums,re.M)[1]
     data['tools']['git']={'version':git,'sha256':digest}
-    data['actions']={repo:fetch('https://api.github.com/repos/'+repo+'/releases/latest')['tag_name'] for repo in ['actions/checkout','actions/setup-node','actions/upload-artifact','docker/setup-buildx-action']}
+    data['actions']={repo:fetch('https://api.github.com/repos/'+repo+'/releases/latest')['tag_name'] for repo in data['actions']}
     data['updatedAt']=datetime.now(timezone.utc).date().isoformat()
     return data
 

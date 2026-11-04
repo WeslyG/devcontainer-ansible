@@ -5,7 +5,7 @@ from common import ROOT, write_json
 
 def export(kind,arch='amd64',root=ROOT):
     out=root/'artifacts';out.mkdir(exist_ok=True)
-    files=([root/f'.build/{arch}/results.json',root/'images.json'] if kind=='build' else
+    files=([root/f'.build/{arch}/results.json',root/'images.json',*[root/f'.build/{arch}/publish-{major}-{arch}.json' for major in ['10','12','14']]] if kind=='build' else
            [root/'.build/update.patch',root/'.build/latest-releases.json',root/'compatibility/packages.json',root/'compatibility/resolved.json'])
     copied=[]
     for source in files:

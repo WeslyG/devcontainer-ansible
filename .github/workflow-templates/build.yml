@@ -1,4 +1,4 @@
-name: Build and test Ansible images
+name: Build, test and publish Ansible images
 on:
   push:
     branches: [main]
@@ -7,8 +7,8 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: build-${{ github.ref }}
-  cancel-in-progress: true
+  group: ansible-release-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   version:
     runs-on: ubuntu-24.04
@@ -16,6 +16,20 @@ jobs:
       release: ${{ steps.version.outputs.release }}
     steps:
       - uses: actions/checkout@@CHECKOUT@
+      - name: Check Docker Hub credentials
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN || secrets.DOCKERHUB_PASSWORD }}
+        run: |
+          test -n "$DOCKERHUB_USERNAME"
+          test -n "$DOCKERHUB_TOKEN"
+      - name: Verify Docker Hub login
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: docker/login-action@@LOGIN@
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || secrets.DOCKERHUB_PASSWORD }}
       - name: Choose dated release from published tags
         id: version
         run: |
@@ -47,17 +61,50 @@ jobs:
         run: |
           python3 scripts/check.py
           python3 -m unittest discover -s tests
-      - name: Build and test without publishing
+      - name: Build and test native image
         run: python3 scripts/build.py --variants ${{ matrix.ansible }} --test
+      - name: Login to Docker Hub
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: docker/login-action@@LOGIN@
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || secrets.DOCKERHUB_PASSWORD }}
+      - name: Push tested native image
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: python3 scripts/publish.py stage --variant ${{ matrix.ansible }} --arch ${{ matrix.machine.arch }}
       - name: Prepare explicit public reports
         if: always()
         run: python3 scripts/artifacts.py build --arch ${{ matrix.machine.arch }}
       - uses: actions/upload-artifact@@UPLOAD@
         if: always()
         with:
-          name: validation-ansible${{ matrix.ansible }}-${{ env.TAG_VERSION }}-${{ matrix.machine.arch }}
+          name: validation-ansible${{ matrix.ansible }}-${{ env.PLATFORM_VERSION }}-${{ matrix.machine.arch }}
           path: |
             artifacts/status.json
             artifacts/results.json
             artifacts/images.json
+            artifacts/publish-${{ matrix.ansible }}-${{ matrix.machine.arch }}.json
           retention-days: 14
+  publish:
+    needs: [version, image]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PLATFORM_VERSION: ${{ needs.version.outputs.release }}
+      TAG_VERSION: ${{ needs.version.outputs.release }}
+    steps:
+      - uses: actions/checkout@@CHECKOUT@
+      - uses: docker/setup-buildx-action@@BUILDX@
+      - uses: actions/download-artifact@@DOWNLOAD@
+        with:
+          pattern: validation-ansible*-${{ env.PLATFORM_VERSION }}-*
+          path: .build/publish
+          merge-multiple: false
+      - name: Login to Docker Hub
+        uses: docker/login-action@@LOGIN@
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || secrets.DOCKERHUB_PASSWORD }}
+      - name: Publish and verify multiarch release tags
+        run: python3 scripts/publish.py merge --directory .build/publish

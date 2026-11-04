@@ -1,4 +1,4 @@
-"""Build and validate local images. Intentionally contains no registry publication path."""
+"""Build and validate native images with exact identity and dependency reports."""
 import argparse
 from datetime import datetime, timezone
 import json
@@ -93,11 +93,12 @@ def main():
             if args.no_cache:command.append('--no-cache')
             logged(command,path)
             outcome(path)
-        size=int(subprocess.check_output(['docker','image','inspect',image(major),'--format','{{.Size}}'],text=True))
+        inspected=json.loads(subprocess.check_output(['docker','image','inspect',image(major)]))[0]
+        size=inspected['Size']
         limit=data['variants'][major]['maxImageBytes']
         if size>limit:raise SystemExit(f'Ansible {major}: image {size} bytes exceeds reviewed budget {limit}')
         results[major]={'image':image(major),'bytes':size,'budgetBytes':limit,'platform':args.platform,'tested':False,
-                        'pythonImage':data['variants'][major]['pythonImage'],'platformVersion':os.environ['PLATFORM_VERSION'],
+                        'pythonImage':data['variants'][major]['pythonImage'],'platformVersion':os.environ['PLATFORM_VERSION'],'imageId':inspected['Id'],
                         'manifestSha256':hashlib.sha256((ROOT/'images.json').read_bytes()).hexdigest(),
                         'lockSha256':hashlib.sha256((ROOT/f'requirements/ansible{major}.txt').read_bytes()).hexdigest()}
         write_json(folder/'results.json',{'date':datetime.now(timezone.utc).isoformat(),'images':results})

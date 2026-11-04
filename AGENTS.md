@@ -1,62 +1,69 @@
-# Работа с Ansible devcontainers
-
-Пользователь запретил любые push. Не выполнять `git push`, публикацию Docker
-образов, создание PR или workflow с записью в репозиторий. Итог работы —
-локальный коммит после успешной проверки и показа diff пользователю.
-Это разрешение на локальные изменения/сборки/тесты, отдельное подтверждение
-на каждую обратимую правку не требуется.
+# Сопровождение Ansible devcontainers
 
 ## Источники и структура
 
-- Одна main, три варианта Ansible 10/12/14. Не заводить ветку на каждый вариант.
+- Ветка main содержит варианты Ansible 10/12/14 из общего Dockerfile и features.
 - Источники: images.json, requirements/*.in, .devcontainer/template.json,
   .github/workflow-templates/*.yml и локальные features.
-- Генерируемые configs/workflows: `python3 scripts/render.py`. Проверка: `make check`.
+- Генерация configs/workflows/таблиц: `python3 scripts/render.py`; проверка: `make check`.
 - Python locks: `scripts/update.py --write --resolve --features`, затем
-  `scripts/audit.py --write`. Не переписывать вручную сотни hash pins.
-- Python controller ceilings: 10→3.12/core2.17, 12→3.13/core2.19,
-  14→3.14/core2.21. Перепроверять по upstream support matrix, не только Requires-Python.
-- All stable direct packages should be as new as the complete resolver permits.
-  bcrypt<5 остаётся обоснованным passlib 1.7.4, пока реальный тест не докажет исправление.
+  `scripts/audit.py --write`. Hash pins генерируются из PyPI metadata.
+- Семейства: 10→Python3.12/core2.17, 12→Python3.13/core2.19, 14→Python3.14/core2.21.
+  Границы controller/target Python определяются официальной support matrix Ansible.
+- Прямые и транзитивные зависимости выбираются максимально свежими в пределах
+  совместимости. bcrypt<5 обусловлен backend-проверкой passlib 1.7.4.
 
-## Обязательные инварианты
+## Инварианты runtime
 
-- Один Python в каждом конечном образе. Никаких NVM/fnm/Volta/asdf/mise,
-  pyenv/uv/conda/pipx и других runtime/version managers. pip/npm разрешены.
-- Node напрямую из официального архива с точной версией и SHA256. Нет Corepack/Yarn/pnpm.
-- Сохранить Claude Code и minikube. Claude native-бинарник в одном экземпляре.
-- Docker CLI + daemon хоста. Не добавлять dockerd, systemd и компиляторы в runtime.
-- Очищать apt/pip/npm и временные загрузки в создавшем их RUN, а не поздним слоем.
-- Не отключать pip dependency checks/hashes. Не чинить wheel metadata sed-ом.
-- Feature locks фиксировать и собирать с `--frozen-lockfile`.
-- Не повышать budgets размера автоматически ради прохождения CI. Сначала объяснить рост.
-- Не удалять пользовательские образы/контейнеры/volumes и не делать глобальный prune.
+- Один Python на образ. NVM/fnm/Volta/asdf/mise, pyenv/uv/conda/pipx отсутствуют.
+  pip/npm используются как установщики пакетов; Corepack/Yarn/pnpm отсутствуют.
+- Node устанавливается официальным архивом с точной версией и SHA256 для обеих архитектур.
+- Claude Code имеет один native-бинарник, принадлежащий vscode; minikube включён.
+- Docker CLI работает с daemon хоста. Компилятор остаётся в стадии сборки Git.
+- apt/pip/npm caches и временные загрузки очищаются в создающем их RUN.
+- Python dependencies проверяются через hash-lock и pip check; features — frozen-lockfile.
+- Бюджеты размера требуют явного анализа перед изменением.
+- Пользовательские контейнеры, образы, volumes и общий build cache сохраняются.
+  Временные ресурсы тестов удаляются только по собственным уникальным меткам.
 
 ## Цикл обновления
 
-1. Прочитать README, images.json, compatibility/*.json и текущее git status.
-2. `make audit`, изучить upstream release notes и совместимость каждого варианта.
-3. `make update`; проверить metadata, lockfiles, generated CI и diff.
-4. `make check`; `make test BUILD_FLAGS=--no-cache` для релизного обновления
-   (или кешированная повторная проверка неизменившихся слоёв) на native amd64, затем native arm64 в доступном
-   окружении/CI. Не выдавать один amd64-прогон за multiarch-проверку.
-5. `make record` после всех трёх успешных локальных вариантов; проверить
-   сгенерированные README matrix/sizes, compatibility reports и заметки об исключениях.
-6. Показать полный diff перед локальным коммитом. После коммита проверить чистоту.
-   Никаких push.
+1. Прочитать README, images.json, compatibility/*.json и git status.
+2. `make audit`: изучить выпуски и совместимость вариантов.
+3. `make update`: обновить manifest, locks, configs/workflows и отчёты.
+4. `make check`; выполнить native build/tests. Для релизного обновления:
+   `make test BUILD_FLAGS=--no-cache`. Локальные amd64 и arm64 результаты
+   учитываются отдельно; CI проверяет обе архитектуры native runners.
+5. `make record` после успешного полного прогона трёх вариантов. Проверить размеры,
+   README matrix и причины ограничений в compatibility/packages.json.
+6. Показать полный diff перед коммитом; проверить чистоту после коммита.
+   Git commit/push выполнять в рамках запроса пользователя.
 
-Runner пишет логи в .build/<arch>. Test result должен включать hash-lock match,
-pip check, cache/runtime audit, CLI smoke, Gilt и Molecule lifecycle через Docker
-хоста от vscode. После изменения критической логики выполнить соответствующие
-проверки заново; не повторять дорогостоящие неизменившиеся сборки без причины.
+Runner пишет .build/<arch>: результаты включают hash-lock, pip check, аудит
+кешей/менеджеров, CLI smoke, Gilt, Testinfra и Molecule lifecycle от vscode
+через daemon хоста. Проверять изменённую критическую логику; существующие
+успешные тесты неизменившихся компонентов не требуют повторения без причины.
 
-В update workflow результат — только patch/reports artifact. Применение patch
-требует дальнейших build/tests; workflow не должен самостоятельно коммитить/пушить.
+## Релизы Docker Hub
 
-## Датированные релизы
+- Версия генерируется scripts/version.py: Asia/Yekaterinburg, YYYY.MM.DD,
+  повторные выпуски -1/-2. Python версии хранятся в dependency manifest.
+- Один PLATFORM_VERSION на всю матрицу. ENV, /etc/platform_version, OCI version
+  label, image tags и отчёты должны согласовываться.
+- CI учитывает опубликованные native- и multiarch-теги. Concurrency сериализует
+  выпуск main целиком; cancel-in-progress=false.
+- build.yml на main собирает и тестирует 3×2 native-матрицу. После тестов job
+  публикует точный проверенный image ID под `<arch>-ansible<major>-<version>`.
+- Job publish зависит от успеха всей матрицы. Он проверяет шесть отчётов и
+  публикует `weslyg/ansible-infra:ansible<major>-<version>` по точным digest.
+  Манифесты должны содержать ровно linux/amd64 и linux/arm64.
+- Publication разрешена push/ручному запуску main; PR и другие ветки тестируются.
+  Secrets: DOCKERHUB_USERNAME и DOCKERHUB_TOKEN либо DOCKERHUB_PASSWORD.
+- Занятые теги с другим содержимым сохраняются; публикация завершается ошибкой.
+  Идентичные теги допускают повтор job. Локальные build/test команды не публикуют образы.
+- Actions versions закреплены в images.json и включены в общий updater.
+- CI экспортирует только явно перечисленные публичные файлы. Credentials,
+  скрытые файлы и каталоги целиком в artifacts не включать.
 
-- Не возвращать ручные platform_version.txt и не вводить вручную версии Python в тег.
-- scripts/version.py: Asia/Yekaterinburg, YYYY.MM.DD, затем -1/-2; проверять
-  существующие локальные теги и опубликованные Docker Hub tags в CI.
-- Один выбор PLATFORM_VERSION на всю матрицу; сохранить его в ENV,
-  /etc/platform_version, OCI label, image tags и отчётах. Ничего не публиковать.
+Update workflow выдаёт patch/reports для проверки. Применённое обновление
+проходит build/tests и стандартный процесс коммита/публикации.

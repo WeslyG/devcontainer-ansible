@@ -31,7 +31,7 @@ def generated():
             path=ROOT/'.devcontainer/devcontainer.json' if default else ROOT/f'.devcontainer/ansible{major}/devcontainer.json'
             result[path]=json.dumps(cfg,indent=2,ensure_ascii=False)+'\n'
     replacements={'CHECKOUT':data['actions']['actions/checkout'], 'SETUP_NODE':data['actions']['actions/setup-node'],
-                  'UPLOAD':data['actions']['actions/upload-artifact'], 'BUILDX':data['actions']['docker/setup-buildx-action'],
+                  'UPLOAD':data['actions']['actions/upload-artifact'], 'LOGIN':data['actions']['docker/login-action'], 'DOWNLOAD':data['actions']['actions/download-artifact'], 'BUILDX':data['actions']['docker/setup-buildx-action'],
                   'NODE':data['tools']['node']['version'], 'DEVCONTAINER':data['devcontainerCli']}
     for feature,values in [('node',data['tools']['node']),('cli-tools',data['tools']['cliTools']),('gilt',{'version':data['tools']['gilt']})]:
         path=ROOT/f'.devcontainer/features/{feature}/devcontainer-feature.json'
@@ -73,7 +73,7 @@ def generated():
             for arch,report in read_json(validation).items():
                 for major,row in report['images'].items():
                     current=hashlib.sha256((ROOT/f'requirements/ansible{major}.txt').read_bytes()).hexdigest()==row['lockSha256'] and row['pythonImage']==data['variants'][major]['pythonImage'] and row.get('manifestSha256')==hashlib.sha256((ROOT/'images.json').read_bytes()).hexdigest()
-                    sizes.append(f'| {arch} | {row["image"]} | {row["bytes"]:,} байт | {report["date"][:10]} | '+('текущий' if current else 'предыдущее окружение')+' |')
+                    sizes.append(f'| {arch} | {row["image"]} | {row["bytes"]:,} байт | {report["date"][:10]} | '+('текущий' if current else 'требует проверки')+' |')
         else:sizes=['Полный прогон ещё не записан. Выполните `make test` и `make record`.']
         text=re.sub(r'<!-- sizes:start -->.*?<!-- sizes:end -->','<!-- sizes:start -->\n'+'\n'.join(sizes)+'\n<!-- sizes:end -->',text,flags=re.S)
         result[readme]=text
