@@ -53,7 +53,7 @@ def generated():
     if readme.exists() and (ROOT/'compatibility/resolved.json').exists():
         text=readme.read_text()
         selected=read_json(ROOT/'compatibility/resolved.json')['packages']
-        table=['| Образ | Ansible | ansible-core | Python контроллера | Python целевых узлов (upstream) | Molecule | ansible-lint / ansible-compat |',
+        table=['| Образ | Ansible | ansible-core | Python контроллера | Поддерживаемый Python на удалённых хостах | Molecule | ansible-lint / ansible-compat |',
                '|---|---|---|---|---|---|---|']
         for major,variant in data['variants'].items():
             p=selected[major];py=variant['pythonImage'].split(':',1)[1].split('-')[0]
