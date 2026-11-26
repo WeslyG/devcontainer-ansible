@@ -169,3 +169,32 @@ jobs:
             artifacts/scan-metadata.json
             artifacts/scan-summary.md
           retention-days: ${{ github.retention_days }}
+
+  badges:
+    name: Update vulnerability badges
+    needs: [version, publish, scan-published]
+    if: >-
+      always() && !cancelled() && needs.publish.result == 'success' &&
+      needs['scan-published'].result != 'skipped'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      PLATFORM_VERSION: ${{ needs.version.outputs.release }}
+    steps:
+      - uses: actions/checkout@@CHECKOUT@
+        with:
+          ref: main
+      - uses: actions/download-artifact@@DOWNLOAD@
+        with:
+          pattern: security-${{ env.PLATFORM_VERSION }}-*-attempt*
+          path: .build/badge-inputs
+      - name: Refresh badges from existing scan snapshots
+        run: |
+          git pull --ff-only origin main
+          python3 scripts/badges.py --directory .build/badge-inputs
+          git add -- README.md compatibility/security-snapshot.json
+          if git diff --cached --quiet; then exit 0; fi
+          git -c 'user.name=github-actions[bot]' -c 'user.email=41898282+github-actions[bot]@users.noreply.github.com' commit -m 'docs: refresh vulnerability badges [skip ci]'
+          git push origin HEAD:main

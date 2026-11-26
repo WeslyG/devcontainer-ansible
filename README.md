@@ -5,6 +5,19 @@
 проверяет каждый вариант на native amd64/arm64 и публикует образы в
 [`weslyg/ansible-infra`](https://hub.docker.com/r/weslyg/ansible-infra).
 
+<!-- security-badges:start -->
+[![Trivy: 2026.11.27](https://img.shields.io/badge/Trivy-2026.11.27-blue?style=flat-square)](https://github.com/WeslyG/devcontainer-ansible/actions/runs/45889510824)
+
+| Ansible | amd64 | arm64 |
+| --- | --- | --- |
+| 10 | [![Ansible 10 amd64: 96 High/Critical](https://img.shields.io/badge/amd64-96%20High%2FCritical-red?style=flat-square)](https://github.com/WeslyG/devcontainer-ansible/actions/runs/45889510824) | [![Ansible 10 arm64: 96 High/Critical](https://img.shields.io/badge/arm64-96%20High%2FCritical-red?style=flat-square)](https://github.com/WeslyG/devcontainer-ansible/actions/runs/45889510824) |
+| 12 | [![Ansible 12 amd64: 96 High/Critical](https://img.shields.io/badge/amd64-96%20High%2FCritical-red?style=flat-square)](https://github.com/WeslyG/devcontainer-ansible/actions/runs/45889510824) | [![Ansible 12 arm64: 96 High/Critical](https://img.shields.io/badge/arm64-96%20High%2FCritical-red?style=flat-square)](https://github.com/WeslyG/devcontainer-ansible/actions/runs/45889510824) |
+| 14 | [![Ansible 14 amd64: 96 High/Critical](https://img.shields.io/badge/amd64-96%20High%2FCritical-red?style=flat-square)](https://github.com/WeslyG/devcontainer-ansible/actions/runs/45889510824) | [![Ansible 14 arm64: 96 High/Critical](https://img.shields.io/badge/arm64-96%20High%2FCritical-red?style=flat-square)](https://github.com/WeslyG/devcontainer-ansible/actions/runs/45889510824) |
+
+Счётчики находок High/Critical учитывают согласованные исключения Ansible 10.
+Полные JSON/SBOM — в [Artifacts этого скана](https://github.com/WeslyG/devcontainer-ansible/actions/runs/45889510824#artifacts).
+<!-- security-badges:end -->
+
 ## Матрица совместимости
 
 <!-- compatibility:start -->
@@ -297,3 +310,10 @@ Hashicorp mirror находится вне набора автоматическ
 Проверки безопасности, SBOM и политика Ansible 10: [docs/security.md](docs/security.md).
 
 Тестовый harness запускает готовый image ID с исходными runtime-настройками devcontainer и UID пользователя образа. Перед smoke/Molecule проверяется совпадение `.Image` контейнера с измеренным image ID. Временная конфигурация запуска находится в `.build/<arch>/runtime-<variant>/devcontainer.json`.
+
+Badges показывают последний проведённый post-publication скан для каждой
+версии и архитектуры. `compatibility/security-snapshot.json` сохраняет счётчики,
+digest образов, source revision и версию базы CVE. Ошибка или отсутствующий
+скан отображаются серым, а не нулём. После сканов job `badges` обновляет только
+README и этот снимок коммитом `[skip ci]`. Без нового сканирования бейджи можно
+перегенерировать командой `python3 scripts/badges.py`.

@@ -89,3 +89,16 @@ job scan-published сканирует точные native digest и сохран
 точный tested image ID. Нельзя обещать отсутствие CVE по одному статусу сборки.
 
 Тестовый harness запускает готовый image ID с исходными runtime-настройками devcontainer и UID пользователя образа. Перед smoke/Molecule проверяется совпадение `.Image` контейнера с измеренным image ID. Временная конфигурация запуска находится в `.build/<arch>/runtime-<variant>/devcontainer.json`.
+
+## Badges уязвимостей
+
+Генератор `scripts/badges.py` использует готовые scan-metadata.json текущего CI
+run. Проверять release/revision/run ID, выбирать последнюю попытку отдельно
+для amd64/arm64; ошибку сканера показывать серым. Счётчик High/Critical следует
+адресной политике Ansible 10. `compatibility/security-snapshot.json` и блок
+security-badges README обновляются вместе. Job badges получает contents:write;
+в git add явно перечислены только README и снимок. Коммит содержит `[skip ci]`;
+новый build/scan не нужен.
+Локальная перегенерация: `python3 scripts/badges.py`. При изменении документации
+по запросу без новой сборки использовать `[skip ci]` и проверить отсутствие
+нового workflow run на опубликованном SHA.

@@ -69,6 +69,10 @@ def generated():
     readme=ROOT/'README.md'
     if readme.exists() and (ROOT/'compatibility/resolved.json').exists():
         text=readme.read_text()
+        security_snapshot=ROOT/'compatibility/security-snapshot.json'
+        if security_snapshot.exists():
+            from badges import replace_block
+            text=replace_block(text,read_json(security_snapshot))
         selected=read_json(ROOT/'compatibility/resolved.json')['packages']
         table=['| Образ | Ansible | ansible-core | Python контроллера | Поддерживаемый Python на удалённых хостах | Molecule | ansible-lint / ansible-compat |',
                '|---|---|---|---|---|---|---|']

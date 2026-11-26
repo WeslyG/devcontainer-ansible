@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "release": "2026.11.27",
+  "revision": "27ce5c55975967dbc85e8827f49a375ddbb1611d",
+  "runId": "45889510824",
+  "repository": "WeslyG/devcontainer-ansible",
+  "runUrl": "https://github.com/WeslyG/devcontainer-ansible/actions/runs/45889510824",
+  "architectures": {
+    "amd64": {
+      "runAttempt": "1",
+      "startedAt": "2026-11-26T20:31:46.714519+00:00",
+      "finishedAt": "2026-11-26T20:33:49.196707+00:00",
+      "scanner": "aquasec/trivy@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb",
+      "databaseSha256": "80b72081e35c6d7fb3df5897576145d15ffaa6c9843d02df2e68c25b99eb7d7f",
+      "policySha256": "02a0b3254649354150cc4029a26daf018af13b26b12cecae32462c8cb6996e90",
+      "images": {
+        "10": {
+          "status": "findings",
+          "highCritical": 96,
+          "accepted": 2,
+          "digest": "sha256:ff77c979291ac75e4ed853d5fa3e82d56f70dc0887f7479d677267fb047008a2",
+          "reportSha256": "cb8794e7c4cd5d8ce99d9f7714cd3216700d4785f508dbff500ca06bde02caa7"
+        },
+        "12": {
+          "status": "findings",
+          "highCritical": 96,
+          "accepted": 0,
+          "digest": "sha256:a6ae5fb9a07a4073b9cb3bd0a0c6dcaede1ff271b0e2a78adb23758ab0b4a7fd",
+          "reportSha256": "644aa50518b775a66042235e4574b77fccfc3fbcbbd9202365bc2391d51e6e60"
+        },
+        "14": {
+          "status": "findings",
+          "highCritical": 96,
+          "accepted": 0,
+          "digest": "sha256:e9f60b8845ec4b2d5b0101daeff1d414dbfe656a587d23780cc46cc61bce06bb",
+          "reportSha256": "a96d83bccefcf8a751342ebc720c4c2efee3cb06c66b2e9cbe45333a4aca5ac0"
+        }
+      }
+    },
+    "arm64": {
+      "runAttempt": "1",
+      "startedAt": "2026-11-26T20:31:39.351605+00:00",
+      "finishedAt": "2026-11-26T20:34:16.443261+00:00",
+      "scanner": "aquasec/trivy@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb",
+      "databaseSha256": "80b72081e35c6d7fb3df5897576145d15ffaa6c9843d02df2e68c25b99eb7d7f",
+      "policySha256": "02a0b3254649354150cc4029a26daf018af13b26b12cecae32462c8cb6996e90",
+      "images": {
+        "10": {
+          "status": "findings",
+          "highCritical": 96,
+          "accepted": 2,
+          "digest": "sha256:615efe79d6213d221aa5ce7bc0601a0b9b360b4d0a48247247c32d1669d29ec3",
+          "reportSha256": "38405b58ae20a11e6f55f4ee5c585e162eb7779ddd60d44b66c6634520168e24"
+        },
+        "12": {
+          "status": "findings",
+          "highCritical": 96,
+          "accepted": 0,
+          "digest": "sha256:980e1464641bab1d36e39a8ac07c75f221f579f79843f707363591150a1a4845",
+          "reportSha256": "6a4dce5272761ffa39bea0ab38a9dc012e5a4aa5f73bb38b245b161236a49fa9"
+        },
+        "14": {
+          "status": "findings",
+          "highCritical": 96,
+          "accepted": 0,
+          "digest": "sha256:1738378f18a4e7b7601903182c9142aece64a6cfcdfe3d96ba42b7879ce3427c",
+          "reportSha256": "c531394eda63db48e82a8a7039ddd19f978dd4da6b5b1335dabc0ffb3cab7f69"
+        }
+      }
+    }
+  }
+}
