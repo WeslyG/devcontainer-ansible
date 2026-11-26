@@ -4,6 +4,7 @@ feature_dir="${FEATURE_DIR:-/feature}"
 work_dir="$(mktemp -d)"
 trap 'rm -rf -- "$work_dir"' EXIT
 before="$(sha256sum /usr/local/bin/node)"
+test ! -e /usr/local/include/node
 if VERSION=latest bash "$feature_dir/install.sh" > "$work_dir/version.log" 2>&1; then
     echo 'ERROR: accepted a floating Node version' >&2; exit 1
 fi

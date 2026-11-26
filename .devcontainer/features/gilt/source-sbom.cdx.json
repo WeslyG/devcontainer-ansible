@@ -1,0 +1,42 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "version": 1,
+  "components": [
+    {
+      "type": "library",
+      "name": "github.com/retr0h/gilt/v2",
+      "version": "v2.2.5",
+      "purl": "pkg:golang/github.com/retr0h/gilt/v2@v2.2.5",
+      "bom-ref": "pkg:golang/github.com/retr0h/gilt/v2@v2.2.5"
+    },
+    {
+      "type": "library",
+      "name": "github.com/editorconfig-checker/editorconfig-checker/v4",
+      "version": "v4.0.2",
+      "purl": "pkg:golang/github.com/editorconfig-checker/editorconfig-checker/v4@v4.0.2",
+      "bom-ref": "pkg:golang/github.com/editorconfig-checker/editorconfig-checker/v4@v4.0.2"
+    },
+    {
+      "type": "library",
+      "name": "github.com/derailed/k9s",
+      "version": "v0.51.0",
+      "purl": "pkg:golang/github.com/derailed/k9s@v0.51.0",
+      "bom-ref": "pkg:golang/github.com/derailed/k9s@v0.51.0"
+    },
+    {
+      "type": "library",
+      "name": "k8s.io/minikube",
+      "version": "v1.39.0",
+      "purl": "pkg:golang/k8s.io/minikube@v1.39.0",
+      "bom-ref": "pkg:golang/k8s.io/minikube@v1.39.0"
+    },
+    {
+      "type": "library",
+      "name": "k8s.io/kubectl",
+      "version": "v0.37.3",
+      "purl": "pkg:golang/k8s.io/kubectl@v0.37.3",
+      "bom-ref": "pkg:golang/k8s.io/kubectl@v0.37.3"
+    }
+  ]
+}

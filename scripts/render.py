@@ -6,6 +6,14 @@ import hashlib
 import re
 from common import ROOT, matrix, read_json
 
+def go_build_args(data):
+    build=data['tools']['giltBuild']
+    return {'GILT_VERSION':data['tools']['gilt'],'GO_VERSION':build['goVersion'],
+            'GO_SHA256_AMD64':build['goSha256Amd64'],'GO_SHA256_ARM64':build['goSha256Arm64'],
+            'GILT_SOURCE_SHA256':build['sourceSha256'],'GILT_CRYPTO_VERSION':build['cryptoVersion'],
+            'GILT_TEXT_VERSION':build['textVersion'],'EDITORCONFIG_VERSION':build['editorconfigVersion'],
+            'EDITORCONFIG_SOURCE_SHA256':build['editorconfigSourceSha256']}
+
 def generated():
     data=matrix()
     template=read_json(ROOT/'.devcontainer/template.json')
@@ -17,14 +25,16 @@ def generated():
             cfg['build']={'dockerfile':'Dockerfile' if default else '../Dockerfile','context':'..' if default else '../..','args':{
                 'PYTHON_IMAGE':variant['pythonImage'], 'REQUIREMENTS_FILE':f'requirements/ansible{major}.txt',
                 'ANSIBLE_MAJOR':major, 'PLATFORM_VERSION':'${localEnv:PLATFORM_VERSION}', 'GIT_BUILDER_IMAGE':data['gitBuilderImage'],
-                'GIT_VERSION':data['tools']['git']['version'], 'GIT_SHA256':data['tools']['git']['sha256']}}
+                'GIT_VERSION':data['tools']['git']['version'], 'GIT_SHA256':data['tools']['git']['sha256'],
+                'OPENSSH_VERSION':data['tools']['openssh']['version'],'OPENSSH_SHA256':data['tools']['openssh']['sha256'],
+                'BIND_VERSION':data['tools']['bind']['version'], 'BIND_SHA256':data['tools']['bind']['sha256']}}
+            cfg['build']['args'].update(go_build_args(data))
             prefix='./features/' if default else '../features/'
             features=cfg['features']
             features['./features/node'].update(data['tools']['node'])
-            features['./features/gilt']['version']=data['tools']['gilt']
+            features['./features/gilt'].update(version=data['tools']['gilt'],**data['tools']['giltBuild'])
             features['./features/cli-tools'].update(data['tools']['cliTools'])
-            features['ghcr.io/dhoeric/features/k9s:1']['version']=data['tools']['k9s']
-            features['ghcr.io/devcontainers/features/kubectl-helm-minikube:1'].update(data['tools']['kubernetes'])
+            features['./features/kubernetes'].update(data['tools']['kubernetes'])
             cfg['features']={k.replace('./features/',prefix):v for k,v in features.items()}
             cfg['overrideFeatureInstallOrder']=[s.replace('./features/',prefix) for s in cfg['overrideFeatureInstallOrder']]
             cfg['containerEnv']={'ANSIBLE_MAJOR':major,'MOLECULE_TARGET_IMAGE':variant['pythonImage']}
@@ -33,16 +43,23 @@ def generated():
     replacements={'CHECKOUT':data['actions']['actions/checkout'], 'SETUP_NODE':data['actions']['actions/setup-node'],
                   'UPLOAD':data['actions']['actions/upload-artifact'], 'LOGIN':data['actions']['docker/login-action'], 'DOWNLOAD':data['actions']['actions/download-artifact'], 'BUILDX':data['actions']['docker/setup-buildx-action'],
                   'NODE':data['tools']['node']['version'], 'DEVCONTAINER':data['devcontainerCli']}
-    for feature,values in [('node',data['tools']['node']),('cli-tools',data['tools']['cliTools']),('gilt',{'version':data['tools']['gilt']})]:
+    for feature,values in [('node',data['tools']['node']),('kubernetes',data['tools']['kubernetes']),('cli-tools',data['tools']['cliTools']),('gilt',{'version':data['tools']['gilt'],**data['tools']['giltBuild']})]:
         path=ROOT/f'.devcontainer/features/{feature}/devcontainer-feature.json'
         metadata=read_json(path)
         for key,value in values.items():metadata['options'][key]['default']=value
         result[path]=json.dumps(metadata,indent=2,ensure_ascii=False)+'\n'
+    import go_sources
+    go_config=go_sources.configuration(data)
+    result[ROOT/'.devcontainer/features/gilt/go-tools.json']=json.dumps(go_config,indent=2)+'\n'
+    result[ROOT/'.devcontainer/features/gilt/source-sbom.cdx.json']=json.dumps(go_sources.sbom(data),indent=2)+'\n'
     dockerfile=ROOT/'.devcontainer/Dockerfile'
     text=dockerfile.read_text()
     defaults={'PYTHON_IMAGE':data['variants'][data['default']]['pythonImage'], 'GIT_BUILDER_IMAGE':data['gitBuilderImage'],
               'GIT_VERSION':data['tools']['git']['version'],'GIT_SHA256':data['tools']['git']['sha256'],
+              'OPENSSH_VERSION':data['tools']['openssh']['version'],'OPENSSH_SHA256':data['tools']['openssh']['sha256'],
+                'BIND_VERSION':data['tools']['bind']['version'],'BIND_SHA256':data['tools']['bind']['sha256'],
               'ANSIBLE_MAJOR':data['default'],'REQUIREMENTS_FILE':'requirements/ansible'+data['default']+'.txt'}
+    defaults.update(go_build_args(data))
     for key,value in defaults.items():text=re.sub(r'^ARG '+key+r'=.*$', 'ARG '+key+'='+value,text,flags=re.M)
     result[dockerfile]=text
     for template_path in (ROOT/'.github/workflow-templates').glob('*.yml'):
@@ -64,7 +81,7 @@ def generated():
         rows={'Node.js':tools['node']['version'],'npm':tools['node']['npmVersion'],'Git':tools['git']['version'],
               'Claude Code':tools['cliTools']['claudeVersion'],'elasticdump':tools['cliTools']['elasticdumpVersion'],
               'kubectl':tools['kubernetes']['version'],'Helm':tools['kubernetes']['helm'],'minikube':tools['kubernetes']['minikube'],
-              'k9s':tools['k9s'],'Gilt':tools['gilt'],'devcontainer CLI (host/CI)':data['devcontainerCli']}
+              'k9s':tools['k9s'],'Gilt':tools['gilt'],'OpenSSH client':tools['openssh']['version'],'BIND DNS clients':tools['bind']['version'],'EditorConfig checker':tools['giltBuild']['editorconfigVersion'],'devcontainer CLI (host/CI)':data['devcontainerCli']}
         tool_table='| Инструмент | Версия |\n|---|---|\n'+'\n'.join(f'| {name} | {value} |' for name,value in rows.items())
         text=re.sub(r'<!-- tools:start -->.*?<!-- tools:end -->','<!-- tools:start -->\n'+tool_table+'\n<!-- tools:end -->',text,flags=re.S)
         sizes=['| Платформа | Тег образа | Несжатый размер | Проверено | Состояние lock |','|---|---|---|---|---|']
@@ -76,6 +93,7 @@ def generated():
                     sizes.append(f'| {arch} | {row["image"]} | {row["bytes"]:,} байт | {report["date"][:10]} | '+('текущий' if current else 'требует проверки')+' |')
         else:sizes=['Полный прогон ещё не записан. Выполните `make test` и `make record`.']
         text=re.sub(r'<!-- sizes:start -->.*?<!-- sizes:end -->','<!-- sizes:start -->\n'+'\n'.join(sizes)+'\n<!-- sizes:end -->',text,flags=re.S)
+        text=re.sub(r'npm install --global @devcontainers/cli@[^\s`]+','npm install --global @devcontainers/cli@'+data['devcontainerCli'],text)
         result[readme]=text
     return result
 

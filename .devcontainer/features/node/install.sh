@@ -34,9 +34,9 @@ work_dir="$(mktemp -d)"
 trap 'rm -rf -- "$work_dir"' EXIT
 archive="node-v${version}-linux-${architecture}.tar.xz"
 curl --fail --silent --show-error --location --retry 3 --connect-timeout 15 --max-time 180 \
-    "https://nodejs.org/dist/v${version}/${archive}" -o "$work_dir/$archive"
+    "https://nodejs.org/dist/v${version}/${archive}?ansible-infra=${RANDOM}${RANDOM}" -o "$work_dir/$archive"
 printf '%s  %s\n' "$checksum" "$work_dir/$archive" | sha256sum --check -
-tar -xJf "$work_dir/$archive" -C /usr/local --strip-components=1 --no-same-owner
+tar --exclude="*/include" -xJf "$work_dir/$archive" -C /usr/local --strip-components=1 --no-same-owner
 
 # Keep only the requested Node.js/npm/npx toolchain.
 rm -rf /usr/local/lib/node_modules/corepack

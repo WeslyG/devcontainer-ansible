@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 import re
 import tempfile
-from common import ROOT, fetch, matrix, run, write_json, cli, config
+import hashlib
+from common import ROOT, fetch, matrix, run, write_json, cli, config, download
 from render import render
 
 FAMILIES={'10':('3.12','2.17'),'12':('3.13','2.19'),'14':('3.14','2.21')}
@@ -29,9 +30,16 @@ def discover(data):
     data['tools']['node']={'version':node,'sha256Amd64':sha('x64'),'sha256Arm64':sha('arm64')}
     for key,repo in [('gilt','retr0h/gilt'),('k9s','derailed/k9s')]:data['tools'][key]=release(repo)
     data['tools']['kubernetes']={'version':fetch('https://dl.k8s.io/release/stable.txt',False).strip().removeprefix('v'),'helm':release('helm/helm'),'minikube':release('kubernetes/minikube')}
+    kube=data['tools']['kubernetes']
+    for arch,label in [('amd64','Amd64'),('arm64','Arm64')]:
+        kube['sha256'+label]=fetch(f"https://dl.k8s.io/release/v{kube['version']}/bin/linux/{arch}/kubectl.sha256?ansible-infra=1",False).split()[0]
+        kube['helmSha256'+label]=fetch(f"https://get.helm.sh/helm-v{kube['helm']}-linux-{arch}.tar.gz.sha256sum",False).split()[0]
+        kube['minikubeSha256'+label]=fetch(f"https://github.com/kubernetes/minikube/releases/download/v{kube['minikube']}/minikube-linux-{arch}.sha256",False).split()[0]
     npm=lambda name:fetch('https://registry.npmjs.org/'+name)['dist-tags']['latest']
     data['tools']['node']['npmVersion']=npm('npm')
-    data['tools']['cliTools']={'claudeVersion':npm('@anthropic-ai/claude-code'),'elasticdumpVersion':npm('elasticdump')}
+    data['tools']['cliTools']={'claudeVersion':npm('@anthropic-ai/claude-code'),'elasticdumpVersion':npm('elasticdump'),'ipAddressVersion':npm('ip-address')}
+    form_versions=fetch('https://registry.npmjs.org/form-data')['versions']
+    data['tools']['cliTools']['formData2Version']=max((v for v in form_versions if re.fullmatch(r'2\.\d+\.\d+',v)),key=lambda v:tuple(map(int,v.split('.'))))
     for arch,package in [('Amd64','x64'),('Arm64','arm64')]:
         native=fetch('https://registry.npmjs.org/@anthropic-ai/claude-code-linux-'+package+'/'+data['tools']['cliTools']['claudeVersion'])
         data['tools']['cliTools']['claudeIntegrity'+arch]=native['dist']['integrity']
@@ -43,6 +51,29 @@ def discover(data):
     digest=re.search(r'^([a-f0-9]{64})\s+git-'+re.escape(git)+r'\.tar\.xz$',sums,re.M)[1]
     data['tools']['git']={'version':git,'sha256':digest}
     data['actions']={repo:fetch('https://api.github.com/repos/'+repo+'/releases/latest')['tag_name'] for repo in data['actions']}
+    ssh_listing=fetch('https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/',False)
+    ssh=max(set(re.findall(r'openssh-(\d+\.\d+p\d+)\.tar\.gz',ssh_listing)),key=lambda v:tuple(map(int,re.split(r'[.p]',v))))
+    data['tools']['openssh']={'version':ssh,'sha256':hashlib.sha256(download(f'https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-{ssh}.tar.gz')).hexdigest()}
+    # DNS clients use the supported stable ESV family and omit the LMDB backend.
+    listing=fetch('https://downloads.isc.org/isc/bind9/',False)
+    bind=max(set(re.findall(r'9\.20\.\d+',listing)),key=lambda v:tuple(map(int,v.split('.'))))
+    data['tools']['bind']={'version':bind,'sha256':hashlib.sha256(download(f'https://downloads.isc.org/isc/bind9/{bind}/bind-{bind}.tar.xz')).hexdigest()}
+    go=next(row for row in fetch('https://go.dev/dl/?mode=json') if row['stable'])
+    go_hash=lambda arch:next(f['sha256'] for f in go['files'] if f['os']=='linux' and f['arch']==arch and f['kind']=='archive')
+    gilt=data['tools']['gilt']
+    data['tools']['giltBuild']={
+        'goVersion':go['version'].removeprefix('go'), 'goSha256Amd64':go_hash('amd64'),'goSha256Arm64':go_hash('arm64'),
+        'sourceSha256':hashlib.sha256(download(f'https://codeload.github.com/retr0h/gilt/tar.gz/refs/tags/v{gilt}')).hexdigest(),
+        'cryptoVersion':fetch('https://proxy.golang.org/golang.org/x/crypto/@latest')['Version'],
+        'textVersion':fetch('https://proxy.golang.org/golang.org/x/text/@latest')['Version'],
+    }
+    editorconfig=release('editorconfig-checker/editorconfig-checker')
+    data['tools']['giltBuild'].update(editorconfigVersion=editorconfig,editorconfigSourceSha256=hashlib.sha256(download(f'https://codeload.github.com/editorconfig-checker/editorconfig-checker/tar.gz/refs/tags/v{editorconfig}')).hexdigest())
+    import go_sources
+    go_sources.discover(data)
+    trivy=release('aquasecurity/trivy')
+    scanner=fetch(f'https://hub.docker.com/v2/repositories/aquasec/trivy/tags/{trivy}')
+    data['security']={'trivyVersion':trivy,'trivyImage':'aquasec/trivy@'+scanner['digest']}
     data['updatedAt']=datetime.now(timezone.utc).date().isoformat()
     return data
 

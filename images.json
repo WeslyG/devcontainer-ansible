@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-04",
+  "updatedAt": "2026-11-26",
   "default": "14",
-  "devcontainerCli": "0.90.0",
+  "devcontainerCli": "0.91.0",
   "variants": {
     "10": {
       "pythonMinor": "3.12",
       "coreMinor": "2.17",
-      "pythonImage": "python:3.12.16-slim-trixie@sha256:b18b261e1b4974b4f321451ad5251ded85abb22c2b8b262da527dda1d031ab30",
+      "pythonImage": "python:3.12.16-slim-trixie@sha256:191083cdf6c7bda8c76158983163ead5d5cf7b77cf3033e805bb0f5296f51b4b",
       "targetPython": [
         "3.7",
         "3.8",
@@ -21,7 +21,7 @@
     "12": {
       "pythonMinor": "3.13",
       "coreMinor": "2.19",
-      "pythonImage": "python:3.13.18-slim-trixie@sha256:ae14d4ce8771606477a81446e7ef429edd6762305fc50c84507c1041fa8285d1",
+      "pythonImage": "python:3.13.18-slim-trixie@sha256:7249d5587b78209a006dc4a3b5340678f84ea729239193aa559962cd8c1fce50",
       "targetPython": [
         "3.8",
         "3.9",
@@ -35,7 +35,7 @@
     "14": {
       "pythonMinor": "3.14",
       "coreMinor": "2.21",
-      "pythonImage": "python:3.14.10-slim-trixie@sha256:930e1abba7c4e8f96ed93e8012c35d174d7732752731bbd5e8e757d7ec6f3966",
+      "pythonImage": "python:3.14.10-slim-trixie@sha256:22eafb370920ad8b429e0aec3fff433e0669968519f5d60469d83729c138b28b",
       "targetPython": [
         "3.9",
         "3.10",
@@ -49,27 +49,91 @@
   },
   "tools": {
     "git": {
-      "version": "2.56.0",
-      "sha256": "26c56c296b38c0695b26fa95f475f1d01704d2d38e73465ca30b0b2f5dc789d3"
+      "version": "2.56.1",
+      "sha256": "f0b0bf89264b9bd2e1c640363e7529643989da76281600473c50745cd34a607f"
     },
     "node": {
-      "version": "26.13.0",
-      "sha256Amd64": "d28a96af6c38596f6d9d97c0ee531c13d238d757742387d1928de822d959e997",
-      "sha256Arm64": "406fe3fbde1c054adff8b297c16fdb5af6659db327c1ac8acd46b56ef1af9a92",
-      "npmVersion": "12.2.1"
+      "version": "26.13.1",
+      "sha256Amd64": "5c063e46bab0fbc1c17cc445d7ff129cbdcd0471be6ed83b6ab864f8143bc864",
+      "sha256Arm64": "89e1853138db51e8b82d3e98ba9c0d3f2956a28e5e55ea1b7e12d25aae92d5dd",
+      "npmVersion": "12.2.3"
     },
     "gilt": "2.2.5",
     "cliTools": {
-      "claudeVersion": "2.1.318",
+      "claudeVersion": "2.1.332",
       "elasticdumpVersion": "6.125.1",
-      "claudeIntegrityAmd64": "sha512-GX+7CUng2R5f7SsA2w0LaXlH2f62fRCFD/Z2SUexoeH3B0KfulKQt5DtY9NeD2Yp3VEBz6/k/xWSbGPUi6NV2A==",
-      "claudeIntegrityArm64": "sha512-FUVVH3aQbLEChjv5wQLdFbpBC7bclVIdVYO5hDzJthDyf2OQtdubIP5QqLPgEScQb3CVIAFg2IPJ5nihJa8Ndw=="
+      "claudeIntegrityAmd64": "sha512-f4JWhzwYutJIHScC7/dYOPX6s28tt7ZADhsOi8zwOHq5fFPEuUeChh2NMfinSg0GrUckYxaeebC4h0DqiKzLcw==",
+      "claudeIntegrityArm64": "sha512-BlHNEtK38KBPWU31F4lUSS9sHclCyfWbThT1CErvxxH8+XcljYLZlQwdyXBkTD62rw1TgfE1u1a+quMWS0NSJg==",
+      "ipAddressVersion": "10.7.5",
+      "formData2Version": "2.5.6"
     },
     "k9s": "0.51.0",
     "kubernetes": {
-      "version": "1.37.2",
-      "helm": "4.3.1",
-      "minikube": "1.39.0"
+      "version": "1.37.3",
+      "helm": "4.3.2",
+      "minikube": "1.39.0",
+      "sha256Amd64": "9a1b55af2795b25dd288dbef62387db9b5530087ab918d28c6ad067f2e3cb07c",
+      "sha256Arm64": "da160b41491cc5c5e575d78bb665810fb900f70fad666d834094b24ec56d304f",
+      "helmSha256Amd64": "d1c0278d46beab79582d7e50f5b3dc206944ba8e577cde618513fd07daa53983",
+      "helmSha256Arm64": "df31cb61680ef728f82c770e5280dd565617bee6b039d37e85c677288be4bbb0",
+      "minikubeSha256Amd64": "b738496da01be06bbaf80c688f57ce25acd3849fbb518155f3a88e03ef555aa4",
+      "minikubeSha256Arm64": "202f331cb677761c5aec81c58472d16d65707358b9f66226210be3fe3275b1c3"
+    },
+    "bind": {
+      "version": "9.20.31",
+      "sha256": "9bfecd503ec79209d321053689c794da9f8dba993a24e9cd6bd7aa87cdf4122f"
+    },
+    "giltBuild": {
+      "goVersion": "1.27.4",
+      "goSha256Amd64": "7226736c2339719cda28fbf3a54d71aa63bcefe376e98cef00034268dab24840",
+      "goSha256Arm64": "3392582988a273a87ab5043ee1b2c9c17a2c3c00580bf9326c47a2e0aaaeac92",
+      "sourceSha256": "c495dcd9135935f28bdd4acadf2198e3fec6d75912dd33dafc9cb26f08f18ac2",
+      "cryptoVersion": "v0.59.0",
+      "textVersion": "v0.44.0",
+      "editorconfigVersion": "4.0.2",
+      "editorconfigSourceSha256": "0b84c5090d3f48db1bdfab454b7cde79adb26015d1a2731bba59bc1a636276bb"
+    },
+    "openssh": {
+      "version": "10.6p2",
+      "sha256": "9ae44872090cf2f06b3cf9ff147e7f16f309671340763ed2f99248398ae29d5b"
+    },
+    "goSecurityModules": {
+      "github.com/containerd/containerd": "v1.7.36",
+      "github.com/containerd/containerd/v2": "v2.4.2",
+      "github.com/go-git/go-git/v5": "v5.19.3",
+      "github.com/go-jose/go-jose/v4": "v4.1.9",
+      "github.com/klauspost/compress": "v1.20.5",
+      "github.com/hashicorp/go-getter": "v1.8.10",
+      "golang.org/x/crypto": "v0.59.0",
+      "golang.org/x/mod": "v0.43.0",
+      "golang.org/x/net": "v0.63.0",
+      "golang.org/x/text": "v0.44.0",
+      "google.golang.org/grpc": "v1.85.0",
+      "oras.land/oras-go/v2": "v2.7.0"
+    },
+    "goSourceProjects": {
+      "k9s": {
+        "repo": "derailed/k9s",
+        "version": "0.51.0",
+        "url": "https://codeload.github.com/derailed/k9s/tar.gz/refs/tags/v0.51.0",
+        "sha256": "e2c3851c909b87f9cfafa262e426f4a89023ca4e745cba5cab6d0153f76e7dcd",
+        "moduleOverrides": {
+          "github.com/containerd/containerd/v2": "v2.2.10"
+        },
+        "compatibilityNote": "K9s uses Kubernetes SDK v0.35.1; containerd v2.2.10 is the latest compatible stable series patch"
+      },
+      "minikube": {
+        "repo": "kubernetes/minikube",
+        "version": "1.39.0",
+        "url": "https://codeload.github.com/kubernetes/minikube/tar.gz/refs/tags/v1.39.0",
+        "sha256": "052b5b75f5a714a2d619be69bd9826083b42515d810cf1cac591ef0835be7fd9"
+      },
+      "kubectl": {
+        "repo": "kubernetes/kubernetes",
+        "version": "1.37.3",
+        "url": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.37.3/cmd/kubectl/kubectl.go",
+        "sha256": "b9660b8cacc734cf667f56fd55ae622e8f829536ac18aadf5fb1db0f8eb7edd5"
+      }
     }
   },
   "actions": {
@@ -77,8 +141,12 @@
     "actions/setup-node": "v7.1.0",
     "actions/upload-artifact": "v7.0.2",
     "docker/setup-buildx-action": "v4.4.1",
-    "docker/login-action": "v4.7.0",
+    "docker/login-action": "v4.8.0",
     "actions/download-artifact": "v8.0.2"
   },
-  "gitBuilderImage": "debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4"
+  "gitBuilderImage": "debian:trixie-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0",
+  "security": {
+    "trivyVersion": "0.76.2",
+    "trivyImage": "aquasec/trivy@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb"
+  }
 }

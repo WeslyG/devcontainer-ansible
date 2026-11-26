@@ -8,17 +8,21 @@ fi
 
 set -eu
 if [ "$(id -u)" -eq 0 ]; then
+    # Only the host Docker daemon is used; rootless daemon networking is unnecessary.
+    if dpkg-query -W -f='${db:Status-Status}' slirp4netns 2>/dev/null | grep -qx installed; then
+        apt-get purge -y slirp4netns libslirp0
+    fi
     apt-get clean
     rm -rf /var/lib/apt/lists/*
     rm -f /var/cache/apt/*.bin
     for cache_home in /root /home/*; do
         [ -d "$cache_home" ] || continue
-        rm -rf -- "$cache_home/.cache/pip" "$cache_home/.npm"
+        rm -rf -- "$cache_home/.cache" "$cache_home/.npm"
     done
     rm -rf /tmp/tmp-k9s
 else
     cache_home="$(getent passwd "$(id -u)" | cut -d: -f6)"
     if [ -n "$cache_home" ]; then
-        rm -rf -- "$cache_home/.cache/pip" "$cache_home/.npm"
+        rm -rf -- "$cache_home/.cache" "$cache_home/.npm"
     fi
 fi

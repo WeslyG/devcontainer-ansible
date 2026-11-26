@@ -25,9 +25,17 @@ def check():
         if path.name=='update.yml':
             assert 'scripts/publish.py' not in workflow and 'login-action' not in workflow
         else:
+            # Native build and post-publication scan must each cover both platforms.
+            assert workflow.count('{runner: ubuntu-24.04, arch: amd64}') == 2
+            assert workflow.count('{runner: ubuntu-24.04-arm, arch: arm64}') == 2
+            assert "ansible: ['10', '12', '14']" in workflow
             assert 'needs: [version, image]' in workflow
             assert 'cancel-in-progress: false' in workflow
             assert workflow.count("if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'")>=4
+            assert 'scripts/security.py --variant' not in workflow
+            assert 'needs: [version, publish]' in workflow
+            assert 'scripts/scan_release.py' in workflow
+            assert 'inputs.scan_published' in workflow
             assert 'scripts/publish.py stage' in workflow and 'scripts/publish.py merge' in workflow
         assert 'contents: read' in workflow
         assert 'include-hidden-files: true' not in workflow

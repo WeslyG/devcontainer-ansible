@@ -5,8 +5,15 @@ from common import ROOT, write_json
 
 def export(kind,arch='amd64',root=ROOT):
     out=root/'artifacts';out.mkdir(exist_ok=True)
-    files=([root/f'.build/{arch}/results.json',root/'images.json',*[root/f'.build/{arch}/publish-{major}-{arch}.json' for major in ['10','12','14']]] if kind=='build' else
-           [root/'.build/update.patch',root/'.build/latest-releases.json',root/'compatibility/packages.json',root/'compatibility/resolved.json'])
+    if kind=='build':
+        files=[root/f'.build/{arch}/results.json',root/'images.json',
+               *[root/f'.build/{arch}/publish-{major}-{arch}.json' for major in ['10','12','14']]]
+    elif kind=='update':
+        files=[root/'.build/update.patch',root/'.build/latest-releases.json',root/'compatibility/packages.json',root/'compatibility/resolved.json']
+    elif kind=='scan':
+        files=[root/f'.build/published-scan/{arch}'/name for name in (f'scan-{arch}.tar.gz','scan-metadata.json','scan-summary.md')]
+    else:
+        raise ValueError('Unknown artifact kind')
     copied=[]
     for source in files:
         if source.is_file():
@@ -17,5 +24,5 @@ def export(kind,arch='amd64',root=ROOT):
     return copied
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('kind',choices=['build','update']);parser.add_argument('--arch',choices=['amd64','arm64'],default='amd64');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('kind',choices=['build','update','scan']);parser.add_argument('--arch',choices=['amd64','arm64'],default='amd64');args=parser.parse_args()
     export(args.kind,args.arch)

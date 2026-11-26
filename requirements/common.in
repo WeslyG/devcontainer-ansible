@@ -20,9 +20,8 @@ pip
 setuptools
 wheel
 passlib
-# passlib 1.7.4 probes a long password; bcrypt 5 rejects it. Verified by smoke test.
+# Keep the verified passlib/bcrypt backend compatibility bound; test before raising it.
 bcrypt<5
-editorconfig-checker
 pynetbox
 pydantic
 cookiecutter

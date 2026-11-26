@@ -17,7 +17,7 @@ def main():
             if selected!=versions[name]:
                 reason='resolver selected a version compatible with the full environment; see .build/resolve-'+major+'.json'
                 if name in ['ansible','ansible-core']:reason='pinned Ansible major / supported core family'
-                if name=='bcrypt':reason='passlib 1.7.4 rejects bcrypt 5 (long-password backend probe); runtime roundtrip tested'
+                if name=='bcrypt':reason='verified passlib backend compatibility bound bcrypt<5; runtime roundtrip tested'
             rows[major][name]={'selected':selected,'latest':versions[name],'reason':reason}
     target=ROOT/('compatibility/packages.json' if args.write else '.build/package-audit.json')
     write_json(target,{'updatedAt':matrix()['updatedAt'],'variants':rows})

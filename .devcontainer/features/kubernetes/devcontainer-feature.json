@@ -1,0 +1,53 @@
+{
+  "id": "kubernetes",
+  "version": "1.0.0",
+  "name": "Kubernetes CLIs",
+  "description": "Pinned kubectl, Helm and minikube binaries without extra runtimes.",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "1.37.3",
+      "description": "version"
+    },
+    "helm": {
+      "type": "string",
+      "default": "4.3.2",
+      "description": "helm"
+    },
+    "minikube": {
+      "type": "string",
+      "default": "1.39.0",
+      "description": "minikube"
+    },
+    "sha256Amd64": {
+      "type": "string",
+      "default": "9a1b55af2795b25dd288dbef62387db9b5530087ab918d28c6ad067f2e3cb07c",
+      "description": "sha256Amd64"
+    },
+    "sha256Arm64": {
+      "type": "string",
+      "default": "da160b41491cc5c5e575d78bb665810fb900f70fad666d834094b24ec56d304f",
+      "description": "sha256Arm64"
+    },
+    "helmSha256Amd64": {
+      "type": "string",
+      "default": "d1c0278d46beab79582d7e50f5b3dc206944ba8e577cde618513fd07daa53983",
+      "description": "helmSha256Amd64"
+    },
+    "helmSha256Arm64": {
+      "type": "string",
+      "default": "df31cb61680ef728f82c770e5280dd565617bee6b039d37e85c677288be4bbb0",
+      "description": "helmSha256Arm64"
+    },
+    "minikubeSha256Amd64": {
+      "type": "string",
+      "default": "b738496da01be06bbaf80c688f57ce25acd3849fbb518155f3a88e03ef555aa4",
+      "description": "minikubeSha256Amd64"
+    },
+    "minikubeSha256Arm64": {
+      "type": "string",
+      "default": "202f331cb677761c5aec81c58472d16d65707358b9f66226210be3fe3275b1c3",
+      "description": "minikubeSha256Arm64"
+    }
+  }
+}

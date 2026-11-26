@@ -6,7 +6,9 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 claude_version="${CLAUDEVERSION:?Set an exact Claude Code version}"
 elasticdump_version="${ELASTICDUMPVERSION:?Set an exact elasticdump version}"
-for version in "$claude_version" "$elasticdump_version"; do
+ip_address_version="${IPADDRESSVERSION:?Set exact ip-address security override}"
+form_data_version="${FORMDATA2VERSION:?Set exact compatible form-data 2.x security override}"
+for version in "$claude_version" "$elasticdump_version" "$ip_address_version" "$form_data_version"; do
     if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
         echo 'Specify exact release versions for Claude Code and elasticdump.' >&2; exit 1
     fi
@@ -23,7 +25,7 @@ work_dir="$(mktemp -d)"
 trap 'rm -rf -- "$work_dir"' EXIT
 package="claude-code-linux-${architecture}"
 curl --fail --silent --show-error --location --retry 3 --connect-timeout 15 --max-time 240 \
-    "https://registry.npmjs.org/@anthropic-ai/${package}/-/${package}-${claude_version}.tgz" -o "$work_dir/native.tgz"
+    "https://registry.npmjs.org/@anthropic-ai/${package}/-/${package}-${claude_version}.tgz?ansible-infra=${RANDOM}${RANDOM}" -o "$work_dir/native.tgz"
 python - "$work_dir/native.tgz" "$integrity" <<'PY'
 import base64,hashlib,sys
 from pathlib import Path
@@ -48,6 +50,16 @@ install -m 0755 -o "$remote_user" -g "$(id -gn "$remote_user")" \
 runuser -u "$remote_user" -- ln -sfn "$remote_home/.local/share/claude/versions/$claude_version" "$remote_home/.local/bin/claude"
 ln -sfn "$remote_home/.local/bin/claude" /usr/local/bin/claude
 claude --version
-npm install --global --omit=dev "elasticdump@$elasticdump_version"
+# An application package owns its explicit transitive security overrides.
+application=/usr/local/share/elasticdump
+mkdir -p "$application"
+node - "$application/package.json" "$elasticdump_version" "$ip_address_version" "$form_data_version" <<'JS'
+const fs=require('node:fs');
+fs.writeFileSync(process.argv[2], JSON.stringify({name:'ansible-infra-elasticdump',version:'1.0.0',private:true,
+  dependencies:{elasticdump:process.argv[3]},overrides:{'ip-address':process.argv[4],'form-data@<3':process.argv[5]}},null,2)+'\n');
+JS
+npm install --prefix "$application" --omit=dev --no-audit --no-fund
+ln -sfn "$application/node_modules/.bin/elasticdump" /usr/local/bin/elasticdump
+ln -sfn "$application/node_modules/.bin/multielasticdump" /usr/local/bin/multielasticdump
 npm cache clean --force
 elasticdump --version

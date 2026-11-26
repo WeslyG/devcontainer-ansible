@@ -2,9 +2,15 @@
 set -euo pipefail
 
 feature_dir="${FEATURE_DIR:-/feature}"
+# Load build options from the mounted feature metadata.
+eval "$(python - "$feature_dir/devcontainer-feature.json" <<'PY'
+import json,shlex,sys
+for key,item in json.load(open(sys.argv[1]))['options'].items():
+ if key!='version':print('export '+key.upper()+'='+shlex.quote(item['default']))
+PY
+)"
 export GILT_VERSION="${GILT_VERSION:-2.2.5}"
-VERSION="$GILT_VERSION" bash "$feature_dir/install.sh"
-gilt version | python -c 'import json,sys,os; assert json.load(sys.stdin)["gitVersion"] == os.environ["GILT_VERSION"]'
+gilt version | python -c 'import json,sys,os; data=json.load(sys.stdin); assert data["gitVersion"] == os.environ["GILT_VERSION"]; assert data["goVersion"] == "go"+os.environ["GOVERSION"]'
 original_checksum="$(sha256sum /usr/local/bin/gilt)"
 
 work_dir="$(mktemp -d)"
@@ -35,21 +41,13 @@ esac
 SH
 chmod +x "$work_dir/bin/curl"
 
-if PATH="$work_dir/bin:$PATH" VERSION="$GILT_VERSION" bash "$feature_dir/install.sh" > "$work_dir/corrupt.log" 2>&1; then
+if PATH="$work_dir/bin:$PATH" SOURCESHA256="$(printf %064d 0)" VERSION="$GILT_VERSION" bash "$feature_dir/install.sh" > "$work_dir/corrupt.log" 2>&1; then
     echo "ERROR: accepted a corrupted release binary" >&2
     exit 1
 fi
 grep -q 'did NOT match' "$work_dir/corrupt.log"
 test "$(sha256sum /usr/local/bin/gilt)" = "$original_checksum"
-echo "PASS: rejects a corrupted binary without replacing the installed Gilt"
-
-if PATH="$work_dir/bin:$PATH" TEST_MISSING_CHECKSUM=1 VERSION="$GILT_VERSION" bash "$feature_dir/install.sh" > "$work_dir/missing.log" 2>&1; then
-    echo "ERROR: accepted a release manifest without the selected asset" >&2
-    exit 1
-fi
-grep -q 'Expected exactly one checksum' "$work_dir/missing.log"
-test "$(sha256sum /usr/local/bin/gilt)" = "$original_checksum"
-echo "PASS: rejects a missing checksum"
+echo "PASS: rejects a corrupted source archive without replacing the installed Gilt"
 
 if VERSION=latest bash "$feature_dir/install.sh" > "$work_dir/version.log" 2>&1; then
     echo "ERROR: accepted an unpinned version" >&2
@@ -57,3 +55,6 @@ if VERSION=latest bash "$feature_dir/install.sh" > "$work_dir/version.log" 2>&1;
 fi
 grep -q 'Specify an exact Gilt release version' "$work_dir/version.log"
 echo "PASS: requires a pinned release version"
+
+test "$(ec --version)" = "v$EDITORCONFIGVERSION"
+test "$(readlink -f /usr/local/bin/ec)" = "$(readlink -f /usr/local/bin/editorconfig-checker)"

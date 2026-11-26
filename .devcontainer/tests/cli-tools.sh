@@ -15,7 +15,7 @@ done
 exit 1
 SH
 chmod +x "$work_dir/bin/curl"
-if PATH="$work_dir/bin:$PATH" CLAUDEVERSION=2.1.318 ELASTICDUMPVERSION=6.125.1 \
+if PATH="$work_dir/bin:$PATH" CLAUDEVERSION=2.1.318 ELASTICDUMPVERSION=6.125.1 IPADDRESSVERSION=10.7.5 FORMDATA2VERSION=2.5.6 \
     CLAUDEINTEGRITYAMD64=sha512-invalid CLAUDEINTEGRITYARM64=sha512-invalid \
     bash "$feature_dir/install.sh" > "$work_dir/corrupt.log" 2>&1; then
     echo 'ERROR: accepted a corrupted native Claude package' >&2; exit 1

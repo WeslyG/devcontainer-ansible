@@ -1,43 +1,28 @@
-# Gilt
+# Gilt, EditorConfig checker и общие Go CLI
 
-Локальная devcontainer feature устанавливает официальный бинарник
-[Gilt](https://github.com/retr0h/gilt/releases) в `/usr/local/bin/gilt`.
-Поддерживаются Linux amd64 и arm64. Установка выполняется от root;
-бинарник доступен всем пользователям контейнера.
+Локальная feature поддерживает Linux amd64 и arm64. Общая стадия Dockerfile
+собирает Gilt, EditorConfig checker, K9s, minikube и kubectl из закреплённых
+официальных исходников. Версии, SHA256 исходников, Go SDK для обеих архитектур
+и совместимые security updates модулей находятся в `images.json`.
+`scripts/update.py` обновляет pins; `scripts/render.py` генерирует конфигурации
+и metadata исходников.
 
-```json
-"features": {
-  "./features/gilt": {
-    "version": "2.2.5"
-  }
-}
-```
+Перед сборкой проверяются SHA256 архивов и `go mod verify`, выполняются
+upstream-тесты. `GOTOOLCHAIN=local` запрещает автоматическую загрузку другого
+Go toolchain. Minikube использует upstream Linux flags `CGO_ENABLED=1` и
+`libvirt_dlopen`; остальные Go CLI собираются с `CGO_ENABLED=0`.
 
-Для обновления измените `version` в `.devcontainer/devcontainer.json` на точную
-версию релиза. `latest` не поддерживается, чтобы версия не менялась незаметно.
-Установщик скачивает соответствующий архитектуре бинарник и `checksums.txt`
-из одного GitHub Release и проверяет SHA256 **до** установки и запуска.
-При отсутствии checksum или несовпадении хеша сборка прерывается.
+Runtime получает только бинарники, лицензии, go.mod/go.sum, список импортов
+и supplemental CycloneDX SBOM. `ec` и `editorconfig-checker` — aliases одного
+бинарника. Go SDK, исходники и caches в runtime отсутствуют.
 
-Требуются bash, curl, ca-certificates и стандартные GNU coreutils.
-На Debian/Ubuntu отсутствующие curl и CA-сертификаты устанавливаются через apt.
-Go и Python для установки Gilt не нужны.
+Feature проверяет fingerprint pins/установщиков и SHA256 каждого готового
+бинарника. Совпадающий набор общего builder используется без компиляции.
+При отсутствии подходящего набора feature собирает инструменты временным
+checksum-pinned SDK и удаляет временное окружение в создающем RUN.
 
-Feature хранится в Git вместе с devcontainer и не требует публикации в GHCR.
-Локальные features не получают OCI-запись в `devcontainer-lock.json`:
-их код фиксируется коммитом, версия Gilt — параметром `version`.
-
-Проверка установщика в отдельном чистом контейнере:
-
-```sh
-docker run --rm --platform linux/amd64 \
-  -v "$PWD/.devcontainer/features/gilt:/feature:ro" \
-  -v "$PWD/.devcontainer/tests:/tests:ro" \
-  python:3.12-trixie bash /tests/gilt.sh
-```
-
-Для ARM64 замените платформу на `linux/arm64`. Тест устанавливает настоящий
-релиз, проверяет запуск и overlay локального Git-репозитория по commit SHA,
-затем проверяет отказ при испорченном бинарнике,
-отсутствующем checksum и нефиксированной версии. Запускайте его в одноразовом
-контейнере: установщик пишет в `/usr/local/bin`.
+Локальный код фиксируется git-коммитом; OCI feature lock для него не создаётся.
+Полная проверка: `make test` на native-платформе. CI выполняет тот же прогон
+на amd64 и arm64. Тесты проверяют CLI, Gilt overlay локального Git-репозитория
+по commit SHA, точные версии и отказ при повреждённых исходниках без замены
+установленного Gilt. Полный цикл обновления описан в корневом `AGENTS.md`.

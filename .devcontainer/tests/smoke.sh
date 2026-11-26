@@ -3,6 +3,7 @@ set -eu
 python --version
 python -m pip check
 python "$(dirname "$0")/no-version-managers.py"
+python "$(dirname "$0")/duplicates.py"
 black --version
 isort --version-number
 s3cmd --version
@@ -21,10 +22,12 @@ helm version --short
 minikube version --short
 k9s version --short
 elasticdump --version
+node "$(dirname "$0")/npm-socks.cjs"
 docker --version
 claude --version
 cookiecutter --version
 gilt version
+ec --version
 yamllint --version
 pylint --version
 python - <<'PY'

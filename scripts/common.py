@@ -5,6 +5,8 @@ from pathlib import Path
 import re
 import subprocess
 import urllib.request
+import urllib.parse
+import uuid
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -15,7 +17,16 @@ def write_json(path, data):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
 
+def download(url):
+    if urllib.parse.urlsplit(url).hostname in {'codeload.github.com','downloads.isc.org','cdn.openbsd.org','raw.githubusercontent.com'}:
+        url+=('&' if '?' in url else '?')+'ansible-infra='+uuid.uuid4().hex
+    return subprocess.check_output(['curl','--fail','--silent','--show-error','--location',
+                                    '--connect-timeout','15','--max-time','120','--retry','2',url])
+
 def fetch(url, json_data=True):
+    if url.startswith('https://pypi.org/'):
+        data=download(url).decode()
+        return json.loads(data) if json_data else data
     headers={'User-Agent': 'ansible-devcontainer-updater'}
     if 'api.github.com/' in url and os.environ.get('GITHUB_TOKEN'):
         headers['Authorization']='Bearer '+os.environ['GITHUB_TOKEN']

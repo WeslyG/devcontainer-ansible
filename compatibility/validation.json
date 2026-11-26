@@ -1,36 +1,42 @@
 {
   "amd64": {
-    "date": "2026-11-04T01:27:53.214730+00:00",
+    "date": "2026-11-26T19:39:11.862308+00:00",
     "images": {
       "10": {
-        "image": "ansible-infra:ansible10-local",
-        "bytes": 3494194197,
+        "image": "ansible-infra:ansible10-2026.11.26",
+        "bytes": 2839099956,
         "budgetBytes": 3850000000,
         "platform": "linux/amd64",
         "tested": true,
-        "pythonImage": "python:3.12.16-slim-trixie@sha256:b18b261e1b4974b4f321451ad5251ded85abb22c2b8b262da527dda1d031ab30",
-        "manifestSha256": "6e5bde110254aaac695e1df35bd5fee57f8bacf37e4138d9bddd30c22d235cd7",
-        "lockSha256": "5f9603f59eb0ce49dcd445fb24b155c2126c245e4db4e04316ed679874eae8f1"
+        "pythonImage": "python:3.12.16-slim-trixie@sha256:191083cdf6c7bda8c76158983163ead5d5cf7b77cf3033e805bb0f5296f51b4b",
+        "platformVersion": "2026.11.26",
+        "imageId": "sha256:97acf2b50ec315f8c834483babbf91399663d7a746d7fcbcb3edba6f398308e1",
+        "manifestSha256": "74fbcc57c67396885335dc511169eb15e61dcca1d778d0c1dd6efcb7d50812af",
+        "lockSha256": "6bf593893818e7cb0238c45cbfe967dc0158e2d6274206f32eadc058e2a3dbaa"
       },
       "12": {
-        "image": "ansible-infra:ansible12-local",
-        "bytes": 3531469380,
+        "image": "ansible-infra:ansible12-2026.11.26",
+        "bytes": 2857919627,
         "budgetBytes": 3900000000,
         "platform": "linux/amd64",
         "tested": true,
-        "pythonImage": "python:3.13.18-slim-trixie@sha256:ae14d4ce8771606477a81446e7ef429edd6762305fc50c84507c1041fa8285d1",
-        "manifestSha256": "6e5bde110254aaac695e1df35bd5fee57f8bacf37e4138d9bddd30c22d235cd7",
-        "lockSha256": "0de5f623b3ae68a266ca9a775ef56a1ed9b161b7eafce4d825a689d10708152a"
+        "pythonImage": "python:3.13.18-slim-trixie@sha256:7249d5587b78209a006dc4a3b5340678f84ea729239193aa559962cd8c1fce50",
+        "platformVersion": "2026.11.26",
+        "imageId": "sha256:5764de4afae5eadfa7d118a576412f15ae4533556485278730fb1cd959ef1769",
+        "manifestSha256": "74fbcc57c67396885335dc511169eb15e61dcca1d778d0c1dd6efcb7d50812af",
+        "lockSha256": "a633898bb5a36e6389a230c1e8d827cde0c6d940266be2c1944c104a2f142cbf"
       },
       "14": {
-        "image": "ansible-infra:ansible14-local",
-        "bytes": 3531017955,
+        "image": "ansible-infra:ansible14-2026.11.26",
+        "bytes": 2865606541,
         "budgetBytes": 3900000000,
         "platform": "linux/amd64",
         "tested": true,
-        "pythonImage": "python:3.14.10-slim-trixie@sha256:930e1abba7c4e8f96ed93e8012c35d174d7732752731bbd5e8e757d7ec6f3966",
-        "manifestSha256": "6e5bde110254aaac695e1df35bd5fee57f8bacf37e4138d9bddd30c22d235cd7",
-        "lockSha256": "0f0def4fc2969e2be6d935c6636213919a1c59bb146d358fe30853064f2c5a92"
+        "pythonImage": "python:3.14.10-slim-trixie@sha256:22eafb370920ad8b429e0aec3fff433e0669968519f5d60469d83729c138b28b",
+        "platformVersion": "2026.11.26",
+        "imageId": "sha256:745b114754471a993bccb669bc87496230e0a5a387fa0b69ae21c5a3934f0ea1",
+        "manifestSha256": "74fbcc57c67396885335dc511169eb15e61dcca1d778d0c1dd6efcb7d50812af",
+        "lockSha256": "31f00c409e61e03b14209f4d03e52ad8b9cce8e28944189ff76b76fb3eaabe54"
       }
     }
   }

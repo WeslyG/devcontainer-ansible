@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-04",
+  "updatedAt": "2026-11-26",
   "variants": {
     "10": {
       "aiohappyeyeballs": {
@@ -29,12 +29,12 @@
       },
       "ansible": {
         "selected": "10.7.0",
-        "latest": "14.5.0",
+        "latest": "15.0.0",
         "reason": "pinned Ansible major / supported core family"
       },
       "ansible-compat": {
         "selected": "26.6.0",
-        "latest": "26.10.0",
+        "latest": "26.11.1",
         "reason": "resolver selected a version compatible with the full environment; see .build/resolve-10.json"
       },
       "ansible-core": {
@@ -44,12 +44,12 @@
       },
       "ansible-lint": {
         "selected": "26.6.0",
-        "latest": "26.10.1",
+        "latest": "26.11.1",
         "reason": "resolver selected a version compatible with the full environment; see .build/resolve-10.json"
       },
       "argcomplete": {
-        "selected": "3.7.2",
-        "latest": "3.7.2",
+        "selected": "3.8.0",
+        "latest": "3.8.0",
         "reason": "latest stable"
       },
       "arrow": {
@@ -70,7 +70,7 @@
       "bcrypt": {
         "selected": "4.3.0",
         "latest": "5.0.0",
-        "reason": "passlib 1.7.4 rejects bcrypt 5 (long-password backend probe); runtime roundtrip tested"
+        "reason": "verified passlib backend compatibility bound bcrypt<5; runtime roundtrip tested"
       },
       "binaryornot": {
         "selected": "0.6.0",
@@ -83,13 +83,13 @@
         "reason": "latest stable"
       },
       "bracex": {
-        "selected": "3.2.1",
-        "latest": "3.2.1",
+        "selected": "3.2.4",
+        "latest": "3.2.4",
         "reason": "latest stable"
       },
       "certifi": {
-        "selected": "2026.10.23",
-        "latest": "2026.10.23",
+        "selected": "2026.11.20",
+        "latest": "2026.11.20",
         "reason": "latest stable"
       },
       "cffi": {
@@ -98,13 +98,13 @@
         "reason": "latest stable"
       },
       "charset-normalizer": {
-        "selected": "3.5.2",
-        "latest": "3.5.2",
+        "selected": "3.5.3",
+        "latest": "3.5.3",
         "reason": "latest stable"
       },
       "click": {
-        "selected": "8.5.0",
-        "latest": "8.5.0",
+        "selected": "8.5.1",
+        "latest": "8.5.1",
         "reason": "latest stable"
       },
       "cookiecutter": {
@@ -138,13 +138,8 @@
         "reason": "latest stable"
       },
       "durationpy": {
-        "selected": "0.11",
-        "latest": "0.11",
-        "reason": "latest stable"
-      },
-      "editorconfig-checker": {
-        "selected": "3.11.1",
-        "latest": "3.11.1",
+        "selected": "0.12",
+        "latest": "0.12",
         "reason": "latest stable"
       },
       "enrich": {
@@ -153,8 +148,8 @@
         "reason": "latest stable"
       },
       "filelock": {
-        "selected": "4.2.7",
-        "latest": "4.2.7",
+        "selected": "4.3.1",
+        "latest": "4.3.1",
         "reason": "latest stable"
       },
       "frozenlist": {
@@ -188,13 +183,13 @@
         "reason": "latest stable"
       },
       "jsonpatch": {
-        "selected": "1.41",
-        "latest": "1.41",
+        "selected": "1.48",
+        "latest": "1.48",
         "reason": "latest stable"
       },
       "jsonpointer": {
-        "selected": "3.8",
-        "latest": "3.8",
+        "selected": "3.12",
+        "latest": "3.12",
         "reason": "latest stable"
       },
       "jsonschema": {
@@ -208,13 +203,13 @@
         "reason": "latest stable"
       },
       "kubernetes": {
-        "selected": "37.0.1",
-        "latest": "37.0.1",
+        "selected": "37.0.3",
+        "latest": "37.0.3",
         "reason": "latest stable"
       },
       "markdown-it-py": {
-        "selected": "4.2.0",
-        "latest": "4.2.0",
+        "selected": "4.3.0",
+        "latest": "4.3.0",
         "reason": "latest stable"
       },
       "markupsafe": {
@@ -234,7 +229,7 @@
       },
       "molecule": {
         "selected": "26.6.0",
-        "latest": "26.10.0",
+        "latest": "26.11.1",
         "reason": "resolver selected a version compatible with the full environment; see .build/resolve-10.json"
       },
       "molecule-plugins": {
@@ -263,13 +258,13 @@
         "reason": "latest stable"
       },
       "packaging": {
-        "selected": "26.3",
-        "latest": "26.3",
+        "selected": "26.4",
+        "latest": "26.4",
         "reason": "latest stable"
       },
       "passlib": {
-        "selected": "1.7.4",
-        "latest": "1.7.4",
+        "selected": "1.9.5",
+        "latest": "1.9.5",
         "reason": "latest stable"
       },
       "pathspec": {
@@ -283,8 +278,8 @@
         "reason": "latest stable"
       },
       "platformdirs": {
-        "selected": "4.14.3",
-        "latest": "4.14.3",
+        "selected": "4.14.8",
+        "latest": "4.14.8",
         "reason": "latest stable"
       },
       "pluggy": {
@@ -303,13 +298,13 @@
         "reason": "latest stable"
       },
       "pydantic": {
-        "selected": "2.14.2",
-        "latest": "2.14.2",
+        "selected": "2.14.4",
+        "latest": "2.14.4",
         "reason": "latest stable"
       },
       "pydantic-core": {
-        "selected": "2.50.2",
-        "latest": "2.50.2",
+        "selected": "2.50.5",
+        "latest": "2.50.5",
         "reason": "latest stable"
       },
       "pygments": {
@@ -318,8 +313,8 @@
         "reason": "latest stable"
       },
       "pylint": {
-        "selected": "4.1.3",
-        "latest": "4.1.3",
+        "selected": "4.1.4",
+        "latest": "4.1.4",
         "reason": "latest stable"
       },
       "pynetbox": {
@@ -348,8 +343,8 @@
         "reason": "latest stable"
       },
       "python-slugify": {
-        "selected": "9.1.3",
-        "latest": "9.1.3",
+        "selected": "9.2.0",
+        "latest": "9.2.0",
         "reason": "latest stable"
       },
       "pytokens": {
@@ -363,8 +358,8 @@
         "reason": "latest stable"
       },
       "pyyaml": {
-        "selected": "6.0.3",
-        "latest": "6.0.3",
+        "selected": "6.0.4",
+        "latest": "6.0.4",
         "reason": "latest stable"
       },
       "referencing": {
@@ -433,8 +428,8 @@
         "reason": "latest stable"
       },
       "tomlkit": {
-        "selected": "0.15.2",
-        "latest": "0.15.2",
+        "selected": "0.15.3",
+        "latest": "0.15.3",
         "reason": "latest stable"
       },
       "typing-extensions": {
@@ -443,8 +438,8 @@
         "reason": "latest stable"
       },
       "typing-inspection": {
-        "selected": "0.4.4",
-        "latest": "0.4.4",
+        "selected": "0.4.5",
+        "latest": "0.4.5",
         "reason": "latest stable"
       },
       "tzdata": {
@@ -458,8 +453,8 @@
         "reason": "latest stable"
       },
       "wcmatch": {
-        "selected": "12.0",
-        "latest": "12.0",
+        "selected": "12.0.4",
+        "latest": "12.0.4",
         "reason": "latest stable"
       },
       "websocket-client": {
@@ -521,12 +516,12 @@
       },
       "ansible": {
         "selected": "12.3.0",
-        "latest": "14.5.0",
+        "latest": "15.0.0",
         "reason": "pinned Ansible major / supported core family"
       },
       "ansible-compat": {
-        "selected": "26.10.0",
-        "latest": "26.10.0",
+        "selected": "26.11.1",
+        "latest": "26.11.1",
         "reason": "latest stable"
       },
       "ansible-core": {
@@ -535,13 +530,13 @@
         "reason": "pinned Ansible major / supported core family"
       },
       "ansible-lint": {
-        "selected": "26.10.1",
-        "latest": "26.10.1",
+        "selected": "26.11.1",
+        "latest": "26.11.1",
         "reason": "latest stable"
       },
       "argcomplete": {
-        "selected": "3.7.2",
-        "latest": "3.7.2",
+        "selected": "3.8.0",
+        "latest": "3.8.0",
         "reason": "latest stable"
       },
       "arrow": {
@@ -562,7 +557,7 @@
       "bcrypt": {
         "selected": "4.3.0",
         "latest": "5.0.0",
-        "reason": "passlib 1.7.4 rejects bcrypt 5 (long-password backend probe); runtime roundtrip tested"
+        "reason": "verified passlib backend compatibility bound bcrypt<5; runtime roundtrip tested"
       },
       "binaryornot": {
         "selected": "0.6.0",
@@ -575,13 +570,13 @@
         "reason": "latest stable"
       },
       "bracex": {
-        "selected": "3.2.1",
-        "latest": "3.2.1",
+        "selected": "3.2.4",
+        "latest": "3.2.4",
         "reason": "latest stable"
       },
       "certifi": {
-        "selected": "2026.10.23",
-        "latest": "2026.10.23",
+        "selected": "2026.11.20",
+        "latest": "2026.11.20",
         "reason": "latest stable"
       },
       "cffi": {
@@ -590,13 +585,13 @@
         "reason": "latest stable"
       },
       "charset-normalizer": {
-        "selected": "3.5.2",
-        "latest": "3.5.2",
+        "selected": "3.5.3",
+        "latest": "3.5.3",
         "reason": "latest stable"
       },
       "click": {
-        "selected": "8.5.0",
-        "latest": "8.5.0",
+        "selected": "8.5.1",
+        "latest": "8.5.1",
         "reason": "latest stable"
       },
       "cookiecutter": {
@@ -630,13 +625,8 @@
         "reason": "latest stable"
       },
       "durationpy": {
-        "selected": "0.11",
-        "latest": "0.11",
-        "reason": "latest stable"
-      },
-      "editorconfig-checker": {
-        "selected": "3.11.1",
-        "latest": "3.11.1",
+        "selected": "0.12",
+        "latest": "0.12",
         "reason": "latest stable"
       },
       "enrich": {
@@ -645,8 +635,8 @@
         "reason": "latest stable"
       },
       "filelock": {
-        "selected": "4.2.7",
-        "latest": "4.2.7",
+        "selected": "4.3.1",
+        "latest": "4.3.1",
         "reason": "latest stable"
       },
       "frozenlist": {
@@ -680,13 +670,13 @@
         "reason": "latest stable"
       },
       "jsonpatch": {
-        "selected": "1.41",
-        "latest": "1.41",
+        "selected": "1.48",
+        "latest": "1.48",
         "reason": "latest stable"
       },
       "jsonpointer": {
-        "selected": "3.8",
-        "latest": "3.8",
+        "selected": "3.12",
+        "latest": "3.12",
         "reason": "latest stable"
       },
       "jsonschema": {
@@ -700,13 +690,13 @@
         "reason": "latest stable"
       },
       "kubernetes": {
-        "selected": "37.0.1",
-        "latest": "37.0.1",
+        "selected": "37.0.3",
+        "latest": "37.0.3",
         "reason": "latest stable"
       },
       "markdown-it-py": {
-        "selected": "4.2.0",
-        "latest": "4.2.0",
+        "selected": "4.3.0",
+        "latest": "4.3.0",
         "reason": "latest stable"
       },
       "markupsafe": {
@@ -725,8 +715,8 @@
         "reason": "latest stable"
       },
       "molecule": {
-        "selected": "26.10.0",
-        "latest": "26.10.0",
+        "selected": "26.11.1",
+        "latest": "26.11.1",
         "reason": "latest stable"
       },
       "molecule-plugins": {
@@ -755,13 +745,13 @@
         "reason": "latest stable"
       },
       "packaging": {
-        "selected": "26.3",
-        "latest": "26.3",
+        "selected": "26.4",
+        "latest": "26.4",
         "reason": "latest stable"
       },
       "passlib": {
-        "selected": "1.7.4",
-        "latest": "1.7.4",
+        "selected": "1.9.5",
+        "latest": "1.9.5",
         "reason": "latest stable"
       },
       "pathspec": {
@@ -775,8 +765,8 @@
         "reason": "latest stable"
       },
       "platformdirs": {
-        "selected": "4.14.3",
-        "latest": "4.14.3",
+        "selected": "4.14.8",
+        "latest": "4.14.8",
         "reason": "latest stable"
       },
       "pluggy": {
@@ -795,13 +785,13 @@
         "reason": "latest stable"
       },
       "pydantic": {
-        "selected": "2.14.2",
-        "latest": "2.14.2",
+        "selected": "2.14.4",
+        "latest": "2.14.4",
         "reason": "latest stable"
       },
       "pydantic-core": {
-        "selected": "2.50.2",
-        "latest": "2.50.2",
+        "selected": "2.50.5",
+        "latest": "2.50.5",
         "reason": "latest stable"
       },
       "pygments": {
@@ -810,8 +800,8 @@
         "reason": "latest stable"
       },
       "pylint": {
-        "selected": "4.1.3",
-        "latest": "4.1.3",
+        "selected": "4.1.4",
+        "latest": "4.1.4",
         "reason": "latest stable"
       },
       "pynetbox": {
@@ -840,8 +830,8 @@
         "reason": "latest stable"
       },
       "python-slugify": {
-        "selected": "9.1.3",
-        "latest": "9.1.3",
+        "selected": "9.2.0",
+        "latest": "9.2.0",
         "reason": "latest stable"
       },
       "pytokens": {
@@ -855,8 +845,8 @@
         "reason": "latest stable"
       },
       "pyyaml": {
-        "selected": "6.0.3",
-        "latest": "6.0.3",
+        "selected": "6.0.4",
+        "latest": "6.0.4",
         "reason": "latest stable"
       },
       "referencing": {
@@ -925,8 +915,8 @@
         "reason": "latest stable"
       },
       "tomlkit": {
-        "selected": "0.15.2",
-        "latest": "0.15.2",
+        "selected": "0.15.3",
+        "latest": "0.15.3",
         "reason": "latest stable"
       },
       "typing-extensions": {
@@ -935,8 +925,8 @@
         "reason": "latest stable"
       },
       "typing-inspection": {
-        "selected": "0.4.4",
-        "latest": "0.4.4",
+        "selected": "0.4.5",
+        "latest": "0.4.5",
         "reason": "latest stable"
       },
       "tzdata": {
@@ -950,8 +940,8 @@
         "reason": "latest stable"
       },
       "wcmatch": {
-        "selected": "12.0",
-        "latest": "12.0",
+        "selected": "12.0.4",
+        "latest": "12.0.4",
         "reason": "latest stable"
       },
       "websocket-client": {
@@ -1012,13 +1002,13 @@
         "reason": "latest stable"
       },
       "ansible": {
-        "selected": "14.5.0",
-        "latest": "14.5.0",
-        "reason": "latest stable"
+        "selected": "14.6.0",
+        "latest": "15.0.0",
+        "reason": "pinned Ansible major / supported core family"
       },
       "ansible-compat": {
-        "selected": "26.10.0",
-        "latest": "26.10.0",
+        "selected": "26.11.1",
+        "latest": "26.11.1",
         "reason": "latest stable"
       },
       "ansible-core": {
@@ -1027,13 +1017,13 @@
         "reason": "pinned Ansible major / supported core family"
       },
       "ansible-lint": {
-        "selected": "26.10.1",
-        "latest": "26.10.1",
+        "selected": "26.11.1",
+        "latest": "26.11.1",
         "reason": "latest stable"
       },
       "argcomplete": {
-        "selected": "3.7.2",
-        "latest": "3.7.2",
+        "selected": "3.8.0",
+        "latest": "3.8.0",
         "reason": "latest stable"
       },
       "arrow": {
@@ -1054,7 +1044,7 @@
       "bcrypt": {
         "selected": "4.3.0",
         "latest": "5.0.0",
-        "reason": "passlib 1.7.4 rejects bcrypt 5 (long-password backend probe); runtime roundtrip tested"
+        "reason": "verified passlib backend compatibility bound bcrypt<5; runtime roundtrip tested"
       },
       "binaryornot": {
         "selected": "0.6.0",
@@ -1067,13 +1057,13 @@
         "reason": "latest stable"
       },
       "bracex": {
-        "selected": "3.2.1",
-        "latest": "3.2.1",
+        "selected": "3.2.4",
+        "latest": "3.2.4",
         "reason": "latest stable"
       },
       "certifi": {
-        "selected": "2026.10.23",
-        "latest": "2026.10.23",
+        "selected": "2026.11.20",
+        "latest": "2026.11.20",
         "reason": "latest stable"
       },
       "cffi": {
@@ -1082,13 +1072,13 @@
         "reason": "latest stable"
       },
       "charset-normalizer": {
-        "selected": "3.5.2",
-        "latest": "3.5.2",
+        "selected": "3.5.3",
+        "latest": "3.5.3",
         "reason": "latest stable"
       },
       "click": {
-        "selected": "8.5.0",
-        "latest": "8.5.0",
+        "selected": "8.5.1",
+        "latest": "8.5.1",
         "reason": "latest stable"
       },
       "cookiecutter": {
@@ -1122,13 +1112,8 @@
         "reason": "latest stable"
       },
       "durationpy": {
-        "selected": "0.11",
-        "latest": "0.11",
-        "reason": "latest stable"
-      },
-      "editorconfig-checker": {
-        "selected": "3.11.1",
-        "latest": "3.11.1",
+        "selected": "0.12",
+        "latest": "0.12",
         "reason": "latest stable"
       },
       "enrich": {
@@ -1137,8 +1122,8 @@
         "reason": "latest stable"
       },
       "filelock": {
-        "selected": "4.2.7",
-        "latest": "4.2.7",
+        "selected": "4.3.1",
+        "latest": "4.3.1",
         "reason": "latest stable"
       },
       "frozenlist": {
@@ -1172,13 +1157,13 @@
         "reason": "latest stable"
       },
       "jsonpatch": {
-        "selected": "1.41",
-        "latest": "1.41",
+        "selected": "1.48",
+        "latest": "1.48",
         "reason": "latest stable"
       },
       "jsonpointer": {
-        "selected": "3.8",
-        "latest": "3.8",
+        "selected": "3.12",
+        "latest": "3.12",
         "reason": "latest stable"
       },
       "jsonschema": {
@@ -1192,13 +1177,13 @@
         "reason": "latest stable"
       },
       "kubernetes": {
-        "selected": "37.0.1",
-        "latest": "37.0.1",
+        "selected": "37.0.3",
+        "latest": "37.0.3",
         "reason": "latest stable"
       },
       "markdown-it-py": {
-        "selected": "4.2.0",
-        "latest": "4.2.0",
+        "selected": "4.3.0",
+        "latest": "4.3.0",
         "reason": "latest stable"
       },
       "markupsafe": {
@@ -1217,8 +1202,8 @@
         "reason": "latest stable"
       },
       "molecule": {
-        "selected": "26.10.0",
-        "latest": "26.10.0",
+        "selected": "26.11.1",
+        "latest": "26.11.1",
         "reason": "latest stable"
       },
       "molecule-plugins": {
@@ -1247,13 +1232,13 @@
         "reason": "latest stable"
       },
       "packaging": {
-        "selected": "26.3",
-        "latest": "26.3",
+        "selected": "26.4",
+        "latest": "26.4",
         "reason": "latest stable"
       },
       "passlib": {
-        "selected": "1.7.4",
-        "latest": "1.7.4",
+        "selected": "1.9.5",
+        "latest": "1.9.5",
         "reason": "latest stable"
       },
       "pathspec": {
@@ -1267,8 +1252,8 @@
         "reason": "latest stable"
       },
       "platformdirs": {
-        "selected": "4.14.3",
-        "latest": "4.14.3",
+        "selected": "4.14.8",
+        "latest": "4.14.8",
         "reason": "latest stable"
       },
       "pluggy": {
@@ -1287,13 +1272,13 @@
         "reason": "latest stable"
       },
       "pydantic": {
-        "selected": "2.14.2",
-        "latest": "2.14.2",
+        "selected": "2.14.4",
+        "latest": "2.14.4",
         "reason": "latest stable"
       },
       "pydantic-core": {
-        "selected": "2.50.2",
-        "latest": "2.50.2",
+        "selected": "2.50.5",
+        "latest": "2.50.5",
         "reason": "latest stable"
       },
       "pygments": {
@@ -1302,8 +1287,8 @@
         "reason": "latest stable"
       },
       "pylint": {
-        "selected": "4.1.3",
-        "latest": "4.1.3",
+        "selected": "4.1.4",
+        "latest": "4.1.4",
         "reason": "latest stable"
       },
       "pynetbox": {
@@ -1332,8 +1317,8 @@
         "reason": "latest stable"
       },
       "python-slugify": {
-        "selected": "9.1.3",
-        "latest": "9.1.3",
+        "selected": "9.2.0",
+        "latest": "9.2.0",
         "reason": "latest stable"
       },
       "pytokens": {
@@ -1347,8 +1332,8 @@
         "reason": "latest stable"
       },
       "pyyaml": {
-        "selected": "6.0.3",
-        "latest": "6.0.3",
+        "selected": "6.0.4",
+        "latest": "6.0.4",
         "reason": "latest stable"
       },
       "referencing": {
@@ -1417,8 +1402,8 @@
         "reason": "latest stable"
       },
       "tomlkit": {
-        "selected": "0.15.2",
-        "latest": "0.15.2",
+        "selected": "0.15.3",
+        "latest": "0.15.3",
         "reason": "latest stable"
       },
       "typing-extensions": {
@@ -1427,8 +1412,8 @@
         "reason": "latest stable"
       },
       "typing-inspection": {
-        "selected": "0.4.4",
-        "latest": "0.4.4",
+        "selected": "0.4.5",
+        "latest": "0.4.5",
         "reason": "latest stable"
       },
       "tzdata": {
@@ -1442,8 +1427,8 @@
         "reason": "latest stable"
       },
       "wcmatch": {
-        "selected": "12.0",
-        "latest": "12.0",
+        "selected": "12.0.4",
+        "latest": "12.0.4",
         "reason": "latest stable"
       },
       "websocket-client": {

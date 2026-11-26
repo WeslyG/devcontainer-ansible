@@ -6,7 +6,7 @@
   "options": {
     "claudeVersion": {
       "type": "string",
-      "default": "2.1.318",
+      "default": "2.1.332",
       "description": "Exact native Claude Code release version."
     },
     "elasticdumpVersion": {
@@ -16,13 +16,23 @@
     },
     "claudeIntegrityAmd64": {
       "type": "string",
-      "default": "sha512-GX+7CUng2R5f7SsA2w0LaXlH2f62fRCFD/Z2SUexoeH3B0KfulKQt5DtY9NeD2Yp3VEBz6/k/xWSbGPUi6NV2A==",
+      "default": "sha512-f4JWhzwYutJIHScC7/dYOPX6s28tt7ZADhsOi8zwOHq5fFPEuUeChh2NMfinSg0GrUckYxaeebC4h0DqiKzLcw==",
       "description": "Pinned SHA512 npm integrity of the official native Claude x64 archive."
     },
     "claudeIntegrityArm64": {
       "type": "string",
-      "default": "sha512-FUVVH3aQbLEChjv5wQLdFbpBC7bclVIdVYO5hDzJthDyf2OQtdubIP5QqLPgEScQb3CVIAFg2IPJ5nihJa8Ndw==",
+      "default": "sha512-BlHNEtK38KBPWU31F4lUSS9sHclCyfWbThT1CErvxxH8+XcljYLZlQwdyXBkTD62rw1TgfE1u1a+quMWS0NSJg==",
       "description": "Pinned SHA512 npm integrity of the official native Claude arm64 archive."
+    },
+    "ipAddressVersion": {
+      "type": "string",
+      "default": "10.7.5",
+      "description": "Exact security override for the elasticdump SOCKS IPv6 parser."
+    },
+    "formData2Version": {
+      "type": "string",
+      "default": "2.5.6",
+      "description": "Exact security override within the legacy request-compatible form-data 2.x family."
     }
   },
   "installsAfter": [

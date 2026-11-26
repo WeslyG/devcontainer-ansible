@@ -1,13 +1,53 @@
 {
   "id": "gilt",
   "version": "1.0.0",
-  "name": "Gilt (GitHub Releases)",
-  "description": "Install a pinned Gilt release with SHA256 verification on Linux amd64 or arm64.",
+  "name": "Gilt and EditorConfig checker",
+  "description": "Build pinned Go CLIs with one checksum-pinned temporary Go toolchain.",
   "options": {
     "version": {
       "type": "string",
       "default": "2.2.5",
       "description": "Exact Gilt release version, with or without the v prefix."
+    },
+    "goVersion": {
+      "type": "string",
+      "default": "1.27.4",
+      "description": "goVersion"
+    },
+    "goSha256Amd64": {
+      "type": "string",
+      "default": "7226736c2339719cda28fbf3a54d71aa63bcefe376e98cef00034268dab24840",
+      "description": "goSha256Amd64"
+    },
+    "goSha256Arm64": {
+      "type": "string",
+      "default": "3392582988a273a87ab5043ee1b2c9c17a2c3c00580bf9326c47a2e0aaaeac92",
+      "description": "goSha256Arm64"
+    },
+    "sourceSha256": {
+      "type": "string",
+      "default": "c495dcd9135935f28bdd4acadf2198e3fec6d75912dd33dafc9cb26f08f18ac2",
+      "description": "sourceSha256"
+    },
+    "cryptoVersion": {
+      "type": "string",
+      "default": "v0.59.0",
+      "description": "cryptoVersion"
+    },
+    "textVersion": {
+      "type": "string",
+      "default": "v0.44.0",
+      "description": "textVersion"
+    },
+    "editorconfigVersion": {
+      "type": "string",
+      "default": "4.0.2",
+      "description": "editorconfigVersion"
+    },
+    "editorconfigSourceSha256": {
+      "type": "string",
+      "default": "0b84c5090d3f48db1bdfab454b7cde79adb26015d1a2731bba59bc1a636276bb",
+      "description": "editorconfigSourceSha256"
     }
   },
   "installsAfter": [

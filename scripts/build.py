@@ -41,11 +41,12 @@ def validate(major,report_dir):
     assert inspected['Labels']['org.opencontainers.image.version']==expected
     tests=ROOT/'.devcontainer/tests'
     # Audit the pristine image before running user tools that may create runtime caches.
-    for script in ['caches.py','no-version-managers.py']:
+    for script in ['caches.py','no-version-managers.py','duplicates.py','dns.py']:
         run(['docker','run','--rm','-v',f'{tests}:/tests:ro',tag,'python','/tests/'+script])
+    run(['docker','run','--rm','-v',f'{ROOT}:/repo:ro',tag,'python','/repo/.devcontainer/tests/ssh.py'])
     # Verify every transitive lock pin in the actual image, not only pip's consistency check.
     run(['docker','run','--rm','-v',f'{ROOT}:/repo:ro',tag,'python','/repo/.devcontainer/tests/lock.py',major])
-    for feature in ['node','gilt','cli-tools']:
+    for feature in ['node','gilt','kubernetes','cli-tools']:
         run(['docker','run','--rm','-e',f'GILT_VERSION={data["tools"]["gilt"]}',
              '-v',f'{tests}:/tests:ro','-v',f'{ROOT}/.devcontainer/features/{feature}:/feature:ro',tag,'bash',f'/tests/{feature}.sh'])
     label='ansible.matrix.validation';token=uuid.uuid4().hex

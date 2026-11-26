@@ -1,0 +1,54 @@
+{
+  "projects": {
+    "k9s": {
+      "repo": "derailed/k9s",
+      "version": "0.51.0",
+      "url": "https://codeload.github.com/derailed/k9s/tar.gz/refs/tags/v0.51.0",
+      "sha256": "e2c3851c909b87f9cfafa262e426f4a89023ca4e745cba5cab6d0153f76e7dcd",
+      "moduleOverrides": {
+        "github.com/containerd/containerd/v2": "v2.2.10"
+      },
+      "compatibilityNote": "K9s uses Kubernetes SDK v0.35.1; containerd v2.2.10 is the latest compatible stable series patch",
+      "package": ".",
+      "modules": {
+        "github.com/containerd/containerd": "v1.7.36",
+        "github.com/containerd/containerd/v2": "v2.2.10",
+        "github.com/go-git/go-git/v5": "v5.19.3",
+        "github.com/go-jose/go-jose/v4": "v4.1.9",
+        "github.com/klauspost/compress": "v1.20.5",
+        "golang.org/x/crypto": "v0.59.0",
+        "golang.org/x/mod": "v0.43.0",
+        "golang.org/x/net": "v0.63.0",
+        "golang.org/x/text": "v0.44.0",
+        "google.golang.org/grpc": "v1.85.0",
+        "oras.land/oras-go/v2": "v2.7.0"
+      }
+    },
+    "minikube": {
+      "repo": "kubernetes/minikube",
+      "version": "1.39.0",
+      "url": "https://codeload.github.com/kubernetes/minikube/tar.gz/refs/tags/v1.39.0",
+      "sha256": "052b5b75f5a714a2d619be69bd9826083b42515d810cf1cac591ef0835be7fd9",
+      "package": "./cmd/minikube",
+      "modules": {
+        "github.com/go-jose/go-jose/v4": "v4.1.9",
+        "github.com/hashicorp/go-getter": "v1.8.10",
+        "golang.org/x/crypto": "v0.59.0",
+        "golang.org/x/net": "v0.63.0",
+        "golang.org/x/text": "v0.44.0",
+        "google.golang.org/grpc": "v1.85.0"
+      }
+    },
+    "kubectl": {
+      "repo": "kubernetes/kubernetes",
+      "version": "1.37.3",
+      "url": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.37.3/cmd/kubectl/kubectl.go",
+      "sha256": "b9660b8cacc734cf667f56fd55ae622e8f829536ac18aadf5fb1db0f8eb7edd5",
+      "package": ".",
+      "modules": {
+        "golang.org/x/net": "v0.63.0",
+        "golang.org/x/text": "v0.44.0"
+      }
+    }
+  }
+}

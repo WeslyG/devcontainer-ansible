@@ -19,3 +19,7 @@ test:
 	$(PYTHON) scripts/build.py --variants $(VARIANTS) --test $(BUILD_FLAGS)
 record:
 	$(PYTHON) scripts/record.py
+
+# Requires a completed native build/test with the same image ID.
+security:
+	$(PYTHON) scripts/security.py --variant $(VARIANT) --arch $(ARCH)

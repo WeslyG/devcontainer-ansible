@@ -15,19 +15,17 @@
       "installDockerComposeSwitch": false
     },
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,ncdu,sshpass,dnsutils,ldap-utils",
+      "packages": "curl,stow,ca-certificates,nano,iputils-ping,nmap,jq,shellcheck,ncdu,sshpass,ldap-utils",
       "upgradePackages": true
     },
-    "ghcr.io/dhoeric/features/k9s:1": {},
-    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+    "./features/kubernetes": {},
     "./features/cli-tools": {}
   },
   "overrideFeatureInstallOrder": [
     "ghcr.io/devcontainers/features/common-utils",
     "ghcr.io/rocker-org/devcontainer-features/apt-packages",
     "ghcr.io/devcontainers/features/docker-outside-of-docker",
-    "ghcr.io/devcontainers/features/kubectl-helm-minikube",
-    "ghcr.io/dhoeric/features/k9s",
+    "./features/kubernetes",
     "./features/node",
     "./features/cli-tools",
     "./features/gilt"
