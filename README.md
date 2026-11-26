@@ -295,3 +295,5 @@ Passlib может вывести сообщение об отсутствии `
 Hashicorp mirror находится вне набора автоматически устанавливаемых инструментов.
 
 Проверки безопасности, SBOM и политика Ansible 10: [docs/security.md](docs/security.md).
+
+Тестовый harness запускает готовый image ID с исходными runtime-настройками devcontainer и UID пользователя образа. Перед smoke/Molecule проверяется совпадение `.Image` контейнера с измеренным image ID. Временная конфигурация запуска находится в `.build/<arch>/runtime-<variant>/devcontainer.json`.

@@ -6,6 +6,7 @@ import hashlib
 import os
 from pathlib import Path
 import platform
+import re
 import subprocess
 import uuid
 from common import ROOT, matrix, cli, config, image, run, write_json, read_json
@@ -30,12 +31,22 @@ def outcome(path):
             if value.get('outcome')=='success':return value
     raise RuntimeError(f'No successful devcontainer result in {path}')
 
+def runtime_configuration(source,image_id):
+    """Launch the measured image with its published UID and original runtime settings."""
+    if not re.fullmatch(r'sha256:[a-f0-9]{64}',image_id):
+        raise ValueError('Validation requires an exact local image ID')
+    runtime={key:value for key,value in source.items()
+             if key not in {'build','features','overrideFeatureInstallOrder'}}
+    runtime.update(image=image_id,updateRemoteUserUID=False)
+    return runtime
+
 def validate(major,report_dir):
     data=matrix();variant=data['variants'][major]
     tag=image(major)
     expected=os.environ['PLATFORM_VERSION']
     actual=subprocess.check_output(['docker','run','--rm',tag,'cat','/etc/platform_version'],text=True).strip()
-    inspected=json.loads(subprocess.check_output(['docker','image','inspect',tag]))[0]['Config']
+    built=json.loads(subprocess.check_output(['docker','image','inspect',tag]))[0]
+    image_id=built['Id'];inspected=built['Config']
     assert actual==expected
     assert f'PLATFORM_VERSION={expected}' in inspected['Env']
     assert inspected['Labels']['org.opencontainers.image.version']==expected
@@ -53,10 +64,14 @@ def validate(major,report_dir):
     up_log=report_dir/f'up-{major}.log'
     container=None
     try:
-        logged([cli(),'up','--workspace-folder',ROOT,'--config',config(major),'--id-label',f'{label}={token}'],up_log)
+        runtime_path=report_dir/f'runtime-{major}'/'devcontainer.json'
+        write_json(runtime_path,runtime_configuration(read_json(config(major)),image_id))
+        logged([cli(),'up','--workspace-folder',ROOT,'--config',runtime_path,
+                '--update-remote-user-uid-default','never','--id-label',f'{label}={token}'],up_log)
         result=outcome(up_log);container=result['containerId'];workspace=result['remoteWorkspaceFolder']
         inspected=json.loads(subprocess.check_output(['docker','inspect',container]))[0]
         assert inspected['Config']['Labels'].get(label)==token
+        assert inspected['Image']==image_id, 'Runtime tests must use the exact measured image ID'
         for name,command in [('smoke',['sh',workspace+'/.devcontainer/tests/smoke.sh']),('gilt',['bash',workspace+'/.devcontainer/tests/gilt-overlay.sh']),('host-docker',['docker','info','--format','{{.ServerVersion}}']),('molecule',['sh',workspace+'/.devcontainer/tests/molecule.sh'])]:
             args=['docker','exec','--user','vscode','--workdir','/tmp','-e',f'ANSIBLE_MAJOR={major}',
                   '-e',f'MOLECULE_TARGET_IMAGE={variant["pythonImage"]}','-e',f'MOLECULE_TEST_ID={token}',container,*command]

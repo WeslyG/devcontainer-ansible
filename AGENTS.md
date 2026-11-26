@@ -87,3 +87,5 @@ job scan-published сканирует точные native digest и сохран
 запуском. Сохранять отдельный artifact для каждого run_attempt; экспортировать
 только явный список публичных файлов. Локально scripts/security.py проверяет
 точный tested image ID. Нельзя обещать отсутствие CVE по одному статусу сборки.
+
+Тестовый harness запускает готовый image ID с исходными runtime-настройками devcontainer и UID пользователя образа. Перед smoke/Molecule проверяется совпадение `.Image` контейнера с измеренным image ID. Временная конфигурация запуска находится в `.build/<arch>/runtime-<variant>/devcontainer.json`.
